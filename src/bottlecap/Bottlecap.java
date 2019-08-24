@@ -24,11 +24,12 @@ public class Bottlecap implements Runnable {
     private boolean running = false;
     private Square player;
 
-    public Bottlecap(String title, int width, int height) {
+    public Bottlecap(String title, int width, int height) throws IOException {
         this.width = width;
         this.height = height;
         this.title = title;
-        handler = new Handler();
+        handler = new Handler(this);
+        init();
     }
 
     private void init() throws IOException {
@@ -42,7 +43,6 @@ public class Bottlecap implements Runnable {
     }
 
     private void tick() {
-
         handler.getKM().tick();
         player.tick();
     }
@@ -59,7 +59,6 @@ public class Bottlecap implements Runnable {
 
         //Everything below is what is drawn on the screen.
         player.render(g);
-
 
         //End Draw
         bs.show();
