@@ -57,6 +57,9 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftClicked = true;
         }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            rightClicked = true;
+        }
     }
 
     @Override
@@ -123,7 +126,12 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     }
 
     public boolean isRightClicked() {
-        return rightClicked;
+        if (rightClicked) {
+            rightClicked = false;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setRightClicked(boolean rightClicked) {
