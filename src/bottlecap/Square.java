@@ -4,13 +4,10 @@ import java.awt.*;
 
 public class Square {
 
-    int height, width, xposition, yposition;
+    private Rectangle player;
 
-    public Square(int height, int width, int xposition, int yposition) {
-        this.height = height;
-        this.width = width;
-        this.xposition = xposition;
-        this.yposition = yposition;
+    public Square(Rectangle player) {
+        this.player=player;
     }
 
     public void tick() {
@@ -19,12 +16,9 @@ public class Square {
 
     public void render(Graphics g) {
 
+        g.setColor(Color.cyan);
+        g.drawRect(player.x,player.y,player.width,player.height);
+
     }
 
-    public void movement() {
-        if (W) xposition--;
-        if (A) yposition--;
-        if (S) xposition++;
-        if (D) yposition++;
-    }
 }

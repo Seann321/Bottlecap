@@ -5,7 +5,7 @@ import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
 import bottlecap.states.Handler;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -22,7 +22,7 @@ public class Bottlecap implements Runnable {
     private int width, height;
     public String title;
     private boolean running = false;
-
+    private Square player;
 
     public Bottlecap(String title, int width, int height) {
         this.width = width;
@@ -38,10 +38,13 @@ public class Bottlecap implements Runnable {
         display.getFrame().addMouseMotionListener(handler.getMM());
         display.getCanvas().addMouseListener(handler.getMM());
         display.getCanvas().addMouseMotionListener(handler.getMM());
+        player = new Square(new Rectangle(0,0,10,10));
     }
 
     private void tick() {
+
         handler.getKM().tick();
+        player.tick();
     }
 
     private void render() {
@@ -55,6 +58,8 @@ public class Bottlecap implements Runnable {
         g.clearRect(0, 0, width, height);
 
         //Everything below is what is drawn on the screen.
+        player.render(g);
+
 
         //End Draw
         bs.show();
