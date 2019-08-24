@@ -7,6 +7,7 @@ import bottlecap.states.Handler;
 import bottlecap.states.SquareManager;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -26,12 +27,11 @@ public class Bottlecap implements Runnable {
     private boolean running = false;
 
 
-    public Bottlecap(String title, int width, int height) throws IOException {
+    public Bottlecap(String title, int width, int height){
         this.width = width;
         this.height = height;
         this.title = title;
         handler = new Handler(this);
-        init();
     }
 
     private void init() throws IOException {
@@ -47,6 +47,7 @@ public class Bottlecap implements Runnable {
 
     private void tick() {
         handler.getKM().tick();
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) System.exit(0);
         squareManager.tick();
     }
 
@@ -128,10 +129,6 @@ public class Bottlecap implements Runnable {
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public Display getDisplay() {
-        return display;
     }
 
     public Thread getThread() {

@@ -3,6 +3,7 @@ package bottlecap.states;
 import bottlecap.Square;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -18,6 +19,10 @@ public class SquareManager {
     }
 
     public void tick(){
+
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_R)){
+            newSquares.clear();
+        }
 
         if(handler.getMM().isRightPressed()) {
             newSquares.add(new Square(new Rectangle(handler.getMM().getMouseX(),
