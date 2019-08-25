@@ -1,6 +1,7 @@
-package bottlecap.states;
+package bottlecap.states.gamestate;
 
 import bottlecap.Square;
+import bottlecap.states.Handler;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

@@ -1,10 +1,6 @@
 package bottlecap;
 
-import bottlecap.Display;
-import bottlecap.controls.KeyManager;
-import bottlecap.controls.MouseManager;
 import bottlecap.states.Handler;
-import bottlecap.states.SquareManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -20,14 +16,13 @@ public class Bottlecap implements Runnable {
     private BufferStrategy bs;
     private Graphics g;
     private Handler handler;
-    private SquareManager squareManager;
 
     private int width, height;
     public String title;
     private boolean running = false;
 
 
-    public Bottlecap(String title, int width, int height){
+    public Bottlecap(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
@@ -41,14 +36,13 @@ public class Bottlecap implements Runnable {
         display.getFrame().addMouseMotionListener(handler.getMM());
         display.getCanvas().addMouseListener(handler.getMM());
         display.getCanvas().addMouseMotionListener(handler.getMM());
-        squareManager = new SquareManager(handler);
 
     }
 
     private void tick() {
         handler.getKM().tick();
-        if(handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) System.exit(0);
-        squareManager.tick();
+        if (handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) System.exit(0);
+        handler.getCurrentState().tick();
     }
 
     private void render() {
@@ -62,8 +56,7 @@ public class Bottlecap implements Runnable {
         g.clearRect(0, 0, width, height);
 
         //Everything below is what is drawn on the screen.
-        squareManager.render(g);
-
+        handler.getCurrentState().render(g);
         //End Draw
         bs.show();
 
