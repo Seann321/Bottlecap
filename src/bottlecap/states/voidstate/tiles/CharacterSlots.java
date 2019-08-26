@@ -18,7 +18,7 @@ public class CharacterSlots extends TileEntities {
         bounds.width = 25;
         bounds.height = 25;
         liteUp = false;
-        color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+        color = new Color((int) (Math.random() * 89)+10, (int) (Math.random() * 89) + 10, (int) (Math.random() * 89) + 10);
     }
 
     @Override

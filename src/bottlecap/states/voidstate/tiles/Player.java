@@ -106,6 +106,9 @@ public class Player extends TileEntities {
     }
 
     public void setColor(Color color) {
+        if(this.color == color){
+            return;
+        }
         this.color = color;
         handler.sendMessage("COLORCHANGE " + color +" " + privateID);
     }

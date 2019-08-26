@@ -86,11 +86,17 @@ public class TileManager {
                         if (handler.lastMessage.contains(""+playerID))
                             return;
                         System.out.println(handler.lastMessage);
+                        Color tempColor = colorConvertor(handler.lastMessage.substring(29,42));
+                        TileEntities temp = grabByID(Integer.parseInt(handler.lastMessage.substring(46)));
+                        if(temp instanceof  Player){
+                            ((Player) temp).setColor(tempColor);
+                        }
+
                     }
 
                     if (handler.lastMessage.startsWith("CORDS")) {
                         if (!handler.lastMessage.contains("" + playerID)) {
-                            int newID = Integer.parseInt(handler.lastMessage.substring(9, handler.lastMessage.length() - 1));
+                            int newID = Integer.parseInt(handler.lastMessage.substring(9));
                             int newX = Integer.parseInt(handler.lastMessage.substring(5, 7));
                             int newY = Integer.parseInt(handler.lastMessage.substring(7, 9));
                             testX = tiles.cords(newX, newY)[0];
@@ -120,6 +126,24 @@ public class TileManager {
         }
     }
 
+    public Color colorConvertor(String colorStart){
+        int a = Integer.parseInt(colorStart.substring(0,2));
+        int b = Integer.parseInt(colorStart.substring(5,7));
+        int c = Integer.parseInt(colorStart.substring(10,12));
+        System.out.println(a + " " + b + " " + c);
+        return new Color(a,b,c);
+    }
+
+    TileEntities grabByID(int ID){
+        for (TileEntities p : multiplayerEntities) {
+            if (p instanceof Player) {
+                if (ID == ((Player) p).privateID)
+                    //System.out.println(((Player) p).privateID);
+                    return p;
+            }
+        }
+        return null;
+    }
 
     boolean isIDBeingUsed(int ID) {
         for (TileEntities p : multiplayerEntities) {
