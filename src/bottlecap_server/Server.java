@@ -60,22 +60,23 @@ public class Server {
 
     }
 
-    public void sendMessage(String message) {
-
-        for (PrintWriter writer : writers) {
-            writer.println(message);
-        }
-
-    }
-
     private static class Handler extends Thread {
 
         private Socket socket;
+
         private BufferedReader in;
         private PrintWriter out;
 
         public Handler(Socket socket) {
             this.socket = socket;
+        }
+
+        public void sendMessage(String message) {
+
+            for (PrintWriter writer : writers) {
+                writer.println(message);
+            }
+
         }
 
         public void run() {
@@ -94,8 +95,12 @@ public class Server {
                         continue;
                     } else if (input.startsWith("1"))
                         out.println("PING");
-                    else if(input.startsWith("PONG")){
+                    else if (input.startsWith("PONG")) {
                         System.out.println("Client has Ponged");
+                    } else if (input.startsWith("CORDS")) {
+                        sendMessage(input);
+                    } else if (input.startsWith("COLORCHANGE")) {
+                         sendMessage(input);
                     }
                 }
             } catch (IOException e) {
