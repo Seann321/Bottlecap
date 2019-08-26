@@ -57,8 +57,10 @@ public class Client {
         if (in.ready())
             line = in.readLine();
         else return;
+        handler.lastMessage = line;
         if (line.startsWith("PING")) {
             sendMessage("PONG");
+            System.out.println("Connected to " + IP);
         }
     }
 

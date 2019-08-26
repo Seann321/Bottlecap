@@ -23,6 +23,16 @@ public class Player extends TileEntities {
         cords[1] = player.y;
     }
 
+    public Player(Rectangle player, Handler handler, boolean lockMovement) {
+        super(handler);
+        this.player = player;
+        this.lockMovement = lockMovement;
+        screen = new Rectangle(0, 0, handler.getWidth(), handler.getHeight());
+        ghostPlayer = player;
+        cords[0] = player.x;
+        cords[1] = player.y;
+    }
+
     public void tick() {
 
         if (!lockMovement)

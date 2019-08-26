@@ -35,6 +35,15 @@ public class Tiles {
         return cords;
     }
 
+    public int[] tilePOS(int x, int y){
+        int[] cords = new int[2];
+
+        cords[0] = x/xDiv;
+        cords[1] = y/yDiv;
+
+        return cords;
+    }
+
     public void tick() {
     }
 

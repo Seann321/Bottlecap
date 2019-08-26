@@ -15,6 +15,8 @@ public class TileManager {
     private final Tiles tiles;
     public Boolean liteUp = false;
     public Boolean debug = true;
+    public Boolean multiplayer = false;
+    private int playerID = 0;
     private boolean pickAColor = false;
     private static Rectangle playerStartingPOS;
     private static Rectangle truePlayerStartingPOS;
@@ -29,6 +31,12 @@ public class TileManager {
         newTileEntities.add(new Candle(tiles.cords(50, 10), true, handler));
         createDoorways();
         createPlayerSlots();
+        for (TileEntities p : tileEntities) {
+            if (p instanceof Player) {
+                playerID = p.hashCode();
+            }
+        }
+
     }
 
 
@@ -38,17 +46,55 @@ public class TileManager {
         Iterator<TileEntities> it = tileEntities.iterator();
         while (it.hasNext()) {
             TileEntities x = it.next();
+
             x.tick();
+
         }
         lightUpCandles();
         if (liteUp) {
             collisionWithDoors();
             collisionwithCharacterSelections();
         }
+        multiplayerTick();
+    }
+
+
+    public void multiplayerTick() {
+        if (multiplayer) {
+            int x = 0;
+            int y = 0;
+            int ID = 0;
+            for (TileEntities p : tileEntities) {
+                if (p instanceof Player) {
+                    //Needs to return the TILE
+                    x = tiles.tilePOS(p.cords[0], p.cords[1])[0];
+                    y = tiles.tilePOS(p.cords[0], p.cords[1])[1];
+                    ID = p.hashCode();
+
+                    //System.out.println("CORDS: X " + x + " Y " + y + " ID " + ID);
+                    handler.sendMessage("CORDS" + x + "" + y + "" + ID);
+                    if (handler.lastMessage.startsWith("CORDS")) {
+                        if (!handler.lastMessage.contains("" + playerID)) {
+                                System.out.println(handler.lastMessage);
+                                System.out.println("X:" + handler.lastMessage.substring(5,7));
+                                System.out.println("Y:" + handler.lastMessage.substring(7,9));
+                                System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    boolean isIDBeingUsed(TileEntities p) {
+        return false;
     }
 
     public void startSinglePlayer() {
-
+        if (handler.recieveMessage() == "PING") {
+            System.out.println(true);
+        }
     }
 
     public void startMutliplayer() {
@@ -64,6 +110,7 @@ public class TileManager {
         }
         handler.client.connectToServer();
         handler.sendMessage("1");
+        multiplayer = true;
 
     }
 
