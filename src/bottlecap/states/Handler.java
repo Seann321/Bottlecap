@@ -4,6 +4,7 @@ import bottlecap.Bottlecap;
 import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
 import bottlecap.states.gamestate.GameState;
+import bottlecap.states.voidstate.VoidState;
 
 public class Handler {
 
@@ -13,14 +14,20 @@ public class Handler {
 
     //States
     public GameState gameState;
+    public VoidState voidState;
 
     public Handler(Bottlecap bottlecap){
         this.bottlecap = bottlecap;
         mouseManager = new MouseManager();
         keyManager = new KeyManager();
         gameState = new GameState(this);
-        setCurrentState(gameState);
+        voidState = new VoidState(this);
+        setCurrentState(voidState);
     }
+
+    public int getHeight() {return bottlecap.getHeight();}
+
+    public int getWidth() {return bottlecap.getWidth();}
 
     public MouseManager getMM(){
         return mouseManager;

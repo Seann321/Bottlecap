@@ -1,4 +1,4 @@
-package bottlecap;
+package bottlecap.states.gamestate;
 
 import bottlecap.states.Handler;
 

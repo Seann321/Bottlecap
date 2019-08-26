@@ -1,6 +1,5 @@
 package bottlecap.states.gamestate;
 
-import bottlecap.Square;
 import bottlecap.states.Handler;
 
 import java.awt.*;
@@ -28,7 +27,6 @@ public class SquareManager {
         if(handler.getMM().isRightPressed()) {
             newSquares.add(new Square(new Rectangle(handler.getMM().getMouseX(),
                     handler.getMM().getMouseY(),10,10), handler));
-
         }
 
 
