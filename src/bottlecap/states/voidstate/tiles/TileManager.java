@@ -58,6 +58,7 @@ public class TileManager {
         multiplayerTick();
     }
 
+    private int testX = 0, testY = 0;
 
     public void multiplayerTick() {
         if (multiplayer) {
@@ -79,7 +80,10 @@ public class TileManager {
                                 System.out.println("X:" + handler.lastMessage.substring(5,7));
                                 System.out.println("Y:" + handler.lastMessage.substring(7,9));
                                 System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
-
+                                int newX = Integer.parseInt(handler.lastMessage.substring(5,7));
+                                int newY = Integer.parseInt(handler.lastMessage.substring(7,9));
+                                testX = tiles.cords(newX,newY)[0];
+                                testY = tiles.cords(newX,newY)[1];
                         }
                     }
                 }
@@ -239,6 +243,9 @@ public class TileManager {
     }
 
     public void render(Graphics g) {
+
+        g.setColor(Color.white);
+        g.drawRect(testX,testY,50,50);
 
         Iterator<TileEntities> it = tileEntities.iterator();
         while (it.hasNext()) {
