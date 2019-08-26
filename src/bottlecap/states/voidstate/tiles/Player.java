@@ -1,29 +1,31 @@
-package bottlecap.states.voidstate;
+package bottlecap.states.voidstate.tiles;
 
 import bottlecap.states.Handler;
 import org.w3c.dom.css.Rect;
 
 import java.awt.*;
 
-public class Player {
+public class Player extends TileEntities {
 
     private Rectangle screen;
     private Rectangle player;
     private Rectangle ghostPlayer;
-    private Handler handler;
     private final int SPEED = 5;
 
     public Player(Rectangle player, Handler handler) {
+        super(handler);
         this.player = player;
-        this.handler = handler;
         screen = new Rectangle(0, 0, handler.getWidth(), handler.getHeight());
         ghostPlayer = player;
+        cords[0] = player.x;
+        cords[1] = player.y;
     }
 
     public void tick() {
 
         movement();
-
+        cords[0] = player.x;
+        cords[1] = player.y;
     }
 
     public void render(Graphics g) {
@@ -71,6 +73,10 @@ public class Player {
                 player.y = ghostPlayer.y;
             }
         }
+    }
+
+    public Rectangle getBounds() {
+        return player;
     }
 }
 

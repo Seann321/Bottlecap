@@ -30,7 +30,7 @@ public class Tiles {
 
     public int[] cords(int x, int y){
         int[] cords = new int[2];
-        cords[0] = (x * xDiv);
+        cords[0] = (x * xDiv) - xDiv;
         cords[1] = (y * yDiv);
         return cords;
     }

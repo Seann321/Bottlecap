@@ -18,7 +18,7 @@ public class Handler {
 
     public Handler(Bottlecap bottlecap){
         this.bottlecap = bottlecap;
-        mouseManager = new MouseManager();
+        mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         gameState = new GameState(this);
         voidState = new VoidState(this);

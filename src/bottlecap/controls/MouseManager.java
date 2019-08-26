@@ -1,5 +1,7 @@
 package bottlecap.controls;
 
+import bottlecap.states.Handler;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -8,8 +10,10 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     private boolean leftPressed, rightPressed, middlePressed, leftClicked, rightClicked;
     private int mouseX, mouseY;
+    private Handler handler;
 
-    public MouseManager() {
+    public MouseManager(Handler handler) {
+        this.handler = handler;
     }
 
     public boolean isLeftPressed() {

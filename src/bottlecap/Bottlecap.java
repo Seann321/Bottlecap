@@ -36,7 +36,6 @@ public class Bottlecap implements Runnable {
         display.getFrame().addMouseMotionListener(handler.getMM());
         display.getCanvas().addMouseListener(handler.getMM());
         display.getCanvas().addMouseMotionListener(handler.getMM());
-
     }
 
     private void tick() {
