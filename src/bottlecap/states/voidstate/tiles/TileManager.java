@@ -14,6 +14,7 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
+    private boolean pickAColor = false;
 
     public TileManager(Handler handler, Tiles tiles) {
         this.handler = handler;
@@ -38,6 +39,7 @@ public class TileManager {
         lightUpCandles();
         if (liteUp) {
             collisionWithDoors();
+            collisionwithCharacterSelections();
         }
     }
 
@@ -62,16 +64,40 @@ public class TileManager {
         newTileEntities.add(new CharacterSlots(tiles.cords(75,55),handler));
     }
 
+    public void collisionwithCharacterSelections(){
+        for(TileEntities c : tileEntities){
+            if(c instanceof CharacterSlots){
+               for(TileEntities p : tileEntities){
+                   if(p instanceof  Player){
+                       if(((CharacterSlots) c).bounds.intersects(((Player) p).getBounds())){
+                           ((Player) p).setColor(((CharacterSlots) c).color);
+                           pickAColor = false;
+                           for(TileEntities cc : tileEntities){
+                               if(cc instanceof CharacterSlots){
+                                   ((CharacterSlots) cc).selected = false;
+                               }
+                           }
+                           ((CharacterSlots) c).selected = true;
+                       }
+                   }
+               }
+            }
+        }
+    }
+
     public void collisionWithDoors() {
         for (TileEntities d : tileEntities) {
             if (d instanceof Doorway) {
                 for (TileEntities p : tileEntities) {
                     if (p instanceof Player) {
                         if (((Doorway) d).bounds.intersects(((Player) p).getBounds())) {
-                            if (((Doorway) d).singlePlayer) {
+                            if(((Player) p).getColor() == Color.gray){
+                                pickAColor = true;
+                            }
+                            else if (((Doorway) d).singlePlayer) {
                                 startSinglePlayer();
                             }
-                            if (!((Doorway) d).singlePlayer) {
+                            else if (!((Doorway) d).singlePlayer) {
                                 startMutliplayer();
                             }
                         }
@@ -158,6 +184,10 @@ public class TileManager {
             TileEntities x = it.next();
             if (x.liteUp)
                 x.render(g);
+        }
+        if(pickAColor){
+            g.setColor(Color.yellow);
+            g.drawString("Pick a Character Color to continue.", tiles.cords(45, 35)[0], tiles.cords(45, 35)[1]);
         }
     }
 

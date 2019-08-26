@@ -11,6 +11,7 @@ public class Player extends TileEntities {
     private Rectangle player;
     private Rectangle ghostPlayer;
     private final int SPEED = 5;
+    private Color color = Color.gray;
 
     public Player(Rectangle player, Handler handler) {
         super(handler);
@@ -30,7 +31,7 @@ public class Player extends TileEntities {
 
     public void render(Graphics g) {
 
-        g.setColor(Color.gray);
+        g.setColor(color);
         g.fillRect(player.x, player.y, player.width, player.height);
 
     }
@@ -73,6 +74,14 @@ public class Player extends TileEntities {
                 player.y = ghostPlayer.y;
             }
         }
+    }
+
+    public Color getColor(){
+        return color;
+    }
+
+    public void setColor(Color color){
+        this.color = color;
     }
 
     public Rectangle getBounds() {
