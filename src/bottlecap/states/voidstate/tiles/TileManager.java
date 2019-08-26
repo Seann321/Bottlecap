@@ -11,6 +11,8 @@ public class TileManager {
 
     private ArrayList<TileEntities> tileEntities = new ArrayList<>();
     private ArrayList<TileEntities> newTileEntities = new ArrayList<>();
+    private ArrayList<TileEntities> multiplayerEntities = new ArrayList<>();
+    private ArrayList<TileEntities> newMultiplayerEntities = new ArrayList<>();
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
@@ -41,6 +43,8 @@ public class TileManager {
 
 
     public void tick() {
+        multiplayerEntities.clear();
+        multiplayerEntities.addAll(newMultiplayerEntities);
         tileEntities.clear();
         tileEntities.addAll(newTileEntities);
         Iterator<TileEntities> it = tileEntities.iterator();
@@ -59,39 +63,72 @@ public class TileManager {
     }
 
     private int testX = 0, testY = 0;
+    private String lastMessageSent = "";
 
     public void multiplayerTick() {
         if (multiplayer) {
             int x = 0;
             int y = 0;
-            int ID = 0;
             for (TileEntities p : tileEntities) {
                 if (p instanceof Player) {
                     //Needs to return the TILE
                     x = tiles.tilePOS(p.cords[0], p.cords[1])[0];
                     y = tiles.tilePOS(p.cords[0], p.cords[1])[1];
-                    ID = p.hashCode();
 
-                    //System.out.println("CORDS: X " + x + " Y " + y + " ID " + ID);
-                    handler.sendMessage("CORDS" + x + "" + y + "" + ID);
+                    if (("CORDS" + x + "" + y + "" + playerID) != lastMessageSent) {
+                        handler.sendMessage("CORDS" + x + "" + y + "" + playerID);
+                        lastMessageSent = ("CORDS" + x + "" + y + "" + playerID);
+                        //System.out.println("CORDS: X " + x + " Y " + y + " ID " + playerID);
+                        //System.out.println("Last " + lastMessageSent);
+                    }
+
+                    if (handler.lastMessage.startsWith("COLORCHANGE")) {
+                        if (handler.lastMessage.contains(""+playerID))
+                            return;
+                        System.out.println(handler.lastMessage);
+                    }
+
                     if (handler.lastMessage.startsWith("CORDS")) {
                         if (!handler.lastMessage.contains("" + playerID)) {
-                                System.out.println(handler.lastMessage);
-                                System.out.println("X:" + handler.lastMessage.substring(5,7));
-                                System.out.println("Y:" + handler.lastMessage.substring(7,9));
-                                System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
-                                int newX = Integer.parseInt(handler.lastMessage.substring(5,7));
-                                int newY = Integer.parseInt(handler.lastMessage.substring(7,9));
-                                testX = tiles.cords(newX,newY)[0];
-                                testY = tiles.cords(newX,newY)[1];
+                            int newID = Integer.parseInt(handler.lastMessage.substring(9, handler.lastMessage.length() - 1));
+                            int newX = Integer.parseInt(handler.lastMessage.substring(5, 7));
+                            int newY = Integer.parseInt(handler.lastMessage.substring(7, 9));
+                            testX = tiles.cords(newX, newY)[0];
+                            testY = tiles.cords(newX, newY)[1];
+
+                            if (isIDBeingUsed(newID)) {
+                                for (TileEntities rr : multiplayerEntities) {
+                                    if (rr instanceof Player) {
+                                        if (((Player) rr).privateID == newID) {
+                                            ((Player) rr).setPlayerPOS(testX, testY);
+                                        }
+                                    }
+                                }
+                            } else {
+                                System.out.println("New Char made with ID of: " + newID);
+                                newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
+                            }
                         }
+
+                        //System.out.println(handler.lastMessage);
+                        //System.out.println("X:" + handler.lastMessage.substring(5,7));
+                        //System.out.println("Y:" + handler.lastMessage.substring(7,9));
+                        //System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
                     }
                 }
             }
         }
     }
 
-    boolean isIDBeingUsed(TileEntities p) {
+
+    boolean isIDBeingUsed(int ID) {
+        for (TileEntities p : multiplayerEntities) {
+            if (p instanceof Player) {
+                if (ID == ((Player) p).privateID)
+                    //System.out.println(((Player) p).privateID);
+                    return true;
+            }
+        }
         return false;
     }
 
@@ -244,8 +281,8 @@ public class TileManager {
 
     public void render(Graphics g) {
 
-        g.setColor(Color.white);
-        g.drawRect(testX,testY,50,50);
+        //g.setColor(Color.white);
+        //g.drawRect(testX, testY, 50, 50);
 
         Iterator<TileEntities> it = tileEntities.iterator();
         while (it.hasNext()) {
@@ -256,6 +293,14 @@ public class TileManager {
         if (pickAColor) {
             g.setColor(Color.yellow);
             g.drawString("Pick a Character Color to continue.", tiles.cords(45, 35)[0], tiles.cords(45, 35)[1]);
+        }
+
+        //Multiplayer Rendering
+        Iterator<TileEntities> mi = multiplayerEntities.iterator();
+        while (mi.hasNext()) {
+            TileEntities m = mi.next();
+            if (m.liteUp)
+                m.render(g);
         }
     }
 

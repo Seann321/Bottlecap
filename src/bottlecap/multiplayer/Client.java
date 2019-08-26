@@ -64,9 +64,14 @@ public class Client {
         }
     }
 
+    private String lastMessage = "";
+
     public void sendMessage(String message) {
         if(out == null) return;
+        if(message.equals(lastMessage)) return;
         out.println(message);
+        //System.out.println("Info Sent " + message);
+        lastMessage = message;
         try {
             checkForMessage();
         } catch (IOException e) {

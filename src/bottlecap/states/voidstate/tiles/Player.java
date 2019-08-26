@@ -7,6 +7,7 @@ import java.awt.*;
 
 public class Player extends TileEntities {
 
+    public int privateID = 0;
     private Rectangle screen;
     private Rectangle player;
     private Rectangle ghostPlayer;
@@ -21,12 +22,13 @@ public class Player extends TileEntities {
         ghostPlayer = player;
         cords[0] = player.x;
         cords[1] = player.y;
+        privateID = this.hashCode();
     }
 
-    public Player(Rectangle player, Handler handler, boolean lockMovement) {
+    public Player(Rectangle player, Handler handler, int privateID) {
         super(handler);
         this.player = player;
-        this.lockMovement = lockMovement;
+        this.privateID = privateID;
         screen = new Rectangle(0, 0, handler.getWidth(), handler.getHeight());
         ghostPlayer = player;
         cords[0] = player.x;
@@ -105,6 +107,7 @@ public class Player extends TileEntities {
 
     public void setColor(Color color) {
         this.color = color;
+        handler.sendMessage("COLORCHANGE " + color +" " + privateID);
     }
 
     public Rectangle getBounds() {
