@@ -12,6 +12,7 @@ public class Player extends TileEntities {
     private Rectangle ghostPlayer;
     private final int SPEED = 5;
     private Color color = Color.gray;
+    public boolean lockMovement = false;
 
     public Player(Rectangle player, Handler handler) {
         super(handler);
@@ -24,7 +25,8 @@ public class Player extends TileEntities {
 
     public void tick() {
 
-        movement();
+        if (!lockMovement)
+            movement();
         cords[0] = player.x;
         cords[1] = player.y;
     }
@@ -33,6 +35,17 @@ public class Player extends TileEntities {
 
         g.setColor(color);
         g.fillRect(player.x, player.y, player.width, player.height);
+
+    }
+
+    public void setPlayerPOS(int x, int y) {
+
+        ghostPlayer.x = x;
+        ghostPlayer.y = y;
+        player.x = x;
+        player.y = y;
+        cords[0] = x;
+        cords[1] = y;
 
     }
 
@@ -76,11 +89,11 @@ public class Player extends TileEntities {
         }
     }
 
-    public Color getColor(){
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(Color color){
+    public void setColor(Color color) {
         this.color = color;
     }
 

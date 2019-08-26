@@ -14,12 +14,17 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
+    public Boolean debug = true;
     private boolean pickAColor = false;
+    private static Rectangle playerStartingPOS;
+    private static Rectangle truePlayerStartingPOS;
 
     public TileManager(Handler handler, Tiles tiles) {
         this.handler = handler;
         this.tiles = tiles;
-        newTileEntities.add(new Player(new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30), handler));
+        playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        truePlayerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        newTileEntities.add(new Player(playerStartingPOS, handler));
         createCandleWalkway();
         newTileEntities.add(new Candle(tiles.cords(50, 10), true, handler));
         createDoorways();
@@ -28,7 +33,6 @@ public class TileManager {
 
 
     public void tick() {
-
         tileEntities.clear();
         tileEntities.addAll(newTileEntities);
         Iterator<TileEntities> it = tileEntities.iterator();
@@ -48,39 +52,51 @@ public class TileManager {
     }
 
     public void startMutliplayer() {
+        for (TileEntities p : tileEntities) {
+            if (p instanceof Player) {
+                ((Player) p).setPlayerPOS(truePlayerStartingPOS.x, truePlayerStartingPOS.y);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        handler.client.connectToServer();
+        handler.sendMessage("1");
 
     }
 
     public void createPlayerSlots() {
         //Singleplayer Slots
-        newTileEntities.add(new CharacterSlots(tiles.cords(25,50),handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(25,55),handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(35,50),handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(35,55),handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(25, 55), handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(35, 55), handler));
         //Multiplayer Slots
-        newTileEntities.add(new CharacterSlots(tiles.cords(65,50),handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(65,55),handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(75,50),handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(75,55),handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(65, 55), handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler));
+        newTileEntities.add(new CharacterSlots(tiles.cords(75, 55), handler));
     }
 
-    public void collisionwithCharacterSelections(){
-        for(TileEntities c : tileEntities){
-            if(c instanceof CharacterSlots){
-               for(TileEntities p : tileEntities){
-                   if(p instanceof  Player){
-                       if(((CharacterSlots) c).bounds.intersects(((Player) p).getBounds())){
-                           ((Player) p).setColor(((CharacterSlots) c).color);
-                           pickAColor = false;
-                           for(TileEntities cc : tileEntities){
-                               if(cc instanceof CharacterSlots){
-                                   ((CharacterSlots) cc).selected = false;
-                               }
-                           }
-                           ((CharacterSlots) c).selected = true;
-                       }
-                   }
-               }
+    public void collisionwithCharacterSelections() {
+        for (TileEntities c : tileEntities) {
+            if (c instanceof CharacterSlots) {
+                for (TileEntities p : tileEntities) {
+                    if (p instanceof Player) {
+                        if (((CharacterSlots) c).bounds.intersects(((Player) p).getBounds())) {
+                            ((Player) p).setColor(((CharacterSlots) c).color);
+                            pickAColor = false;
+                            for (TileEntities cc : tileEntities) {
+                                if (cc instanceof CharacterSlots) {
+                                    ((CharacterSlots) cc).selected = false;
+                                }
+                            }
+                            ((CharacterSlots) c).selected = true;
+                        }
+                    }
+                }
             }
         }
     }
@@ -91,13 +107,11 @@ public class TileManager {
                 for (TileEntities p : tileEntities) {
                     if (p instanceof Player) {
                         if (((Doorway) d).bounds.intersects(((Player) p).getBounds())) {
-                            if(((Player) p).getColor() == Color.gray){
+                            if (((Player) p).getColor() == Color.gray) {
                                 pickAColor = true;
-                            }
-                            else if (((Doorway) d).singlePlayer) {
+                            } else if (((Doorway) d).singlePlayer) {
                                 startSinglePlayer();
-                            }
-                            else if (!((Doorway) d).singlePlayer) {
+                            } else if (!((Doorway) d).singlePlayer) {
                                 startMutliplayer();
                             }
                         }
@@ -142,7 +156,7 @@ public class TileManager {
 
     public void lightUpCandles() {
 
-        if (true) {
+        if (debug) {
             for (TileEntities p : tileEntities) {
                 p.liteUp = true;
                 liteUp = true;
@@ -185,7 +199,7 @@ public class TileManager {
             if (x.liteUp)
                 x.render(g);
         }
-        if(pickAColor){
+        if (pickAColor) {
             g.setColor(Color.yellow);
             g.drawString("Pick a Character Color to continue.", tiles.cords(45, 35)[0], tiles.cords(45, 35)[1]);
         }

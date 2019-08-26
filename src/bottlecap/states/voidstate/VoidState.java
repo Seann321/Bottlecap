@@ -23,6 +23,7 @@ public class VoidState extends State {
     public void tick() {
         tiles.tick();
         tm.tick();
+        handler.client.tick();
     }
 
     @Override
@@ -36,8 +37,3 @@ public class VoidState extends State {
         }
     }
 }
-
-// public void createDoorways() {
-//    newTileEntities.add(new Doorway(handler, tiles.cords(28, 5)));
-//     newTileEntities.add(new Doorway(handler, tiles.cords(68, 5)));
-//  }

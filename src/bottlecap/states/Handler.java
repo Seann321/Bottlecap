@@ -3,7 +3,9 @@ package bottlecap.states;
 import bottlecap.Bottlecap;
 import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
+import bottlecap.multiplayer.Client;
 import bottlecap.states.gamestate.GameState;
+import bottlecap.states.joiningstate.JoiningState;
 import bottlecap.states.voidstate.VoidState;
 
 public class Handler {
@@ -11,37 +13,49 @@ public class Handler {
     private Bottlecap bottlecap;
     private MouseManager mouseManager;
     private KeyManager keyManager;
+    public Client client;
 
     //States
     public GameState gameState;
     public VoidState voidState;
+    public JoiningState joiningState;
 
-    public Handler(Bottlecap bottlecap){
+    public Handler(Bottlecap bottlecap) {
         this.bottlecap = bottlecap;
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         gameState = new GameState(this);
         voidState = new VoidState(this);
+        client = new Client(this);
+        joiningState = new JoiningState(this);
         setCurrentState(voidState);
     }
 
-    public int getHeight() {return bottlecap.getHeight();}
+    public void sendMessage(String x){
+        client.sendMessage(x);
+    }
 
-    public int getWidth() {return bottlecap.getWidth();}
+    public int getHeight() {
+        return bottlecap.getHeight();
+    }
 
-    public MouseManager getMM(){
+    public int getWidth() {
+        return bottlecap.getWidth();
+    }
+
+    public MouseManager getMM() {
         return mouseManager;
     }
 
-    public KeyManager getKM(){
+    public KeyManager getKM() {
         return keyManager;
     }
 
-    public State getCurrentState(){
+    public State getCurrentState() {
         return State.CurrentState;
     }
 
-    public void setCurrentState(State x){
+    public void setCurrentState(State x) {
         State.CurrentState = x;
     }
 
