@@ -31,7 +31,7 @@ public class Handler {
         voidState = new VoidState(this);
         client = new Client(this);
         joiningState = new JoiningState(this);
-        creationState = new CreationState();
+        creationState = new CreationState(this);
         setCurrentState(voidState);
     }
 
