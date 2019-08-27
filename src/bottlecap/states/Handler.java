@@ -4,6 +4,7 @@ import bottlecap.Bottlecap;
 import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
 import bottlecap.multiplayer.Client;
+import bottlecap.states.creationstate.CreationState;
 import bottlecap.states.gamestate.GameState;
 import bottlecap.states.joiningstate.JoiningState;
 import bottlecap.states.voidstate.VoidState;
@@ -20,6 +21,7 @@ public class Handler {
     public GameState gameState;
     public VoidState voidState;
     public JoiningState joiningState;
+    public CreationState creationState;
 
     public Handler(Bottlecap bottlecap) {
         this.bottlecap = bottlecap;
@@ -29,6 +31,7 @@ public class Handler {
         voidState = new VoidState(this);
         client = new Client(this);
         joiningState = new JoiningState(this);
+        creationState = new CreationState();
         setCurrentState(voidState);
     }
 

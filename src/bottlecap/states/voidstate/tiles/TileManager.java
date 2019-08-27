@@ -157,9 +157,7 @@ public class TileManager {
     }
 
     public void startSinglePlayer() {
-        if (handler.recieveMessage() == "PING") {
-            System.out.println(true);
-        }
+        handler.setCurrentState(handler.creationState);
     }
 
     public void startMutliplayer() {
