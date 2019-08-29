@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class Player extends TileEntities {
 
-    public int privateID = 0;
+    private Color lastSentColor = Color.GRAY;
     private Rectangle screen;
     private Rectangle player;
     private Rectangle ghostPlayer;
@@ -106,11 +106,15 @@ public class Player extends TileEntities {
     }
 
     public void setColor(Color color) {
-        if(this.color == color){
+        if (this.color == color) {
             return;
         }
         this.color = color;
-        handler.sendMessage("COLORCHANGE " + color +" " + privateID);
+        if (lastSentColor != color) {
+            //System.out.println("First Color: " + lastSentColor + "second " + color);
+            handler.sendMessage("COLORCHANGE " + color);
+        }
+        lastSentColor = color;
     }
 
     public Rectangle getBounds() {
