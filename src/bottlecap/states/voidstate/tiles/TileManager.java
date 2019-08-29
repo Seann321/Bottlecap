@@ -103,8 +103,13 @@ public class TileManager {
                     return;
                 //System.out.println(lastMessageSent);
                 Color tempColor = colorConvertor(currentMessage.substring(29, 42));
-                TileEntities temp = grabByID(Integer.parseInt(currentMessage.substring(43)));
+                TileEntities temp = grabByID(Integer.parseInt(currentMessage.substring(42)));
+                System.out.println(currentMessage.substring(42));
                 for (TileEntities play : multiplayerEntities) {
+                    if(temp == null){
+                        System.out.println(false);
+                        System.exit(-1);
+                    }
                     if (play.privateID == temp.privateID) {
                         {
                             ((Player) play).setColor(tempColor);
