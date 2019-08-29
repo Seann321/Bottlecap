@@ -20,7 +20,7 @@ public class Server {
     static JTextArea messageArea = new JTextArea(8, 40);
     private static final int PORT = 9001;
 
-    private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
+    private static HashSet<PrintWriter> writers = new HashSet<>();
 
     public static void main(String[] args) throws Exception {
 

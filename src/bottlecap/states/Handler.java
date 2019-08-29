@@ -15,7 +15,7 @@ public class Handler {
     private MouseManager mouseManager;
     private KeyManager keyManager;
     public Client client;
-    public String lastMessage = "";
+    private String lastMessage = "";
 
     //States
     public GameState gameState;
@@ -39,8 +39,14 @@ public class Handler {
         client.sendMessage(x);
     }
 
+    public void setLastMessage(String x){
+        lastMessage = x;
+    }
+
     public String recieveMessage(){
-        return lastMessage;
+        String temp = lastMessage;
+        lastMessage = "";
+        return temp;
     }
 
     public int getHeight() {
