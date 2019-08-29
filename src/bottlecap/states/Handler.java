@@ -11,6 +11,7 @@ import bottlecap.states.voidstate.VoidState;
 
 public class Handler {
 
+    public int computerID = 0;
     private Bottlecap bottlecap;
     private MouseManager mouseManager;
     private KeyManager keyManager;
@@ -36,7 +37,7 @@ public class Handler {
     }
 
     public void sendMessage(String x){
-        client.sendMessage(x);
+        client.sendMessage(x+computerID);
     }
 
     public void setLastMessage(String x){
@@ -44,8 +45,13 @@ public class Handler {
     }
 
     public String recieveMessage(){
+        if(lastMessage.contains(""+computerID)){
+            lastMessage = "";
+        }
         String temp = lastMessage;
         lastMessage = "";
+        //if(!temp.equals(""))
+        //System.out.println("Message: " + temp);
         return temp;
     }
 

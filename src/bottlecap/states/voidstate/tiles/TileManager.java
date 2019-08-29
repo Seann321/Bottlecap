@@ -39,7 +39,8 @@ public class TileManager {
                 playerID = p.hashCode();
             }
         }
-        if(debug){
+        handler.computerID = playerID;
+        if (debug) {
             startMutliplayer("192.168.0.15");
         }
 
@@ -67,14 +68,14 @@ public class TileManager {
         commands();
     }
 
-    public void commands(){
-        if(handler.getKM().keyJustPressed(KeyEvent.VK_F5)){
+    public void commands() {
+        if (handler.getKM().keyJustPressed(KeyEvent.VK_F5)) {
             newMultiplayerEntities.clear();
         }
     }
 
     private int testX = 0, testY = 0;
-        private String lastMessageSent = "";
+    private String lastMessageSent = "";
 
     public void multiplayerTick() {
         if (multiplayer) {
@@ -90,75 +91,71 @@ public class TileManager {
                     //System.out.println("Y " + y);
 
                     if (!("CORDS" + x + "" + y + "" + playerID).equals(lastMessageSent)) {
-                        handler.sendMessage("CORDSX" + x + "Y" + y + "ID" + playerID);
-                        lastMessageSent = ("CORDSX" + x + "Y" + y + "ID" + playerID);
+                        handler.sendMessage("CORDSX" + x + "Y" + y + "ID");
+                        lastMessageSent = ("CORDSX" + x + "Y" + y + "ID");
                         //System.out.println("CORDS: X " + x + " Y " + y + " ID " + playerID);
                         //System.out.println("Last " + lastMessageSent);
                     }
-
-                    if (currentMessage.startsWith("COLORCHANGE")) {
-                        if (currentMessage.contains("" + playerID))
-                            return;
-                        //System.out.println(handler.lastMessage);
-                        Color tempColor = colorConvertor(currentMessage.substring(29, 42));
-                        TileEntities temp = grabByID(Integer.parseInt(currentMessage.substring(43)));
-                        if (temp instanceof Player) {
-                            for (TileEntities play : multiplayerEntities) {
-                                if (play instanceof Player) {
-                                    {
-                                        if (((Player) play).privateID == ((Player) temp).privateID || !(((Player) play).getColor() == tempColor)) {
-                                            ((Player) play).setColor(tempColor);
-                                            //System.out.println(((Player) play).privateID + " Changed to Color: " + tempColor);
-                                            return;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-
-                if (currentMessage.startsWith("CORDS")) {
-                    if (!currentMessage.contains("" + playerID)) {
-                        int localX = currentMessage.indexOf("X");
-                        int localY = currentMessage.indexOf("Y");
-                        int localID = currentMessage.indexOf("ID");
-                        int newID = Integer.parseInt(currentMessage.substring(localID+2));
-                        int newX = Integer.parseInt(currentMessage.substring(localX+1, localY));
-                        int newY = Integer.parseInt(currentMessage.substring(localY+1, localID));
-                        testX = tiles.cords(newX, newY)[0];
-                        testY = tiles.cords(newX, newY)[1];
-
-                        //TestCord Info
-                        //System.out.println(currentMessage);
-                        //System.out.println("Incoming X: " + newX);
-                        //System.out.println("Incoming Y: " + newY);
-                        //System.out.println("New X: " + testX);
-                        //System.out.println("New Y: " + testY);
-
-
-                        if (isIDBeingUsed(newID)) {
-                            for (TileEntities rr : multiplayerEntities) {
-                                if (rr instanceof Player) {
-                                    if (((Player) rr).privateID == newID) {
-                                        ((Player) rr).setPlayerPOS(testX , testY);
-                                    }
-                                }
-                            }
-                        } else {
-                            System.out.println("New Char made with ID of: " + newID);
-                            newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
-                            return;
-                        }
-                    }
-
-                    //System.out.println(handler.lastMessage);
-                    //System.out.println("X:" + handler.lastMessage.substring(5,7));
-                    //System.out.println("Y:" + handler.lastMessage.substring(7,9));
-                    //System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
                 }
             }
+            if (currentMessage.startsWith("COLORCHANGE")) {
+                if (currentMessage.contains("" + playerID))
+                    return;
+                //System.out.println(lastMessageSent);
+                Color tempColor = colorConvertor(currentMessage.substring(29, 42));
+                TileEntities temp = grabByID(Integer.parseInt(currentMessage.substring(43)));
+                for (TileEntities play : multiplayerEntities) {
+                    if (play.privateID == temp.privateID) {
+                        {
+                            ((Player) play).setColor(tempColor);
+                            System.out.println(((Player) play).privateID + " Changed to Color: " + tempColor + " From " + ((Player) play).getColor());
+                        }
+                    }
+                    return;
+
+                }
+            }
+            if (currentMessage.startsWith("CORDS")) {
+                if (!currentMessage.contains("" + playerID)) {
+                    int localX = currentMessage.indexOf("X");
+                    int localY = currentMessage.indexOf("Y");
+                    int localID = currentMessage.indexOf("ID");
+                    int newID = Integer.parseInt(currentMessage.substring(localID + 2));
+                    int newX = Integer.parseInt(currentMessage.substring(localX + 1, localY));
+                    int newY = Integer.parseInt(currentMessage.substring(localY + 1, localID));
+                    testX = tiles.cords(newX, newY)[0];
+                    testY = tiles.cords(newX, newY)[1];
+
+                    //TestCord Info
+                    //System.out.println(currentMessage);
+                    //System.out.println("Incoming X: " + newX);
+                    //System.out.println("Incoming Y: " + newY);
+                    //System.out.println("New X: " + testX);
+                    //System.out.println("New Y: " + testY);
+
+
+                    if (isIDBeingUsed(newID)) {
+                        for (TileEntities rr : multiplayerEntities) {
+                            if (rr instanceof Player) {
+                                if (((Player) rr).privateID == newID) {
+                                    ((Player) rr).setPlayerPOS(testX, testY);
+                                }
+                            }
+                        }
+                    } else {
+                        System.out.println("New Char made with ID of: " + newID);
+                        newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
+                        return;
+                    }
+                }
+
+                //System.out.println(handler.lastMessage);
+                //System.out.println("X:" + handler.lastMessage.substring(5,7));
+                //System.out.println("Y:" + handler.lastMessage.substring(7,9));
+                //System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
+            }
+
+
         }
     }
 
@@ -172,11 +169,8 @@ public class TileManager {
 
     TileEntities grabByID(int ID) {
         for (TileEntities p : multiplayerEntities) {
-            if (p instanceof Player) {
-                if (ID == ((Player) p).privateID)
-                    //System.out.println(((Player) p).privateID);
-                    return p;
-            }
+            if (p.privateID == ID)
+                return p;
         }
         return null;
     }
@@ -249,6 +243,9 @@ public class TileManager {
                 for (TileEntities p : tileEntities) {
                     if (p instanceof Player) {
                         if (((CharacterSlots) c).bounds.intersects(((Player) p).getBounds())) {
+                            if (((Player) p).privateID != playerID) {
+                                return;
+                            }
                             ((Player) p).setColor(((CharacterSlots) c).color);
                             pickAColor = false;
                             for (TileEntities cc : tileEntities) {
