@@ -3,6 +3,7 @@ package bottlecap.states.voidstate.tiles;
 import bottlecap.states.Handler;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -38,6 +39,9 @@ public class TileManager {
                 playerID = p.hashCode();
             }
         }
+        if(debug){
+            startMutliplayer("192.168.0.15");
+        }
 
     }
 
@@ -60,6 +64,13 @@ public class TileManager {
             collisionwithCharacterSelections();
         }
         multiplayerTick();
+        commands();
+    }
+
+    public void commands(){
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_F5)){
+            newMultiplayerEntities.clear();
+        }
     }
 
     private int testX = 0, testY = 0;
@@ -83,58 +94,68 @@ public class TileManager {
                     }
 
                     if (handler.lastMessage.startsWith("COLORCHANGE")) {
-                        if (handler.lastMessage.contains(""+playerID))
+                        if (handler.lastMessage.contains("" + playerID))
                             return;
-                        System.out.println(handler.lastMessage);
-                        Color tempColor = colorConvertor(handler.lastMessage.substring(29,42));
-                        TileEntities temp = grabByID(Integer.parseInt(handler.lastMessage.substring(46)));
-                        if(temp instanceof  Player){
-                            ((Player) temp).setColor(tempColor);
-                        }
-
-                    }
-
-                    if (handler.lastMessage.startsWith("CORDS")) {
-                        if (!handler.lastMessage.contains("" + playerID)) {
-                            int newID = Integer.parseInt(handler.lastMessage.substring(9));
-                            int newX = Integer.parseInt(handler.lastMessage.substring(5, 7));
-                            int newY = Integer.parseInt(handler.lastMessage.substring(7, 9));
-                            testX = tiles.cords(newX, newY)[0];
-                            testY = tiles.cords(newX, newY)[1];
-
-                            if (isIDBeingUsed(newID)) {
-                                for (TileEntities rr : multiplayerEntities) {
-                                    if (rr instanceof Player) {
-                                        if (((Player) rr).privateID == newID) {
-                                            ((Player) rr).setPlayerPOS(testX, testY);
+                        //System.out.println(handler.lastMessage);
+                        Color tempColor = colorConvertor(handler.lastMessage.substring(29, 42));
+                        TileEntities temp = grabByID(Integer.parseInt(handler.lastMessage.substring(43)));
+                        if (temp instanceof Player) {
+                            for (TileEntities play : multiplayerEntities) {
+                                if (play instanceof Player) {
+                                    {
+                                        if (((Player) play).privateID == ((Player) temp).privateID) {
+                                            ((Player) play).setColor(tempColor);
+                                            System.out.println(((Player) play).privateID + "Changed to Color: " + tempColor);
                                         }
                                     }
                                 }
-                            } else {
-                                System.out.println("New Char made with ID of: " + newID);
-                                newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
                             }
                         }
-
-                        //System.out.println(handler.lastMessage);
-                        //System.out.println("X:" + handler.lastMessage.substring(5,7));
-                        //System.out.println("Y:" + handler.lastMessage.substring(7,9));
-                        //System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
                     }
+
+                }
+
+                if (handler.lastMessage.startsWith("CORDS")) {
+                    if (!handler.lastMessage.contains("" + playerID)) {
+                        int newID = Integer.parseInt(handler.lastMessage.substring(9));
+                        int newX = Integer.parseInt(handler.lastMessage.substring(5, 7));
+                        int newY = Integer.parseInt(handler.lastMessage.substring(7, 9));
+                        testX = tiles.cords(newX, newY)[0];
+                        testY = tiles.cords(newX, newY)[1];
+
+                        if (isIDBeingUsed(newID)) {
+                            for (TileEntities rr : multiplayerEntities) {
+                                if (rr instanceof Player) {
+                                    if (((Player) rr).privateID == newID) {
+                                        ((Player) rr).setPlayerPOS(testX, testY);
+                                    }
+                                }
+                            }
+                        } else {
+                            System.out.println("New Char made with ID of: " + newID);
+                            newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
+                            return;
+                        }
+                    }
+
+                    //System.out.println(handler.lastMessage);
+                    //System.out.println("X:" + handler.lastMessage.substring(5,7));
+                    //System.out.println("Y:" + handler.lastMessage.substring(7,9));
+                    //System.out.println("ID:" + handler.lastMessage.substring(9,handler.lastMessage.length()-1));
                 }
             }
         }
     }
 
-    public Color colorConvertor(String colorStart){
-        int a = Integer.parseInt(colorStart.substring(0,2));
-        int b = Integer.parseInt(colorStart.substring(5,7));
-        int c = Integer.parseInt(colorStart.substring(10,12));
-        System.out.println(a + " " + b + " " + c);
-        return new Color(a,b,c);
+
+    public Color colorConvertor(String colorStart) {
+        int a = Integer.parseInt(colorStart.substring(0, 2));
+        int b = Integer.parseInt(colorStart.substring(5, 7));
+        int c = Integer.parseInt(colorStart.substring(10, 12));
+        return new Color(a, b, c);
     }
 
-    TileEntities grabByID(int ID){
+    TileEntities grabByID(int ID) {
         for (TileEntities p : multiplayerEntities) {
             if (p instanceof Player) {
                 if (ID == ((Player) p).privateID)
@@ -172,6 +193,23 @@ public class TileManager {
             }
         }
         handler.client.connectToServer();
+        handler.sendMessage("1");
+        multiplayer = true;
+
+    }
+
+    public void startMutliplayer(String IP) {
+        for (TileEntities p : tileEntities) {
+            if (p instanceof Player) {
+                ((Player) p).setPlayerPOS(truePlayerStartingPOS.x, truePlayerStartingPOS.y);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        handler.client.connectToServer(IP);
         handler.sendMessage("1");
         multiplayer = true;
 

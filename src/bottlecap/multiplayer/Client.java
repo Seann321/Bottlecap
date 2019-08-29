@@ -43,6 +43,20 @@ public class Client {
         }
     }
 
+    public void connectToServer(String x) {
+        IP = x;
+        System.out.println("Trying to connect to: " + IP);
+        Socket socket = null;
+        try {
+            socket = new Socket(IP, 9001);
+            in = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void tick() {
         try {
             checkForMessage();

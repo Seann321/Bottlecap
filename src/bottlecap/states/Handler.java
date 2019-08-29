@@ -27,9 +27,9 @@ public class Handler {
         this.bottlecap = bottlecap;
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
+        client = new Client(this);
         gameState = new GameState(this);
         voidState = new VoidState(this);
-        client = new Client(this);
         joiningState = new JoiningState(this);
         creationState = new CreationState(this);
         setCurrentState(voidState);
