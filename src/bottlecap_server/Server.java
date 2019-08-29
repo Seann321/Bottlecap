@@ -97,10 +97,8 @@ public class Server {
                         out.println("PING");
                     else if (input.startsWith("PONG")) {
                         System.out.println("Client has Ponged");
-                    } else if (input.startsWith("CORDS")) {
+                    } else {
                         sendMessage(input);
-                    } else if (input.startsWith("COLORCHANGE")) {
-                         sendMessage(input);
                     }
                 }
             } catch (IOException e) {
