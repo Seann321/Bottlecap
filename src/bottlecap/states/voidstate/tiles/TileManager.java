@@ -6,6 +6,7 @@ import bottlecap.states.Tiles;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TileManager {
 
@@ -15,16 +16,17 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
-    private Boolean debug = true;
+    public Boolean debug = true;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
+    private static Rectangle playerStartingPOS;
     private static Rectangle truePlayerStartingPOS;
 
     public TileManager(Handler handler, Tiles tiles) {
         this.handler = handler;
         this.tiles = tiles;
-        Rectangle playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
         truePlayerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
         newTileEntities.add(new Player(playerStartingPOS, handler));
         createCandleWalkway();
@@ -40,12 +42,16 @@ public class TileManager {
         if (debug) {
             startMutliplayer("192.168.0.15");
         }
+
     }
+
 
     public void tick() {
         tileEntities.clear();
         tileEntities.addAll(newTileEntities);
-        for (TileEntities x : tileEntities) {
+        Iterator<TileEntities> it = tileEntities.iterator();
+        while (it.hasNext()) {
+            TileEntities x = it.next();
             x.tick();
         }
         lightUpCandles();
@@ -67,7 +73,7 @@ public class TileManager {
         return null;
     }
 
-    private void multiplayerTick() {
+    public void multiplayerTick() {
         if (multiplayer) {
             int x = 0;
             int y = 0;
@@ -85,7 +91,7 @@ public class TileManager {
         }
     }
 
-    private void startSinglePlayer() {
+    public void startSinglePlayer() {
         handler.setCurrentState(handler.creationState);
     }
 
@@ -116,19 +122,20 @@ public class TileManager {
             }
         }
     }
-
-    private void createPlayerSlots() {
+    public void createPlayerSlots() {
+        //Singleplayer Slots
         newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler));
         newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler));
         newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler));
         newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler));
+        //Multiplayer Slots
         newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler));
         newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler));
         newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler));
         newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler));
     }
 
-    private void collisionwithCharacterSelections() {
+    public void collisionwithCharacterSelections() {
         for (TileEntities c : tileEntities) {
             if (c instanceof CharacterSlots) {
                 for (TileEntities p : tileEntities) {
@@ -152,7 +159,7 @@ public class TileManager {
         }
     }
 
-    private void collisionWithDoors() {
+    public void collisionWithDoors() {
         for (TileEntities d : tileEntities) {
             if (d instanceof Doorway) {
                 for (TileEntities p : tileEntities) {
@@ -173,12 +180,12 @@ public class TileManager {
     }
 
 
-    private void createDoorways() {
+    public void createDoorways() {
         newTileEntities.add(new Doorway(handler, tiles.cords(28, 5)));
         newTileEntities.add(new Doorway(handler, tiles.cords(68, 5), false));
     }
 
-    private void createCandleWalkway() {
+    public void createCandleWalkway() {
         for (int i = 40; i <= 90; i += 10) {
             newTileEntities.add(new Candle(tiles.cords(47, i), handler));
             newTileEntities.add(new Candle(tiles.cords(53, i), handler));
@@ -191,7 +198,7 @@ public class TileManager {
         deleteDumbCandles();
     }
 
-    private void deleteDumbCandles() {
+    public void deleteDumbCandles() {
         for (TileEntities t : tileEntities) {
             if (t.cords[0] == tiles.cords(50, 40)[0]) {
                 newTileEntities.remove(t);
@@ -205,13 +212,14 @@ public class TileManager {
         }
     }
 
-    private void lightUpCandles() {
+    public void lightUpCandles() {
 
         if (debug) {
             for (TileEntities p : tileEntities) {
                 p.liteUp = true;
                 liteUp = true;
             }
+
             return;
         }
 
@@ -241,7 +249,13 @@ public class TileManager {
     }
 
     public void render(Graphics g) {
-        for (TileEntities x : tileEntities) {
+
+        //g.setColor(Color.white);
+        //g.drawRect(testX, testY, 50, 50);
+
+        Iterator<TileEntities> it = tileEntities.iterator();
+        while (it.hasNext()) {
+            TileEntities x = it.next();
             if (x.liteUp)
                 x.render(g);
         }
@@ -249,5 +263,7 @@ public class TileManager {
             g.setColor(Color.yellow);
             g.drawString("Pick a Character Color to continue.", tiles.cords(45, 35)[0], tiles.cords(45, 35)[1]);
         }
+
     }
+
 }

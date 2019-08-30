@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener {
 
     private boolean[] keys, justPressed, cantPress;
-    private boolean up, down, left, right, shift;
+    public boolean up, down, left, right, shift;
 
     public KeyManager() {
         keys = new boolean[256];
@@ -25,7 +25,7 @@ public class KeyManager implements KeyListener {
 
     }
 
-    private void resetPressedKeys(){
+    public void resetPressedKeys(){
         for (int i = 0; i < keys.length; i++) {
             if (cantPress[i] && !keys[i]) {
                 cantPress[i] = false;

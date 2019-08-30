@@ -1,14 +1,18 @@
 package bottlecap;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class Main {
 
-    private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static Bottlecap bottlecap;
 
-    public static void main(String[] args) {
-        Bottlecap bottlecap = new Bottlecap("Testing", screenSize.width, screenSize.height);
+    public static void main(String[] args) throws IOException {
+
+        bottlecap = new Bottlecap("Testing", screenSize.width, screenSize.height);
         bottlecap.start();
+
     }
 
 }

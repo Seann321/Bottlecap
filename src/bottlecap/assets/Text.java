@@ -10,19 +10,11 @@ public class Text {
     public static Font mFont;
     public static Font lFont;
 
-    Color color = Color.yellow;
     String message;
     int x, y;
     Font font;
 
     public Text(String message, int x, int y, Font font) {
-        this.font = font;
-        this.x = x;
-        this.y = y;
-        this.message = message;
-    }
-    public Text(String message, int x, int y, Font font, Color color) {
-        this.color = color;
         this.font = font;
         this.x = x;
         this.y = y;
@@ -37,13 +29,6 @@ public class Text {
         return message;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
 
     public static void Init() {
         try {
@@ -70,7 +55,6 @@ public class Text {
     }
 
     public void render(Graphics g) {
-        g.setColor(color);
         g.setFont(font);
         g.drawString(message,x,y);
     }

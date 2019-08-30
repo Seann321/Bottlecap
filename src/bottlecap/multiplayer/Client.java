@@ -12,14 +12,36 @@ import java.net.Socket;
 
 public class Client {
 
-    private BufferedReader in;
-    private PrintWriter out;
-    private String IP = "";
+    public boolean isConnected = false;
+    BufferedReader in;
+    PrintWriter out;
+    JFrame frame = new JFrame("Client");
+    JTextField textField = new JTextField(40);
+    JTextArea messageArea = new JTextArea(8, 40);
+    public String IP = "", line = "";
 
     private Handler handler;
 
     public Client(Handler handler) {
         this.handler = handler;
+    }
+
+    public void connectToServer() {
+        IP = JOptionPane.showInputDialog(
+                frame,
+                "Enter IP Address of the Server:",
+                "Connector",
+                JOptionPane.QUESTION_MESSAGE);
+        System.out.println("Trying to connect to: " + IP);
+        Socket socket = null;
+        try {
+            socket = new Socket(IP, 9001);
+            in = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void connectToServer(String x) {
@@ -44,16 +66,16 @@ public class Client {
         }
     }
 
-    private void checkForMessage() throws IOException {
+    public void checkForMessage() throws IOException {
         if (in == null)
             return;
-        String line = "";
         if (in.ready())
             line = in.readLine();
         else return;
         handler.setLastMessage(line);
         if (line.startsWith("PING")) {
             sendMessage("PONG");
+            isConnected = true;
             System.out.println("Connected to " + IP);
         }
     }
@@ -72,6 +94,8 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+
 }
 
 

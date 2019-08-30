@@ -9,11 +9,12 @@ public abstract class TileEntities {
     public int privateID = 0;
     public Boolean liteUp = true;
     protected Handler handler;
-    int[] cords = new int[2];
 
-    TileEntities(Handler handler) {
+    public TileEntities(Handler handler) {
         this.handler = handler;
     }
+
+    public int[] cords = new int[2];
 
     public abstract void tick();
 

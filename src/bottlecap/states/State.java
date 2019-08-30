@@ -5,7 +5,7 @@ import java.awt.*;
 
 public abstract class State {
 
-    static State CurrentState = null;
+    public static State CurrentState = null;
     protected Handler handler;
 
     public State(Handler handler){

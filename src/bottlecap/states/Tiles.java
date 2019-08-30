@@ -8,16 +8,19 @@ import java.util.Iterator;
 
 public class Tiles {
 
+    private final Handler handler;
+    private int xTiles, yTiles;
     public int xDiv;
     private int yDiv;
     private ArrayList<Rectangle> tiles = new ArrayList<>();
 
 
     public Tiles(Handler handler) {
+        this.handler = handler;
         xDiv = handler.getWidth() / 100;
         yDiv = handler.getHeight() / 100;
-        int xTiles = handler.getWidth() / xDiv;
-        int yTiles = handler.getHeight() / yDiv;
+        xTiles = handler.getWidth() / xDiv;
+        yTiles = handler.getHeight() / yDiv;
         for (int i = 0; i < xTiles; i++) {
             for(int ii = 0; ii < yTiles; ii++){
                 tiles.add(new Rectangle(i * xDiv, ii * yDiv, xDiv, yDiv));
@@ -45,8 +48,11 @@ public class Tiles {
     }
 
     public void render(Graphics g) {
-        for (Rectangle x : tiles) {
+        Iterator<Rectangle> it = tiles.iterator();
+        while(it.hasNext()){
+            Rectangle x= it.next();
             g.setColor(Color.darkGray);
+            //g.drawRect(x.x,x.y,x.width,x.height);
         }
     }
 

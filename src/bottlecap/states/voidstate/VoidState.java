@@ -20,6 +20,8 @@ public class VoidState extends State {
     private ArrayList<Text> textStringsMulti = new ArrayList<>();
     private ArrayList<TileEntities> multiplayerEntities = new ArrayList<>();
     private ArrayList<TileEntities> newMultiplayerEntities = new ArrayList<>();
+    String currentMessage = handler.recieveMessage();
+    private int testX = 0, testY = 0;
 
     public VoidState(Handler handler) {
         super(handler);
@@ -47,8 +49,8 @@ public class VoidState extends State {
             recieveMessages();
     }
 
-    private void recieveMessages() {
-        String currentMessage = handler.recieveMessage();
+    public void recieveMessages() {
+        currentMessage = handler.recieveMessage();
         if(currentMessage.startsWith("REQUESTCOLOR")){
             if(tm.player() instanceof  Player){
                 ((Player) tm.player()).initialColor();
@@ -58,7 +60,6 @@ public class VoidState extends State {
             Color tempColor = colorConvertor(currentMessage.substring(29, 42));
             int localID = currentMessage.indexOf("ID");
             TileEntities temp = grabByID(Integer.parseInt(currentMessage.substring(localID + 2)));
-            assert temp != null : "grabByID is null";
             ((Player) temp).setColor(tempColor);
             System.out.println(temp.privateID + " Changed to Color: " + tempColor + " From " + ((Player) temp).getColor());
         }
@@ -76,11 +77,14 @@ public class VoidState extends State {
         }
 
         if (currentMessage.startsWith("CORDS")) {
-            int newID = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("ID") + 2));
-            int newX = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("X") + 1, currentMessage.indexOf("Y")));
-            int newY = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("Y") + 1, currentMessage.indexOf("ID")));
-            int testX = tiles.cords(newX, newY)[0];
-            int testY = tiles.cords(newX, newY)[1];
+            int localX = currentMessage.indexOf("X");
+            int localY = currentMessage.indexOf("Y");
+            int localID = currentMessage.indexOf("ID");
+            int newID = Integer.parseInt(currentMessage.substring(localID + 2));
+            int newX = Integer.parseInt(currentMessage.substring(localX + 1, localY));
+            int newY = Integer.parseInt(currentMessage.substring(localY + 1, localID));
+            testX = tiles.cords(newX, newY)[0];
+            testY = tiles.cords(newX, newY)[1];
 
             if (isIDBeingUsed(newID)) {
                 for (TileEntities rr : multiplayerEntities) {
@@ -96,9 +100,10 @@ public class VoidState extends State {
                 handler.client.sendMessage("REQUESTCOLOR");
             }
         }
+
     }
 
-    private TileEntities grabByID(int ID) {
+    TileEntities grabByID(int ID) {
         for (TileEntities p : multiplayerEntities) {
             if (p.privateID == ID)
                 return p;
@@ -106,7 +111,7 @@ public class VoidState extends State {
         return null;
     }
 
-    private boolean isIDBeingUsed(int ID) {
+    boolean isIDBeingUsed(int ID) {
         for (TileEntities p : multiplayerEntities) {
             if (p instanceof Player) {
                 if (ID == ((Player) p).privateID)
@@ -116,14 +121,15 @@ public class VoidState extends State {
         return false;
     }
 
-    private Color colorConvertor(String colorStart) {
+    public Color colorConvertor(String colorStart) {
         int a = Integer.parseInt(colorStart.substring(0, 2));
         int b = Integer.parseInt(colorStart.substring(5, 7));
         int c = Integer.parseInt(colorStart.substring(10, 12));
         return new Color(a, b, c);
     }
 
-    private void commands() {
+
+    public void commands() {
         if (handler.getKM().keyJustPressed(KeyEvent.VK_F5)) {
             newMultiplayerEntities.clear();
         }
@@ -136,6 +142,7 @@ public class VoidState extends State {
     public void render(Graphics g) {
         tiles.render(g);
         tm.render(g);
+        g.setColor(Color.YELLOW);
         if (tm.liteUp && !tm.multiplayer) {
             for (Text t : textStringsSingle) {
                 t.render(g);

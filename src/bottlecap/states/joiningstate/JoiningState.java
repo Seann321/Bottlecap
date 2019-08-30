@@ -19,8 +19,8 @@ public class JoiningState extends State {
     public JoiningState(Handler handler) {
         super(handler);
         tiles = new Tiles(handler);
-        textStrings.add(new Text("IP Address:",(tiles.cords(48,15)[0]),(tiles.cords(48,15)[1]),Text.lFont,Color.LIGHT_GRAY));
-        ipMessage = new Text("", (tiles.cords(49, 25)[0]), (tiles.cords(49, 25)[1]),Text.mFont,Color.LIGHT_GRAY);
+        textStrings.add(new Text("IP Address:",(tiles.cords(48,15)[0]),(tiles.cords(48,15)[1]),Text.lFont));
+        ipMessage = new Text("", (tiles.cords(49, 25)[0]), (tiles.cords(49, 25)[1]),Text.mFont);
     }
 
     @Override
@@ -41,6 +41,7 @@ public class JoiningState extends State {
 
     @Override
     public void render(Graphics g) {
+        g.setColor(Color.LIGHT_GRAY);
         ipMessage.render(g);
         for (Text t : textStrings) {
             t.render(g);
