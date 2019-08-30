@@ -6,8 +6,8 @@ import java.awt.*;
 
 public abstract class TileEntities {
 
-    protected int privateID = 0;
-    protected Boolean liteUp = true;
+    public int privateID = 0;
+    public Boolean liteUp = true;
     protected Handler handler;
 
     public TileEntities(Handler handler) {

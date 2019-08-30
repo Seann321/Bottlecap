@@ -37,7 +37,8 @@ public class Handler {
     }
 
     public void sendMessage(String x){
-        client.sendMessage(x+computerID);
+        client.sendMessage(x+"ID"+computerID);
+        //System.out.println("Message Sent: " + x + "ID" + computerID);
     }
 
     public void setLastMessage(String x){

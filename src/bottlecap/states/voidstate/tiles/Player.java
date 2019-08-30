@@ -112,7 +112,8 @@ public class Player extends TileEntities {
         this.color = color;
         if (lastSentColor != color) {
             //System.out.println("First Color: " + lastSentColor + "second " + color);
-            handler.sendMessage("COLORCHANGE " + color);
+            if (privateID == handler.computerID)
+                handler.sendMessage("COLORCHANGE " + color);
         }
         lastSentColor = color;
     }
