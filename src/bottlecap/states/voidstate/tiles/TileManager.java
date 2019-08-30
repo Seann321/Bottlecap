@@ -1,9 +1,9 @@
 package bottlecap.states.voidstate.tiles;
 
 import bottlecap.states.Handler;
+import bottlecap.states.Tiles;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -15,7 +15,7 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
-    public Boolean debug = true;
+    public Boolean debug = false;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
@@ -39,7 +39,7 @@ public class TileManager {
         }
         handler.computerID = playerID;
         if (debug) {
-            startMutliplayer("192.168.0.15");
+            //startMutliplayer("192.168.0.15");
         }
 
     }
@@ -86,20 +86,13 @@ public class TileManager {
     }
 
     public void startMutliplayer() {
+        handler.setCurrentState(handler.joiningState);
         for (TileEntities p : tileEntities) {
             if (p instanceof Player) {
                 ((Player) p).setPlayerPOS(truePlayerStartingPOS.x, truePlayerStartingPOS.y);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
-        handler.client.connectToServer();
-        handler.sendMessage("1");
         multiplayer = true;
-
     }
 
     public void startMutliplayer(String IP) {

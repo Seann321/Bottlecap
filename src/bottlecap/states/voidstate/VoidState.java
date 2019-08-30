@@ -1,21 +1,22 @@
 package bottlecap.states.voidstate;
 
+import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.voidstate.tiles.Player;
 import bottlecap.states.voidstate.tiles.TileEntities;
 import bottlecap.states.voidstate.tiles.TileManager;
-import bottlecap.states.voidstate.tiles.Tiles;
+import bottlecap.states.Tiles;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class VoidState extends State {
 
     private Tiles tiles;
     private TileManager tm;
+    private ArrayList<Text> textStrings = new ArrayList<>();
     private ArrayList<TileEntities> multiplayerEntities = new ArrayList<>();
     private ArrayList<TileEntities> newMultiplayerEntities = new ArrayList<>();
     String currentMessage = handler.recieveMessage();
@@ -25,6 +26,8 @@ public class VoidState extends State {
         super(handler);
         tiles = new Tiles(handler);
         tm = new TileManager(handler, tiles);
+        textStrings.add(new Text("Multiplayer", tiles.cords(67, 4)[0], tiles.cords(68, 4)[1],Text.sFont));
+        textStrings.add(new Text("Single Player", tiles.cords(27, 4)[0], tiles.cords(28, 4)[1], Text.sFont));
     }
 
     @Override
@@ -115,8 +118,9 @@ public class VoidState extends State {
         tm.render(g);
         g.setColor(Color.YELLOW);
         if (tm.liteUp) {
-            g.drawString("Single Player", tiles.cords(28, 4)[0], tiles.cords(28, 4)[1]);
-            g.drawString("Multiplayer", tiles.cords(68, 4)[0], tiles.cords(68, 4)[1]);
+            for(Text t : textStrings){
+                t.render(g);
+            }
         }
         for (TileEntities multiplayerEntity : multiplayerEntities) {
             if (multiplayerEntity.liteUp) {

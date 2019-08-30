@@ -1,4 +1,4 @@
-package bottlecap.states.voidstate.tiles;
+package bottlecap.states;
 
 import bottlecap.states.Handler;
 

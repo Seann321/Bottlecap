@@ -1,5 +1,6 @@
 package bottlecap;
 
+import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 
 import java.awt.*;
@@ -23,6 +24,7 @@ public class Bottlecap implements Runnable {
 
 
     public Bottlecap(String title, int width, int height) {
+        Text.Init();
         this.width = width;
         this.height = height;
         this.title = title;
@@ -43,6 +45,8 @@ public class Bottlecap implements Runnable {
         if (handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) System.exit(0);
         handler.getCurrentState().tick();
     }
+
+
 
     private void render() {
         bs = display.getCanvas().getBufferStrategy();
