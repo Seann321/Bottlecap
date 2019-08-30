@@ -64,6 +64,15 @@ public class TileManager {
 
     private String lastMessageSent = "";
 
+    public TileEntities player(){
+        for(TileEntities t : tileEntities){
+            if(t.privateID == handler.computerID){
+                return t;
+            }
+        }
+        return null;
+    }
+
     public void multiplayerTick() {
         if (multiplayer) {
             int x = 0;

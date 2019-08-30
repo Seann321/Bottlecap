@@ -51,6 +51,11 @@ public class VoidState extends State {
 
     public void recieveMessages() {
         currentMessage = handler.recieveMessage();
+        if(currentMessage.startsWith("REQUESTCOLOR")){
+            if(tm.player() instanceof  Player){
+                ((Player) tm.player()).initialColor();
+            }
+        }
         if (currentMessage.startsWith("COLORCHANGE")) {
             Color tempColor = colorConvertor(currentMessage.substring(29, 42));
             int localID = currentMessage.indexOf("ID");
@@ -92,6 +97,7 @@ public class VoidState extends State {
             } else {
                 System.out.println("New Char made with ID of: " + newID);
                 newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
+                handler.client.sendMessage("REQUESTCOLOR");
             }
         }
 

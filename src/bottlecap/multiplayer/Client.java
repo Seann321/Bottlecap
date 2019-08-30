@@ -12,6 +12,7 @@ import java.net.Socket;
 
 public class Client {
 
+    public boolean isConnected = false;
     BufferedReader in;
     PrintWriter out;
     JFrame frame = new JFrame("Client");
@@ -74,6 +75,7 @@ public class Client {
         handler.setLastMessage(line);
         if (line.startsWith("PING")) {
             sendMessage("PONG");
+            isConnected = true;
             System.out.println("Connected to " + IP);
         }
     }
