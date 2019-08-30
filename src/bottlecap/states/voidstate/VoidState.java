@@ -57,6 +57,7 @@ public class VoidState extends State {
             }
         }
         if (currentMessage.startsWith("COLORCHANGE")) {
+            System.out.println(currentMessage.substring(29,42));
             Color tempColor = colorConvertor(currentMessage.substring(29, 42));
             int localID = currentMessage.indexOf("ID");
             TileEntities temp = grabByID(Integer.parseInt(currentMessage.substring(localID + 2)));

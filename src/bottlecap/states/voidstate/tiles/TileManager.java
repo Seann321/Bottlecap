@@ -16,7 +16,7 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
-    public Boolean debug = true;
+    public Boolean debug = false;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
