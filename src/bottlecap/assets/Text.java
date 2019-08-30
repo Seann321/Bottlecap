@@ -21,6 +21,14 @@ public class Text {
         this.message = message;
     }
 
+    public void setText(String x){
+        message = x;
+    }
+
+    public String getText(){
+        return message;
+    }
+
 
     public static void Init() {
         try {

@@ -1,5 +1,6 @@
 package bottlecap.states.voidstate.tiles;
 
+import bottlecap.multiplayer.Client;
 import bottlecap.states.Handler;
 import bottlecap.states.Tiles;
 
@@ -15,7 +16,7 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
-    public Boolean debug = false;
+    public Boolean debug = true;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
@@ -86,13 +87,20 @@ public class TileManager {
     }
 
     public void startMutliplayer() {
-        handler.setCurrentState(handler.joiningState);
+        if (multiplayer) {
+            handler.sendMessage("DISCONNECT");
+            handler.client = null;
+            handler.client = new Client(handler);
+            multiplayer = false;
+        } else {
+            handler.setCurrentState(handler.joiningState);
+            multiplayer = true;
+        }
         for (TileEntities p : tileEntities) {
             if (p instanceof Player) {
                 ((Player) p).setPlayerPOS(truePlayerStartingPOS.x, truePlayerStartingPOS.y);
             }
         }
-        multiplayer = true;
     }
 
     public void startMutliplayer(String IP) {

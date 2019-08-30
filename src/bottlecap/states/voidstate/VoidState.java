@@ -16,7 +16,8 @@ public class VoidState extends State {
 
     private Tiles tiles;
     private TileManager tm;
-    private ArrayList<Text> textStrings = new ArrayList<>();
+    private ArrayList<Text> textStringsSingle = new ArrayList<>();
+    private ArrayList<Text> textStringsMulti = new ArrayList<>();
     private ArrayList<TileEntities> multiplayerEntities = new ArrayList<>();
     private ArrayList<TileEntities> newMultiplayerEntities = new ArrayList<>();
     String currentMessage = handler.recieveMessage();
@@ -26,12 +27,18 @@ public class VoidState extends State {
         super(handler);
         tiles = new Tiles(handler);
         tm = new TileManager(handler, tiles);
-        textStrings.add(new Text("Multiplayer", tiles.cords(67, 4)[0], tiles.cords(68, 4)[1],Text.sFont));
-        textStrings.add(new Text("Single Player", tiles.cords(27, 4)[0], tiles.cords(28, 4)[1], Text.sFont));
+        textStringsSingle.add(new Text("Multiplayer", tiles.cords(67, 4)[0], tiles.cords(67, 4)[1], Text.sFont));
+        textStringsSingle.add(new Text("Single Player", tiles.cords(27, 4)[0], tiles.cords(27, 4)[1], Text.sFont));
+        textStringsMulti.add(new Text("Start Game", tiles.cords(28, 4)[0], tiles.cords(28, 4)[1], Text.sFont));
+        textStringsMulti.add(new Text("Exit Session", tiles.cords(67, 4)[0], tiles.cords(67, 4)[1], Text.sFont));
     }
 
     @Override
     public void tick() {
+        if (!tm.multiplayer) {
+            newMultiplayerEntities.clear();
+
+        }
         multiplayerEntities.clear();
         multiplayerEntities.addAll(newMultiplayerEntities);
         tiles.tick();
@@ -52,33 +59,43 @@ public class VoidState extends State {
             System.out.println(temp.privateID + " Changed to Color: " + tempColor + " From " + ((Player) temp).getColor());
         }
 
-        if(currentMessage.startsWith("CORDS"))
-
-    {
-        int localX = currentMessage.indexOf("X");
-        int localY = currentMessage.indexOf("Y");
-        int localID = currentMessage.indexOf("ID");
-        int newID = Integer.parseInt(currentMessage.substring(localID + 2));
-        int newX = Integer.parseInt(currentMessage.substring(localX + 1, localY));
-        int newY = Integer.parseInt(currentMessage.substring(localY + 1, localID));
-        testX = tiles.cords(newX, newY)[0];
-        testY = tiles.cords(newX, newY)[1];
-
-        if (isIDBeingUsed(newID)) {
+        if (currentMessage.startsWith("DISCONNECT")) {
+            int localID = currentMessage.indexOf("ID");
+            int newID = Integer.parseInt(currentMessage.substring(localID + 2));
             for (TileEntities rr : multiplayerEntities) {
                 if (rr instanceof Player) {
                     if (((Player) rr).privateID == newID) {
-                        ((Player) rr).setPlayerPOS(testX, testY);
+                        newMultiplayerEntities.remove(rr);
                     }
                 }
             }
-        } else {
-            System.out.println("New Char made with ID of: " + newID);
-            newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
         }
-    }
 
-}
+        if (currentMessage.startsWith("CORDS")) {
+            int localX = currentMessage.indexOf("X");
+            int localY = currentMessage.indexOf("Y");
+            int localID = currentMessage.indexOf("ID");
+            int newID = Integer.parseInt(currentMessage.substring(localID + 2));
+            int newX = Integer.parseInt(currentMessage.substring(localX + 1, localY));
+            int newY = Integer.parseInt(currentMessage.substring(localY + 1, localID));
+            testX = tiles.cords(newX, newY)[0];
+            testY = tiles.cords(newX, newY)[1];
+
+            if (isIDBeingUsed(newID)) {
+                for (TileEntities rr : multiplayerEntities) {
+                    if (rr instanceof Player) {
+                        if (((Player) rr).privateID == newID) {
+                            ((Player) rr).setPlayerPOS(testX, testY);
+                        }
+                    }
+                }
+            } else {
+                System.out.println("New Char made with ID of: " + newID);
+                newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
+            }
+        }
+
+    }
 
     TileEntities grabByID(int ID) {
         for (TileEntities p : multiplayerEntities) {
@@ -117,8 +134,13 @@ public class VoidState extends State {
         tiles.render(g);
         tm.render(g);
         g.setColor(Color.YELLOW);
-        if (tm.liteUp) {
-            for(Text t : textStrings){
+        if (tm.liteUp && !tm.multiplayer) {
+            for (Text t : textStringsSingle) {
+                t.render(g);
+            }
+        }
+        if (tm.liteUp && tm.multiplayer) {
+            for (Text t : textStringsMulti) {
                 t.render(g);
             }
         }

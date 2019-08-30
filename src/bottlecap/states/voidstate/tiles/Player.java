@@ -44,10 +44,8 @@ public class Player extends TileEntities {
     }
 
     public void render(Graphics g) {
-
         g.setColor(color);
         g.fillRect(player.x, player.y, player.width, player.height);
-
     }
 
     public void setPlayerPOS(int x, int y) {
@@ -105,7 +103,7 @@ public class Player extends TileEntities {
         return color;
     }
 
-    public void initialColor(){
+    public void initialColor() {
         handler.sendMessage("COLORCHANGE " + color);
     }
 
