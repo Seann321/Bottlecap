@@ -7,10 +7,10 @@ import java.awt.*;
 public class CharacterSlots extends TileEntities {
 
     public Color color;
-    public boolean selected = false;
-    public Rectangle bounds = new Rectangle();
+    boolean selected = false;
+    Rectangle bounds = new Rectangle();
 
-    public CharacterSlots(int[] cords, Handler handler) {
+    CharacterSlots(int[] cords, Handler handler) {
         super(handler);
         this.cords = cords;
         bounds.x = cords[0];
@@ -31,8 +31,8 @@ public class CharacterSlots extends TileEntities {
     public void render(Graphics g) {
         g.setColor(color);
         if (selected) {
-            g.fillRect(cords[0], cords[1], bounds.width, bounds.width);
+            g.fillRect(cords[0], cords[1], bounds.width, bounds.height);
         }
-        g.drawRect(cords[0], cords[1], bounds.width, bounds.width);
+        g.drawRect(cords[0], cords[1], bounds.width, bounds.height);
     }
 }

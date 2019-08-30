@@ -4,32 +4,32 @@ import bottlecap.states.Handler;
 
 import java.awt.*;
 
-public class Candle extends TileEntities{
+public class Candle extends TileEntities {
 
     private Rectangle body;
     private Rectangle flame;
-    public Boolean special = false;
+    Boolean special = false;
 
-    public Candle(int[] cords, Handler handler) {
+    Candle(int[] cords, Handler handler) {
         super(handler);
         setup(cords);
     }
 
-    public Candle(int[] cords, Boolean special, Handler handler){
+    Candle(int[] cords, Boolean special, Handler handler) {
         super(handler);
         setup(cords);
-        if(special){
-            body.width*=4;
-            body.height*=4;
-            flame.x = body.x + body.width/3;
-            flame.y = body.y - body.height/2;
-            flame.width = body.width/2;
-            flame.height = body.height/2;
+        if (special) {
+            body.width *= 4;
+            body.height *= 4;
+            flame.x = body.x + body.width / 3;
+            flame.y = body.y - body.height / 2;
+            flame.width = body.width / 2;
+            flame.height = body.height / 2;
         }
         this.special = special;
     }
 
-    public void setup(int[] cords){
+    private void setup(int[] cords) {
         this.cords = cords;
         body = new Rectangle();
         flame = new Rectangle();
@@ -37,10 +37,10 @@ public class Candle extends TileEntities{
         body.y = cords[1];
         body.width = 8;
         body.height = 16;
-        flame.x = body.x + body.width/3;
-        flame.y = body.y - body.height/2;
-        flame.width = body.width/2;
-        flame.height = body.height/2;
+        flame.x = body.x + body.width / 3;
+        flame.y = body.y - body.height / 2;
+        flame.width = body.width / 2;
+        flame.height = body.height / 2;
         liteUp = false;
     }
 
@@ -48,15 +48,15 @@ public class Candle extends TileEntities{
     }
 
     public void render(Graphics g) {
-        if(!liteUp) return;
+        if (!liteUp) return;
         g.setColor(Color.white);
         g.fillRect(body.x, body.y, body.width, body.height);
-        if ((int)(Math.random() * 10) == 1) {
+        if ((int) (Math.random() * 10) == 1) {
             g.setColor(Color.RED);
-        }else{
+        } else {
             g.setColor(Color.orange);
         }
-            g.fillRect(flame.x, flame.y, flame.width, flame.height);
+        g.fillRect(flame.x, flame.y, flame.width, flame.height);
     }
 
 }

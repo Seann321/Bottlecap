@@ -14,16 +14,15 @@ public class Bottlecap implements Runnable {
 
     private Display display;
     private Thread thread;
-    private BufferStrategy bs;
     private Graphics g;
     private Handler handler;
 
     private int width, height;
-    public String title;
+    private String title;
     private boolean running = false;
 
 
-    public Bottlecap(String title, int width, int height) {
+    Bottlecap(String title, int width, int height) {
         Text.Init();
         this.width = width;
         this.height = height;
@@ -46,10 +45,8 @@ public class Bottlecap implements Runnable {
         handler.getCurrentState().tick();
     }
 
-
-
     private void render() {
-        bs = display.getCanvas().getBufferStrategy();
+        BufferStrategy bs = display.getCanvas().getBufferStrategy();
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
             return;
@@ -106,7 +103,7 @@ public class Bottlecap implements Runnable {
         stop();
     }
 
-    public synchronized void start() {
+    synchronized void start() {
         if (running) {
             return;
         }
@@ -115,7 +112,7 @@ public class Bottlecap implements Runnable {
         thread.start();
     }
 
-    public synchronized void stop() {
+    private synchronized void stop() {
         if (!running) {
             return;
         }
@@ -125,14 +122,6 @@ public class Bottlecap implements Runnable {
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public BufferStrategy getBs() {
-        return bs;
     }
 
     public Graphics getG() {
@@ -146,33 +135,6 @@ public class Bottlecap implements Runnable {
 
     public int getHeight() {
         return height;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
-
-
-    public void setBs(BufferStrategy bs) {
-        this.bs = bs;
-    }
-
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-
-    public void setDisplay(Display display) {
-        this.display = display;
     }
 
     public void setG(Graphics g) {

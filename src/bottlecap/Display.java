@@ -13,7 +13,7 @@ public class Display {
     private final String title;
     private int width, height;
 
-    public Display(String title, int width, int height) {
+    Display(String title, int width, int height) {
         this.title = title;
         this.width = width;
         this.height = height;
@@ -41,7 +41,7 @@ public class Display {
 
     }
 
-    public void setBorderless(boolean x) {
+    private void setBorderless(boolean x) {
         frame.dispose();
         frame.setUndecorated(x);
         frame.setSize(width, height);
@@ -78,24 +78,11 @@ public class Display {
         canvas.setBackground(color);
     }
 
-    public Canvas getCanvas() {
+    Canvas getCanvas() {
         return canvas;
     }
 
-    public JFrame getFrame() {
+    JFrame getFrame() {
         return frame;
     }
-
-    public int getX() {
-        return frame.getX();
-    }
-
-    public int getY() {
-        return frame.getY();
-    }
-
-    public void setLocation(int x, int y) {
-        frame.setLocation(x, y);
-    }
-
 }
