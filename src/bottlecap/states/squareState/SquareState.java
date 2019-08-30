@@ -1,21 +1,25 @@
-package bottlecap.states.gamestate;
+package bottlecap.states.squareState;
 
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
-public class GameState extends State {
+public class SquareState extends State {
 
     private SquareManager squareManager;
 
-    public GameState(Handler handler) {
+    public SquareState(Handler handler) {
         super(handler);
         squareManager = new SquareManager(handler);
     }
 
     @Override
     public void tick() {
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_ENTER)){
+            handler.setCurrentState(handler.voidState);
+        }
         squareManager.tick();
     }
 

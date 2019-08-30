@@ -5,7 +5,7 @@ import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
 import bottlecap.multiplayer.Client;
 import bottlecap.states.creationstate.CreationState;
-import bottlecap.states.gamestate.GameState;
+import bottlecap.states.squareState.SquareState;
 import bottlecap.states.joiningstate.JoiningState;
 import bottlecap.states.voidstate.VoidState;
 
@@ -19,7 +19,7 @@ public class Handler {
     private String lastMessage = "";
 
     //States
-    public GameState gameState;
+    public SquareState squareState;
     public VoidState voidState;
     public JoiningState joiningState;
     public CreationState creationState;
@@ -29,7 +29,7 @@ public class Handler {
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         client = new Client(this);
-        gameState = new GameState(this);
+        squareState = new SquareState(this);
         voidState = new VoidState(this);
         joiningState = new JoiningState(this);
         creationState = new CreationState(this);

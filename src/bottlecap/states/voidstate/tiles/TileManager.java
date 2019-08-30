@@ -64,9 +64,9 @@ public class TileManager {
 
     private String lastMessageSent = "";
 
-    public TileEntities player(){
-        for(TileEntities t : tileEntities){
-            if(t.privateID == handler.computerID){
+    public TileEntities player() {
+        for (TileEntities t : tileEntities) {
+            if (t.privateID == handler.computerID) {
                 return t;
             }
         }

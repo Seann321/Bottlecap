@@ -133,6 +133,9 @@ public class VoidState extends State {
         if (handler.getKM().keyJustPressed(KeyEvent.VK_F5)) {
             newMultiplayerEntities.clear();
         }
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_BACK_SLASH)){
+            handler.setCurrentState(handler.squareState);
+        }
     }
 
     @Override
