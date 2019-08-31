@@ -1,5 +1,6 @@
 package bottlecap.controls;
 
+import bottlecap.assets.GUI;
 import bottlecap.states.Handler;
 
 import java.awt.event.MouseEvent;
@@ -92,6 +93,8 @@ public class MouseManager implements MouseListener, MouseMotionListener {
         if (e.getButton() == MouseEvent.BUTTON3) {
             rightPressed = false;
         }
+        if (GUI.gui != null)
+            GUI.gui.onMouseRelease(e);
 
     }
 
@@ -113,7 +116,8 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
-
+        if(GUI.gui != null)
+            GUI.gui.onMouseMove(e);
     }
 
     public boolean isLeftClicked() {

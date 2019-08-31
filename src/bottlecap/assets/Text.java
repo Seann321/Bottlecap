@@ -1,6 +1,7 @@
 package bottlecap.assets;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,6 +15,8 @@ public class Text {
     public Color color;
     public Color originalColor;
     public Rectangle bounds;
+    protected boolean clicked = false, rightClicked = false, hovering = false;
+    public boolean active = true;
 
     String message;
     int x, y;
@@ -30,14 +33,14 @@ public class Text {
         bounds = new Rectangle(0, 0, 0, 0);
     }
 
-    public void setText(String x) {
-        message = x;
-    }
 
-    public String getText() {
-        return message;
+    public void tick() {
+        if(hovering){
+            color = Color.yellow;
+        }else{
+            color = originalColor;
+        }
     }
-
 
     public static void Init() {
         try {
@@ -84,6 +87,55 @@ public class Text {
         g.drawString(text, x, y);
     }
 
+    public void onClick() {
+        if (!active) {
+            return;
+        }
+        clicked = true;
+    }
+
+    public void onRightClick() {
+        if (!active) {
+            return;
+        }
+        rightClicked = true;
+    }
+
+    public void onMouseMove(MouseEvent e) {
+        if (bounds.contains(e.getX(), e.getY())) {
+            hovering = true;
+        } else {
+            hovering = false;
+        }
+    }
+
+    public void onMouseReleased(MouseEvent e) {
+        if (hovering) {
+            if (e.getButton() == 1) {
+                onClick();
+            }
+            if (e.getButton() == 3) {
+                onRightClick();
+            }
+        }
+    }
+
+    public boolean wasClicked() {
+        if (clicked == true) {
+            clicked = false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean wasRightClicked() {
+        if (rightClicked == true) {
+            rightClicked = false;
+            return true;
+        }
+        return false;
+    }
+
     public int getX() {
         return x;
     }
@@ -103,4 +155,13 @@ public class Text {
     public Rectangle getBounds() {
         return bounds;
     }
+
+    public void setText(String x) {
+        message = x;
+    }
+
+    public String getText() {
+        return message;
+    }
+
 }

@@ -27,10 +27,10 @@ public class VoidState extends State {
         super(handler);
         tiles = new Tiles(handler);
         tm = new TileManager(handler, tiles);
-        textStringsSingle.add(new Text("Multiplayer", tiles.cords(67, 4)[0], tiles.cords(67, 4)[1], Text.sFont,false,Color.YELLOW));
-        textStringsSingle.add(new Text("Single Player", tiles.cords(27, 4)[0], tiles.cords(27, 4)[1], Text.sFont,false,Color.YELLOW));
-        textStringsMulti.add(new Text("Start Game", tiles.cords(28, 4)[0], tiles.cords(28, 4)[1], Text.sFont,false,Color.YELLOW));
-        textStringsMulti.add(new Text("Exit Session", tiles.cords(67, 4)[0], tiles.cords(67, 4)[1], Text.sFont,false,Color.YELLOW));
+        textStringsSingle.add(new Text("Multiplayer", tiles.cords(70, 4)[0], tiles.cords(67, 4)[1], Text.sFont,true,Color.YELLOW));
+        textStringsSingle.add(new Text("Single Player", tiles.cords(30, 4)[0], tiles.cords(27, 4)[1], Text.sFont,true,Color.YELLOW));
+        textStringsMulti.add(new Text("Start Game", tiles.cords(30, 4)[0], tiles.cords(28, 4)[1], Text.sFont,true,Color.YELLOW));
+        textStringsMulti.add(new Text("Exit Session", tiles.cords(70, 4)[0], tiles.cords(67, 4)[1], Text.sFont,true,Color.YELLOW));
     }
 
     @Override
@@ -136,6 +136,9 @@ public class VoidState extends State {
         }
         if(handler.getKM().keyJustPressed(KeyEvent.VK_BACK_SLASH)){
             handler.setCurrentState(handler.squareState);
+        }
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_F12)){
+            handler.fileSystem.deleteSave();
         }
     }
 

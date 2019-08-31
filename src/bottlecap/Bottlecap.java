@@ -1,5 +1,6 @@
 package bottlecap;
 
+import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 

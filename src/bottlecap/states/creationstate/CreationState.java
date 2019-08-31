@@ -1,5 +1,6 @@
 package bottlecap.states.creationstate;
 
+import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
@@ -13,47 +14,43 @@ public class CreationState extends State {
     private ArrayList<Text> text = new ArrayList<>();
     private Tiles tiles;
     private int yOffset;
+    private GUI gui;
     Color darkOrange = new Color(255, 140, 0);
 
     public CreationState(Handler handler) {
         super(handler);
+        gui = new GUI();
+        GUI.gui = gui;
         tiles = new Tiles(handler);
         yOffset = 30;
-        text.add(new Text("Character Sheet", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.lightGray));
-        text.add(new Text("Strength", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.red));
-        text.add(new Text("Magic", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.blue));
-        text.add(new Text("Perception", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.MAGENTA));
-        text.add(new Text("Charisma", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.green));
-        text.add(new Text("Defence", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, darkOrange));
-        text.add(new Text("Agility", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.cyan));
+        gui.addText(new Text("Character Sheet", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.lightGray));
+        gui.addText(new Text("Strength", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.red));
+        gui.addText(new Text("Magic", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.blue));
+        gui.addText(new Text("Perception", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.MAGENTA));
+        gui.addText(new Text("Charisma", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.green));
+        gui.addText(new Text("Defence", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, darkOrange));
+        gui.addText(new Text("Agility", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.cyan));
 
-
-        for (Text t : text) {
-
+        for (Text t : gui.text) {
             if (t.getText().equals("Character Sheet")) continue;
             t.setY(tiles.cords(40, yOffset)[1]);
             yOffset += 10;
-
         }
-
     }
 
     @Override
     public void tick() {
-
+        gui.tick();
+        for(Text t : gui.text){
+            if(t.wasClicked()){
+                System.out.println(true);
+            }
+        }
 
     }
 
     @Override
     public void render(Graphics g) {
-
-        for (Text t : text) {
-            if(t.getBounds().contains(handler.getMM().getMouseX(),handler.getMM().getMouseY())&& !(t.getText().equals("Character Sheet"))){
-                t.color = Color.yellow;
-            }else{
-                t.color = t.originalColor;
-            }
-                t.render(g);
-        }
+        gui.render(g);
     }
 }

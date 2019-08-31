@@ -1,5 +1,6 @@
 package bottlecap.states.voidstate.tiles;
 
+import bottlecap.assets.GUI;
 import bottlecap.multiplayer.Client;
 import bottlecap.states.Handler;
 import bottlecap.states.Tiles;
@@ -16,12 +17,13 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
-    public Boolean debug = false;
+    public Boolean debug = true;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
     private static Rectangle playerStartingPOS;
     private static Rectangle truePlayerStartingPOS;
+    private GUI gui;
 
     public TileManager(Handler handler, Tiles tiles) {
         this.handler = handler;
@@ -123,17 +125,56 @@ public class TileManager {
             }
         }
     }
+
+    public boolean checkForPlayerSlots() {
+        return (handler.fileSystem.charaterSlots.size() == 0);
+    }
+
     public void createPlayerSlots() {
-        //Singleplayer Slots
-        newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler));
-        //Multiplayer Slots
-        newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler));
-        newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler));
+        if (checkForPlayerSlots()) {
+            //Singleplayer Slots
+            newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler, 1));
+            newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler, 2));
+            newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler, 3));
+            newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler, 4));
+            //Multiplayer Slots
+            newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler, 5));
+            newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler, 6));
+            newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler, 7));
+            newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8));
+        } else {
+            for (String chars : handler.fileSystem.charaterSlots) {
+                String color = chars.substring(chars.indexOf("Color") + 8);
+                if (chars.contains("CHARSLOT1")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler, 1, colorConvertor(color)));
+                } else if (chars.contains("CHARSLOT2")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler, 2, colorConvertor(color)));
+                } else if (chars.contains("CHARSLOT3")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler, 3, colorConvertor(color)));
+                } else if (chars.contains("CHARSLOT4")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler, 4, colorConvertor(color)));
+                }
+                if (chars.contains("CHARSLOT5")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler, 5, colorConvertor(color)));
+                }
+                if (chars.contains("CHARSLOT6")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler, 6, colorConvertor(color)));
+                }
+                if (chars.contains("CHARSLOT7")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler, 7, colorConvertor(color)));
+                }
+                if (chars.contains("CHARSLOT8")) {
+                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8, colorConvertor(color)));
+                }
+            }
+        }
+    }
+
+    public Color colorConvertor(String colorStart) {
+        int a = Integer.parseInt(colorStart.substring(0, 2));
+        int b = Integer.parseInt(colorStart.substring(5, 7));
+        int c = Integer.parseInt(colorStart.substring(10, 12));
+        return new Color(a, b, c);
     }
 
     public void collisionwithCharacterSelections() {

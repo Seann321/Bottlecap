@@ -1,6 +1,7 @@
 package bottlecap.states;
 
 import bottlecap.Bottlecap;
+import bottlecap.assets.FileSystem;
 import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
 import bottlecap.multiplayer.Client;
@@ -16,9 +17,8 @@ public class Handler {
     private MouseManager mouseManager;
     private KeyManager keyManager;
     public Client client;
+    public FileSystem fileSystem;
     private String lastMessage = "";
-    public static double Scale;
-    public final double StartScale;
 
     //States
     public SquareState squareState;
@@ -28,8 +28,7 @@ public class Handler {
 
     public Handler(Bottlecap bottlecap) {
         this.bottlecap = bottlecap;
-        Scale = (double) (bottlecap.getWidth()) / 1600D;
-        StartScale = Scale;
+        fileSystem = new FileSystem(this);
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         client = new Client(this);
