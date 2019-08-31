@@ -17,6 +17,8 @@ public class Handler {
     private KeyManager keyManager;
     public Client client;
     private String lastMessage = "";
+    public static double Scale;
+    public final double StartScale;
 
     //States
     public SquareState squareState;
@@ -26,6 +28,8 @@ public class Handler {
 
     public Handler(Bottlecap bottlecap) {
         this.bottlecap = bottlecap;
+        Scale = (double) (bottlecap.getWidth()) / 1600D;
+        StartScale = Scale;
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         client = new Client(this);
@@ -34,6 +38,7 @@ public class Handler {
         joiningState = new JoiningState(this);
         creationState = new CreationState(this);
         setCurrentState(voidState);
+
     }
 
     public void sendMessage(String x){
