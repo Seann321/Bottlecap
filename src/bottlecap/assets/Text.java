@@ -92,6 +92,7 @@ public class Text {
             return;
         }
         clicked = true;
+        hovering = false;
     }
 
     public void onRightClick() {
@@ -99,6 +100,7 @@ public class Text {
             return;
         }
         rightClicked = true;
+        hovering = false;
     }
 
     public void onMouseMove(MouseEvent e) {

@@ -11,13 +11,15 @@ public class GUI {
     public static GUI gui;
 
     public void render(Graphics g) {
-        for (Text e : text) {
-            e.render(g);
+        for (Text t : text) {
+            if(t.active)
+            t.render(g);
         }
     }
 
     public void tick() {
         for (Text t : text) {
+            if(t.active)
             t.tick();
         }
     }

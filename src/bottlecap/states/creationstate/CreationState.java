@@ -15,6 +15,7 @@ public class CreationState extends State {
     private Tiles tiles;
     private int yOffset;
     private GUI gui;
+    private boolean activeChange = false;
     Color darkOrange = new Color(255, 140, 0);
 
     public CreationState(Handler handler) {
@@ -36,17 +37,44 @@ public class CreationState extends State {
             t.setY(tiles.cords(40, yOffset)[1]);
             yOffset += 10;
         }
+        yOffset = 30;
     }
 
     @Override
     public void tick() {
         gui.tick();
-        for(Text t : gui.text){
-            if(t.wasClicked()){
-                System.out.println(true);
+        if (activeChange) {
+            for (Text tt : gui.text) {
+                if (tt.wasClicked() || handler.getMM().isRightClicked()) {
+                    for (Text t : gui.text) {
+                        if (t.getText().equals("Character Sheet")) {
+                            t.setY((tiles.cords(50, 5)[1]));
+                        } else {
+                            t.setY(tiles.cords(40, yOffset)[1]);
+                        }
+                        yOffset += 10;
+                        t.active = true;
+                    }
+                    yOffset = 30;
+                    activeChange = false;
+                }
             }
-        }
-
+        } else
+            for (Text t : gui.text) {
+                if (t.wasClicked()) {
+                    if(t.getText().equals("Character Sheet")){
+                        continue;
+                    }
+                    for (Text tt : gui.text) {
+                        if (tt == t) {
+                            t.setY((tiles.cords(50, 5)[1]));
+                        } else {
+                            tt.active = false;
+                        }
+                    }
+                    activeChange = true;
+                }
+            }
     }
 
     @Override
