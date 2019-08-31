@@ -102,7 +102,7 @@ public class FileSystem {
             if (saveFile.createNewFile()) {
                 System.out.println("Save File Made at " + fileName);
             } else {
-                System.out.println("Save File already made at " + fileName);
+                System.out.println("Save Filed Detected at " + fileName);
                 initReadFromFile();
             }
         } catch (IOException e) {
