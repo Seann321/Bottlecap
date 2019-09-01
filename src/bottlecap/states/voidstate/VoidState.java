@@ -68,14 +68,15 @@ public class VoidState extends State {
     public void recieveMessages() {
         currentMessage = handler.recieveMessage();
         if(currentMessage.startsWith("TITLEINFO")){
-            titleRequestResolt = currentMessage.substring(9);
+            titleRequestResolt = currentMessage.substring(9,currentMessage.indexOf("ID"));
+            titleInfo.setText(titleRequestResolt);
         }
         if(currentMessage.startsWith("REQUESTCOLOR")){
             if(tm.player() instanceof  Player){
                 ((Player) tm.player()).initialColor();
             }
         }if(currentMessage.startsWith("TITLEREQUEST")){
-            handler.sendMessage("TITLEINFO" + (((CharacterSlots) tm.activeChar).nickName) + "     LVL: " + ((CharacterSlots) tm.activeChar).level);
+            handler.sendMessage("TITLEINFO" + (((CharacterSlots) tm.activeChar).nickName) + " LVL: " + ((CharacterSlots) tm.activeChar).level);
         }
         if (currentMessage.startsWith("COLORCHANGE")) {
             //System.out.println(currentMessage.substring(29,42));
@@ -165,6 +166,10 @@ public class VoidState extends State {
             if(t instanceof Player){
                 if (((Player) t).getBounds().contains(handler.getMM().getMouseX(),handler.getMM().getMouseY())){
                     handler.sendMessage("TITLEREQUEST");
+                    titleInfo.setX(handler.getMM().getMouseX() - 10);
+                    titleInfo.setY(handler.getMM().getMouseY() - 10);
+                }else{
+                    titleInfo.setX(10000);
                 }
             }
         }
@@ -189,5 +194,6 @@ public class VoidState extends State {
                 multiplayerEntity.render(g);
             }
         }
+        titleInfo.render(g);
     }
 }

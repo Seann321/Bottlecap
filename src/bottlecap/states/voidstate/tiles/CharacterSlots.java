@@ -11,7 +11,7 @@ public class CharacterSlots extends TileEntities {
     public Color color;
     public boolean selected = false;
     public Rectangle bounds = new Rectangle();
-    public String nickName = "CLASSLESS";
+    public String nickName = "JEFF THE CLASSLESS";
 
     public CharacterSlots(int[] cords, Handler handler, int pos) {
         super(handler);

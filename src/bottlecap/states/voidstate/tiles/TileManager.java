@@ -311,7 +311,7 @@ public class TileManager {
         for (TileEntities t : tileEntities) {
             if (t instanceof Player) {
                 if (((Player) t).getColor() != Color.GRAY) {
-                    Text text = new Text("Player " + handler.computerID + " " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level, handler.getWidth() / 2, tiles.cords(45, 100)[1], Text.lFont, true, Color.yellow);
+                    Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level, handler.getWidth() / 2, tiles.cords(45, 100)[1], Text.lFont, true, Color.yellow);
                     text.render(g);
                 }
             }
