@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class VoidState extends State {
 
+    private Color lastRequestColor;
     private String titleRequestResolt = "";
     private Tiles tiles;
     private TileManager tm;
@@ -165,7 +166,10 @@ public class VoidState extends State {
         for(TileEntities t : multiplayerEntities){
             if(t instanceof Player){
                 if (((Player) t).getBounds().contains(handler.getMM().getMouseX(),handler.getMM().getMouseY())){
+                    if(!(((Player) t).getColor() == lastRequestColor)){
                     handler.sendMessage("TITLEREQUEST");
+                        lastRequestColor = ((Player) t).getColor();
+                    }
                     titleInfo.setX(handler.getMM().getMouseX() - 10);
                     titleInfo.setY(handler.getMM().getMouseY() - 10);
                 }else{
