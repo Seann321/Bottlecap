@@ -18,18 +18,15 @@ public class FileSystem {
 
     private Handler handler;
     private File saveFile;
-    private String fileName = FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath() + ("\\saveFile.txt");
+    private File newFolder;
+    private String fileName = FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath() + ("\\Bottlecap\\saveFile.txt");
+    private String makeDir = FileSystemView.getFileSystemView().getDefaultDirectory().getAbsolutePath() + ("\\Bottlecap");
     public ArrayList<String> charaterSlots = new ArrayList<>();
     public ArrayList<String> readInfo = new ArrayList<>();
 
     public FileSystem(Handler handler) {
         this.handler = handler;
-        createDocumentsFoler();
         createSaveFile();
-    }
-
-    private void createDocumentsFoler() {
-
     }
 
     public String pullCharacterInfo() {
@@ -97,6 +94,7 @@ public class FileSystem {
 
 
     private void createSaveFile() {
+        new File(makeDir).mkdir();
         saveFile = new File(fileName);
         try {
             if (saveFile.createNewFile()) {

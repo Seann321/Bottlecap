@@ -11,12 +11,14 @@ public class Doorway extends TileEntities{
 
     public Doorway(Handler handler, int[] cords){
         super(handler);
+        this.cords = cords;
         bounds = new Rectangle(cords[0],cords[1],90,150);
         liteUp = false;
     }
 
     public Doorway(Handler handler, int[] cords, Boolean singlePlayer){
         super(handler);
+        this.cords = cords;
         bounds = new Rectangle(cords[0],cords[1],90,150);
         liteUp = false;
         this.singlePlayer = false;

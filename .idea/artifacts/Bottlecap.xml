@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Bottlecap">
+    <output-path>$PROJECT_DIR$/out/artifacts/Bottlecap</output-path>
+    <root id="archive" name="Bottlecap.jar">
+      <element id="module-output" name="Bottlecap" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>

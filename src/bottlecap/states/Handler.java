@@ -2,6 +2,7 @@ package bottlecap.states;
 
 import bottlecap.Bottlecap;
 import bottlecap.assets.FileSystem;
+import bottlecap.assets.GUI;
 import bottlecap.controls.KeyManager;
 import bottlecap.controls.MouseManager;
 import bottlecap.multiplayer.Client;
@@ -40,16 +41,16 @@ public class Handler {
 
     }
 
-    public void sendMessage(String x){
-        client.sendMessage(x+"ID"+computerID);
+    public void sendMessage(String x) {
+        client.sendMessage(x + "ID" + computerID);
     }
 
-    public void setLastMessage(String x){
+    public void setLastMessage(String x) {
         lastMessage = x;
     }
 
-    public String recieveMessage(){
-        if(lastMessage.contains(""+computerID)){
+    public String recieveMessage() {
+        if (lastMessage.contains("" + computerID)) {
             lastMessage = "";
         }
         String temp = lastMessage;

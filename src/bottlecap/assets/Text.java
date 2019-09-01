@@ -123,7 +123,7 @@ public class Text {
     }
 
     public boolean wasClicked() {
-        if (clicked == true) {
+        if (clicked) {
             clicked = false;
             return true;
         }
@@ -131,7 +131,7 @@ public class Text {
     }
 
     public boolean wasRightClicked() {
-        if (rightClicked == true) {
+        if (rightClicked) {
             rightClicked = false;
             return true;
         }

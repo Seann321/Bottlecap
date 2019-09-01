@@ -3,9 +3,7 @@ package bottlecap.states.voidstate;
 import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
-import bottlecap.states.voidstate.tiles.Player;
-import bottlecap.states.voidstate.tiles.TileEntities;
-import bottlecap.states.voidstate.tiles.TileManager;
+import bottlecap.states.voidstate.tiles.*;
 import bottlecap.states.Tiles;
 
 import java.awt.*;
@@ -14,12 +12,14 @@ import java.util.ArrayList;
 
 public class VoidState extends State {
 
+    private String titleRequestResolt = "";
     private Tiles tiles;
     private TileManager tm;
     private ArrayList<Text> textStringsSingle = new ArrayList<>();
     private ArrayList<Text> textStringsMulti = new ArrayList<>();
     private ArrayList<TileEntities> multiplayerEntities = new ArrayList<>();
     private ArrayList<TileEntities> newMultiplayerEntities = new ArrayList<>();
+    private Text titleInfo;
     String currentMessage = handler.recieveMessage();
     private int testX = 0, testY = 0;
 
@@ -27,17 +27,28 @@ public class VoidState extends State {
         super(handler);
         tiles = new Tiles(handler);
         tm = new TileManager(handler, tiles);
-        textStringsSingle.add(new Text("Multiplayer", tiles.cords(70, 4)[0], tiles.cords(67, 4)[1], Text.sFont,true,Color.YELLOW));
-        textStringsSingle.add(new Text("Single Player", tiles.cords(30, 4)[0], tiles.cords(27, 4)[1], Text.sFont,true,Color.YELLOW));
-        textStringsMulti.add(new Text("Start Game", tiles.cords(30, 4)[0], tiles.cords(28, 4)[1], Text.sFont,true,Color.YELLOW));
-        textStringsMulti.add(new Text("Exit Session", tiles.cords(70, 4)[0], tiles.cords(67, 4)[1], Text.sFont,true,Color.YELLOW));
+        int centerOfDoorS = 0;
+        int centerOfDoorM = 0;
+        for(TileEntities t : tm.newTileEntities){
+            if(t instanceof  Doorway){
+                if(((Doorway) t).singlePlayer){
+                    centerOfDoorS = ((Doorway) t).bounds.x + ((Doorway) t).bounds.width/2;
+                } else{
+                    centerOfDoorM = ((Doorway) t).bounds.x + ((Doorway) t).bounds.width/2;
+                }
+            }
+        }
+        titleInfo = new Text(titleRequestResolt,0,0,Text.sFont,false,Color.yellow);
+        textStringsSingle.add(new Text("Multiplayer", centerOfDoorM,tiles.cords(69, 4)[1], Text.sFont,true,Color.YELLOW));
+        textStringsSingle.add(new Text("Single Player", centerOfDoorS, tiles.cords(29, 4)[1], Text.sFont,true,Color.YELLOW));
+        textStringsMulti.add(new Text("Start Game", centerOfDoorS, tiles.cords(29, 4)[1], Text.sFont,true,Color.YELLOW));
+        textStringsMulti.add(new Text("Exit Session", centerOfDoorM, tiles.cords(69, 4)[1], Text.sFont,true,Color.YELLOW));
     }
 
     @Override
     public void tick() {
         if (!tm.multiplayer) {
             newMultiplayerEntities.clear();
-
         }
         multiplayerEntities.clear();
         multiplayerEntities.addAll(newMultiplayerEntities);
@@ -47,14 +58,24 @@ public class VoidState extends State {
         commands();
         if (tm.multiplayer)
             recieveMessages();
+        for(TileEntities t : multiplayerEntities){
+            if(t instanceof  Player && ((Player) t).getColor() == Color.GRAY){
+                handler.sendMessage("REQUESTCOLOR");
+            }
+        }
     }
 
     public void recieveMessages() {
         currentMessage = handler.recieveMessage();
+        if(currentMessage.startsWith("TITLEINFO")){
+            titleRequestResolt = currentMessage.substring(9);
+        }
         if(currentMessage.startsWith("REQUESTCOLOR")){
             if(tm.player() instanceof  Player){
                 ((Player) tm.player()).initialColor();
             }
+        }if(currentMessage.startsWith("TITLEREQUEST")){
+            handler.sendMessage("TITLEINFO" + (((CharacterSlots) tm.activeChar).nickName) + "     LVL: " + ((CharacterSlots) tm.activeChar).level);
         }
         if (currentMessage.startsWith("COLORCHANGE")) {
             //System.out.println(currentMessage.substring(29,42));
@@ -98,7 +119,7 @@ public class VoidState extends State {
             } else {
                 System.out.println("New Char made with ID of: " + newID);
                 newMultiplayerEntities.add(new Player(new Rectangle(testX, testY, 20, 30), handler, newID));
-                handler.client.sendMessage("REQUESTCOLOR");
+                handler.sendMessage("REQUESTCOLOR");
             }
         }
 
@@ -140,13 +161,19 @@ public class VoidState extends State {
         if(handler.getKM().keyJustPressed(KeyEvent.VK_F12)){
             handler.fileSystem.deleteSave();
         }
+        for(TileEntities t : multiplayerEntities){
+            if(t instanceof Player){
+                if (((Player) t).getBounds().contains(handler.getMM().getMouseX(),handler.getMM().getMouseY())){
+                    handler.sendMessage("TITLEREQUEST");
+                }
+            }
+        }
     }
 
     @Override
     public void render(Graphics g) {
         tiles.render(g);
         tm.render(g);
-        g.setColor(Color.YELLOW);
         if (tm.liteUp && !tm.multiplayer) {
             for (Text t : textStringsSingle) {
                 t.render(g);

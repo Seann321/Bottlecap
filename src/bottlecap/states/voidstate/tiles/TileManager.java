@@ -1,6 +1,7 @@
 package bottlecap.states.voidstate.tiles;
 
 import bottlecap.assets.GUI;
+import bottlecap.assets.Text;
 import bottlecap.multiplayer.Client;
 import bottlecap.states.Handler;
 import bottlecap.states.Tiles;
@@ -12,8 +13,9 @@ import java.util.Iterator;
 public class TileManager {
 
 
-    private ArrayList<TileEntities> tileEntities = new ArrayList<>();
-    private ArrayList<TileEntities> newTileEntities = new ArrayList<>();
+    public TileEntities activeChar = null;
+    public ArrayList<TileEntities> tileEntities = new ArrayList<>();
+    public ArrayList<TileEntities> newTileEntities = new ArrayList<>();
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
@@ -50,6 +52,11 @@ public class TileManager {
 
 
     public void tick() {
+        if (debug) {
+            if (handler.getMM().isRightPressed()) {
+                System.out.println("X " + tiles.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + tiles.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
+            }
+        }
         tileEntities.clear();
         tileEntities.addAll(newTileEntities);
         Iterator<TileEntities> it = tileEntities.iterator();
@@ -144,27 +151,29 @@ public class TileManager {
             newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8));
         } else {
             for (String chars : handler.fileSystem.charaterSlots) {
-                String color = chars.substring(chars.indexOf("Color") + 8);
+                String color = chars.substring(chars.indexOf("Color") + 8, chars.indexOf("LVL"));
+                String nickName = chars.substring(chars.indexOf("NICK") + 4);
+                String level = chars.substring(chars.indexOf("LVL") + 3, chars.indexOf("NICK"));
                 if (chars.contains("CHARSLOT1")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler, 1, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler, 1, colorConvertor(color), Integer.parseInt(level), nickName));
                 } else if (chars.contains("CHARSLOT2")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler, 2, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler, 2, colorConvertor(color), Integer.parseInt(level), nickName));
                 } else if (chars.contains("CHARSLOT3")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler, 3, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler, 3, colorConvertor(color), Integer.parseInt(level), nickName));
                 } else if (chars.contains("CHARSLOT4")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler, 4, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler, 4, colorConvertor(color), Integer.parseInt(level), nickName));
                 }
                 if (chars.contains("CHARSLOT5")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler, 5, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler, 5, colorConvertor(color), Integer.parseInt(level), nickName));
                 }
                 if (chars.contains("CHARSLOT6")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler, 6, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler, 6, colorConvertor(color), Integer.parseInt(level), nickName));
                 }
                 if (chars.contains("CHARSLOT7")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler, 7, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler, 7, colorConvertor(color), Integer.parseInt(level), nickName));
                 }
                 if (chars.contains("CHARSLOT8")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8, colorConvertor(color)));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8, colorConvertor(color), Integer.parseInt(level), nickName));
                 }
             }
         }
@@ -183,10 +192,8 @@ public class TileManager {
                 for (TileEntities p : tileEntities) {
                     if (p instanceof Player) {
                         if (((CharacterSlots) c).bounds.intersects(((Player) p).getBounds())) {
-                            if (((Player) p).privateID != playerID) {
-                                return;
-                            }
                             ((Player) p).setColor(((CharacterSlots) c).color);
+                            activeChar = c;
                             pickAColor = false;
                             for (TileEntities cc : tileEntities) {
                                 if (cc instanceof CharacterSlots) {
@@ -301,9 +308,17 @@ public class TileManager {
             if (x.liteUp)
                 x.render(g);
         }
+        for (TileEntities t : tileEntities) {
+            if (t instanceof Player) {
+                if (((Player) t).getColor() != Color.GRAY) {
+                    Text text = new Text("Player " + handler.computerID + " " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level, handler.getWidth() / 2, tiles.cords(45, 100)[1], Text.lFont, true, Color.yellow);
+                    text.render(g);
+                }
+            }
+        }
         if (pickAColor) {
-            g.setColor(Color.yellow);
-            g.drawString("Pick a Character Color to continue.", tiles.cords(45, 35)[0], tiles.cords(45, 35)[1]);
+            Text t = new Text("Pick a Character Color to continue.", handler.getWidth() / 2, tiles.cords(45, 100)[1], Text.lFont, true, Color.yellow);
+            t.render(g);
         }
 
     }
