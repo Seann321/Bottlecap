@@ -40,11 +40,12 @@ public class VoidState extends State {
                 }
             }
         }
-        titleInfo = new Text(titleRequestResolt,0,0,Text.sFont,false,Color.yellow);
-        textStringsSingle.add(new Text("Multiplayer", centerOfDoorM,tiles.cords(69, 4)[1], Text.sFont,true,Color.YELLOW));
-        textStringsSingle.add(new Text("Single Player", centerOfDoorS, tiles.cords(29, 4)[1], Text.sFont,true,Color.YELLOW));
-        textStringsMulti.add(new Text("Start Game", centerOfDoorS, tiles.cords(29, 4)[1], Text.sFont,true,Color.YELLOW));
-        textStringsMulti.add(new Text("Exit Session", centerOfDoorM, tiles.cords(69, 4)[1], Text.sFont,true,Color.YELLOW));
+        titleInfo = new Text("",new int[]{0,0},Text.sFont,false,Color.YELLOW);
+        textStringsSingle.add(new Text("Multiplayer",new int[]{centerOfDoorM,tiles.cords(69, 4)[1]}, Text.sFont,true,Color.YELLOW));
+        textStringsSingle.add(new Text("Multiplayer", new int[]{centerOfDoorM,tiles.cords(69, 4)[1]}, Text.sFont,true,Color.YELLOW));
+        textStringsSingle.add(new Text("Single Player", new int[]{centerOfDoorS, tiles.cords(29, 4)[1]}, Text.sFont,true,Color.YELLOW));
+        textStringsMulti.add(new Text("Start Game", new int[]{centerOfDoorS, tiles.cords(29, 4)[1]}, Text.sFont,true,Color.YELLOW));
+        textStringsMulti.add(new Text("Exit Session", new int[]{centerOfDoorM, tiles.cords(69, 4)[1]}, Text.sFont,true,Color.YELLOW));
     }
 
     @Override
@@ -156,6 +157,7 @@ public class VoidState extends State {
 
     public void commands() {
         if(handler.getKM().keyJustPressed(KeyEvent.VK_F6)){
+            //handler.activePlayer = tm.
             handler.setCurrentState(handler.gameState);
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_F5)) {

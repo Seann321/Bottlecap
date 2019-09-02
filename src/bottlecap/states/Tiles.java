@@ -4,7 +4,6 @@ import bottlecap.states.Handler;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Tiles {
 
@@ -49,9 +48,7 @@ public class Tiles {
     }
 
     public void render(Graphics g) {
-        Iterator<Rectangle> it = tiles.iterator();
-        while(it.hasNext()){
-            Rectangle x= it.next();
+        for (Rectangle x : tiles) {
             g.setColor(Color.darkGray);
             //g.drawRect(x.x,x.y,x.width,x.height);
         }

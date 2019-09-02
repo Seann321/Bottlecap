@@ -16,29 +16,43 @@ public class Text {
     public Color originalColor;
     public Rectangle bounds;
     protected boolean clicked = false, rightClicked = false, hovering = false;
-    public boolean active = true;
+    public boolean active = true, clickable = true;
 
     String message;
     int x, y;
     Font font;
 
-    public Text(String message, int x, int y, Font font, Boolean center, Color color) {
+    public Text(String message, int cords[], Font font, Boolean center, Color color) {
         this.font = font;
         this.center = center;
-        this.x = x;
-        this.y = y;
+        x = cords[0];
+        y = cords[1];
         this.message = message;
         this.color = color;
         originalColor = color;
         bounds = new Rectangle(0, 0, 0, 0);
     }
 
+    public Text(String message, int cords[], Font font, Boolean center, Color color, boolean clickable) {
+        this.font = font;
+        this.center = center;
+        x = cords[0];
+        y = cords[1];
+        this.message = message;
+        this.color = color;
+        originalColor = color;
+        bounds = new Rectangle(0, 0, 0, 0);
+        this.clickable = clickable;
+    }
+
 
     public void tick() {
-        if(hovering){
-            color = Color.yellow;
-        }else{
-            color = originalColor;
+        if (clickable) {
+            if (hovering) {
+                color = Color.yellow;
+            } else {
+                color = originalColor;
+            }
         }
     }
 

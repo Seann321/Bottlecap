@@ -11,9 +11,11 @@ import bottlecap.states.gameState.GameState;
 import bottlecap.states.squareState.SquareState;
 import bottlecap.states.joiningstate.JoiningState;
 import bottlecap.states.voidstate.VoidState;
+import bottlecap.states.voidstate.tiles.TileEntities;
 
 public class Handler {
 
+    public TileEntities activePlayer = null;
     public int computerID = 0;
     private Bottlecap bottlecap;
     private MouseManager mouseManager;

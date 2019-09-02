@@ -152,28 +152,26 @@ public class TileManager {
         } else {
             for (String chars : handler.fileSystem.charaterSlots) {
                 String color = chars.substring(chars.indexOf("Color") + 8, chars.indexOf("LVL"));
-                String nickName = chars.substring(chars.indexOf("NICK") + 4);
-                String level = chars.substring(chars.indexOf("LVL") + 3, chars.indexOf("NICK"));
                 if (chars.contains("CHARSLOT1")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler, 1, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 50), handler, 1, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 } else if (chars.contains("CHARSLOT2")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler, 2, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(25, 60), handler, 2, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 } else if (chars.contains("CHARSLOT3")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler, 3, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 50), handler, 3, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 } else if (chars.contains("CHARSLOT4")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler, 4, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(35, 60), handler, 4, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 }
                 if (chars.contains("CHARSLOT5")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler, 5, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 50), handler, 5, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 }
                 if (chars.contains("CHARSLOT6")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler, 6, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(65, 60), handler, 6, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 }
                 if (chars.contains("CHARSLOT7")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler, 7, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 50), handler, 7, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 }
                 if (chars.contains("CHARSLOT8")) {
-                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8, colorConvertor(color), Integer.parseInt(level), nickName));
+                    newTileEntities.add(new CharacterSlots(tiles.cords(75, 60), handler, 8, colorConvertor(color), chars.substring(chars.indexOf("LVL"))));
                 }
             }
         }
@@ -193,6 +191,7 @@ public class TileManager {
                     if (p instanceof Player) {
                         if (((CharacterSlots) c).bounds.intersects(((Player) p).getBounds())) {
                             ((Player) p).setColor(((CharacterSlots) c).color);
+                            handler.activePlayer = c;
                             activeChar = c;
                             pickAColor = false;
                             for (TileEntities cc : tileEntities) {
@@ -311,13 +310,13 @@ public class TileManager {
         for (TileEntities t : tileEntities) {
             if (t instanceof Player) {
                 if (((Player) t).getColor() != Color.GRAY) {
-                    Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level, handler.getWidth() / 2, tiles.cords(45, 96)[1], Text.lFont, true, Color.yellow);
+                    Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level + " HP: " + ((CharacterSlots) activeChar).health, tiles.cords(50, 96), Text.lFont, true, Color.yellow);
                     text.render(g);
                 }
             }
         }
         if (pickAColor) {
-            Text t = new Text("Pick a Character Color to continue.", handler.getWidth() / 2, tiles.cords(45, 100)[1], Text.lFont, true, Color.yellow);
+            Text t = new Text("Pick a Character Color to continue.", tiles.cords(50, 100), Text.lFont, true, Color.yellow);
             t.render(g);
         }
 

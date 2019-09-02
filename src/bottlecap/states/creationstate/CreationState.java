@@ -21,16 +21,16 @@ public class CreationState extends State {
     public CreationState(Handler handler) {
         super(handler);
         gui = new GUI();
-        GUI.gui = gui;
         tiles = new Tiles(handler);
         yOffset = 30;
-        gui.addText(new Text("Character Sheet", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.lightGray));
-        gui.addText(new Text("Strength", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.red));
-        gui.addText(new Text("Magic", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.blue));
-        gui.addText(new Text("Perception", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.MAGENTA));
-        gui.addText(new Text("Charisma", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.green));
-        gui.addText(new Text("Defence", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, darkOrange));
-        gui.addText(new Text("Agility", (handler.getWidth() / 2), (tiles.cords(50, 5)[1]), Text.lFont, true, Color.cyan));
+
+        gui.addText(new Text("Character Sheet", tiles.cords(50, 5), Text.lFont, true, Color.lightGray));
+        gui.addText(new Text("Strength", tiles.cords(50, 5), Text.lFont, true, Color.red));
+        gui.addText(new Text("Magic", tiles.cords(50, 5), Text.lFont, true, Color.blue));
+        gui.addText(new Text("Perception", tiles.cords(50, 5), Text.lFont, true, Color.MAGENTA));
+        gui.addText(new Text("Charisma", tiles.cords(50, 5), Text.lFont, true, Color.green));
+        gui.addText(new Text("Defence", tiles.cords(50, 5), Text.lFont, true, darkOrange));
+        gui.addText(new Text("Agility", tiles.cords(50, 5), Text.lFont, true, Color.cyan));
 
         for (Text t : gui.text) {
             if (t.getText().equals("Character Sheet")) continue;
@@ -42,6 +42,10 @@ public class CreationState extends State {
 
     @Override
     public void tick() {
+        if (GUI.gui != gui) {
+            System.out.println("Switched GUI");
+            GUI.gui = gui;
+        }
         gui.tick();
         if (activeChange) {
             for (Text tt : gui.text) {
@@ -62,7 +66,7 @@ public class CreationState extends State {
         } else
             for (Text t : gui.text) {
                 if (t.wasClicked()) {
-                    if(t.getText().equals("Character Sheet")){
+                    if (t.getText().equals("Character Sheet")) {
                         continue;
                     }
                     for (Text tt : gui.text) {

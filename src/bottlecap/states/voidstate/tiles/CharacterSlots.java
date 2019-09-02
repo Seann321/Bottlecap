@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class CharacterSlots extends TileEntities {
 
+    public int health = 100;
     public int level = 0;
     public int pos;
     public Color color;
@@ -23,10 +24,10 @@ public class CharacterSlots extends TileEntities {
         bounds.height = 25;
         liteUp = false;
         color = new Color((int) (Math.random() * 89) + 10, (int) (Math.random() * 89) + 10, (int) (Math.random() * 89) + 10);
-        handler.fileSystem.writeToFile("CHARSLOT" + pos + color + "LVL" + level + "NICK" + nickName);
+        handler.fileSystem.writeToFile("CHARSLOT" + pos + color + "LVL" + level + "HP" + health +"NICK" + nickName);
     }
 
-    public CharacterSlots(int[] cords, Handler handler, int pos, Color color, int level, String nickName) {
+    public CharacterSlots(int[] cords, Handler handler, int pos, Color color, String chars) {
         super(handler);
         this.pos = pos;
         this.cords = cords;
@@ -36,8 +37,9 @@ public class CharacterSlots extends TileEntities {
         bounds.height = 25;
         liteUp = false;
         this.color = color;
-        this.level = level;
-        this.nickName = nickName;
+        this.level = Integer.parseInt(chars.substring(chars.indexOf("LVL") + 3, chars.indexOf("HP")));
+        this.nickName = chars.substring(chars.indexOf("NICK") + 4);
+        this.health = Integer.parseInt(chars.substring(chars.indexOf("HP") + 2,chars.indexOf("NICK")));
     }
 
     @Override
