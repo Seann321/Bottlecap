@@ -8,7 +8,7 @@ import java.util.Random;
 public class WorldTiles {
 
     public static enum TileType {
-        GRASS, GRASSPATH
+        GRASS, WATER
     }
 
     public int x, y;
@@ -27,7 +27,7 @@ public class WorldTiles {
             int temp = tempRandom.nextInt(3);
             texture = temp;
         } else if (z == 1) {
-            tileType = TileType.GRASSPATH;
+            tileType = TileType.WATER;
         }
     }
 
@@ -36,7 +36,7 @@ public class WorldTiles {
     }
 
     public void render(Graphics g) {
-        if (tileType == TileType.GRASSPATH) {
+        if (tileType == TileType.WATER) {
             g.drawImage(Images.water, x, y, 64, 36, null);
         } else if(tileType == TileType.GRASS){
             g.drawImage(Images.grass[texture],x,y,64,36,null);
