@@ -8,6 +8,7 @@ import bottlecap.states.Tiles;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.security.Key;
 import java.util.ArrayList;
 
 public class VoidState extends State {
@@ -154,6 +155,9 @@ public class VoidState extends State {
 
 
     public void commands() {
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_F6)){
+            handler.setCurrentState(handler.gameState);
+        }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_F5)) {
             newMultiplayerEntities.clear();
         }

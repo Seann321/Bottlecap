@@ -10,36 +10,37 @@ public class Tiles {
 
     private final Handler handler;
     private int xTiles, yTiles;
-    public int xDiv;
-    private int yDiv;
+    public double xDiv;
+    private double yDiv;
     private ArrayList<Rectangle> tiles = new ArrayList<>();
 
 
     public Tiles(Handler handler) {
         this.handler = handler;
-        xDiv = handler.getWidth() / 100;
-        yDiv = handler.getHeight() / 100;
-        xTiles = handler.getWidth() / xDiv;
-        yTiles = handler.getHeight() / yDiv;
+        xDiv = handler.getWidth() / 100D;
+        yDiv = handler.getHeight() / 100D;
+        xTiles = (int)(handler.getWidth() / xDiv);
+        yTiles = (int)(handler.getHeight() / yDiv);
         for (int i = 0; i < xTiles; i++) {
             for(int ii = 0; ii < yTiles; ii++){
-                tiles.add(new Rectangle(i * xDiv, ii * yDiv, xDiv, yDiv));
+                tiles.add(new Rectangle((int)(i * xDiv), (int)(ii * yDiv), (int)xDiv, (int)yDiv));
             }
         }
+        //System.out.println(xDiv);
     }
 
     public int[] cords(int x, int y){
         int[] cords = new int[2];
-        cords[0] = (x * xDiv) - xDiv;
-        cords[1] = (y * yDiv);
+        cords[0] = (int)((x * xDiv) - xDiv);
+        cords[1] = (int)((y * yDiv));
         return cords;
     }
 
     public int[] tilePOS(int x, int y){
         int[] cords = new int[2];
 
-        cords[0] = x/xDiv;
-        cords[1] = y/yDiv;
+        cords[0] = (int)(x/xDiv);
+        cords[1] = (int)(y/yDiv);
 
         return cords;
     }

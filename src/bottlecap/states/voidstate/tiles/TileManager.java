@@ -30,8 +30,8 @@ public class TileManager {
     public TileManager(Handler handler, Tiles tiles) {
         this.handler = handler;
         this.tiles = tiles;
-        playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
-        truePlayerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        playerStartingPOS = new Rectangle((int)((tiles.cords(50, 85)[0]) - tiles.xDiv / 2), tiles.cords(50, 85)[1], 20, 30);
+        truePlayerStartingPOS = new Rectangle((int)((tiles.cords(50, 85)[0]) - tiles.xDiv / 2), tiles.cords(50, 85)[1], 20, 30);
         newTileEntities.add(new Player(playerStartingPOS, handler));
         createCandleWalkway();
         newTileEntities.add(new Candle(tiles.cords(50, 10), true, handler));
@@ -311,7 +311,7 @@ public class TileManager {
         for (TileEntities t : tileEntities) {
             if (t instanceof Player) {
                 if (((Player) t).getColor() != Color.GRAY) {
-                    Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level, handler.getWidth() / 2, tiles.cords(45, 100)[1], Text.lFont, true, Color.yellow);
+                    Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level, handler.getWidth() / 2, tiles.cords(45, 96)[1], Text.lFont, true, Color.yellow);
                     text.render(g);
                 }
             }
