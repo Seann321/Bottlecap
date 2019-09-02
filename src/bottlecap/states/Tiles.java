@@ -25,7 +25,19 @@ public class Tiles {
                 tiles.add(new Rectangle((int)(i * xDiv), (int)(ii * yDiv), (int)xDiv, (int)yDiv));
             }
         }
-        //System.out.println(xDiv);
+    }
+
+    public Tiles(Handler handler, double sizeX, double sizeY) {
+        this.handler = handler;
+        xDiv = handler.getWidth() / sizeX;
+        yDiv = handler.getHeight() / sizeY;
+        xTiles = (int)(handler.getWidth() / xDiv);
+        yTiles = (int)(handler.getHeight() / yDiv);
+        for (int i = 0; i < xTiles; i++) {
+            for(int ii = 0; ii < yTiles; ii++){
+                tiles.add(new Rectangle((int)(i * xDiv), (int)(ii * yDiv), (int)xDiv, (int)yDiv));
+            }
+        }
     }
 
     public int[] cords(int x, int y){
@@ -45,6 +57,10 @@ public class Tiles {
     }
 
     public void tick() {
+    }
+
+    public ArrayList<Rectangle> getTiles(){
+        return tiles;
     }
 
     public void render(Graphics g) {

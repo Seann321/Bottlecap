@@ -2,29 +2,36 @@ package bottlecap.states.gameState;
 
 import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
+import bottlecap.assets.images.Images;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
+import bottlecap.states.gameState.worldGenerator.WorldGenerator;
 import bottlecap.states.voidstate.tiles.CharacterSlots;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class GameState extends State {
 
     private Text[] uiInfo;
     private boolean debug = true;
-    Tiles tiles;
+    private Tiles tiles;
+    private Tiles gridPlacement;
     private GUI gui;
+    private WorldGenerator worldGen;
 
     public GameState(Handler handler) {
         super(handler);
         gui = new GUI();
         tiles = new Tiles(handler);
+        gridPlacement = new Tiles(handler,64,36);
+        worldGen = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/OverWorld.txt");
         uiInfo = new Text[]{
-                new Text("Health: ", tiles.cords(1, 92), Text.mFont, false, Color.white, false),
-                new Text("Level: ", tiles.cords(1, 94), Text.mFont, false, Color.white, false),
-                new Text("", tiles.cords(1, 98), Text.mFont, false, Color.white, false)
+                new Text("Health: ", tiles.cords(1, 91), Text.mFont, false, Color.white, false),
+                new Text("Level: ", tiles.cords(1, 93), Text.mFont, false, Color.white, false),
+                new Text("", tiles.cords(1, 97), Text.mFont, false, Color.white, false)
         };
         for (Text t : uiInfo) {
             gui.addText(t);
@@ -33,6 +40,7 @@ public class GameState extends State {
 
     @Override
     public void tick() {
+        worldGen.tick();
         if (GUI.gui != gui)
             GUI.gui = gui;
         gui.tick();
@@ -51,11 +59,8 @@ public class GameState extends State {
 
     public void debug() {
         if (debug) {
-            if(uiInfo[0].wasClicked()){
-                System.out.println(true);
-            }
             if (handler.getMM().isRightPressed()) {
-                System.out.println("X " + tiles.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + tiles.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
+                System.out.println("X " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
             }
         }
     }
@@ -63,8 +68,9 @@ public class GameState extends State {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.darkGray);
-        g.fillRect(0, tiles.cords(0, 90)[1], handler.getWidth(), handler.getHeight());
+        g.fillRect(0, gridPlacement.cords(0, 32)[1], handler.getWidth(), handler.getHeight());
+        worldGen.render(g);
         gui.render(g);
-        tiles.render(g);
+        gridPlacement.render(g);
     }
 }

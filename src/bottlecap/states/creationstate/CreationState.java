@@ -43,7 +43,6 @@ public class CreationState extends State {
     @Override
     public void tick() {
         if (GUI.gui != gui) {
-            System.out.println("Switched GUI");
             GUI.gui = gui;
         }
         gui.tick();

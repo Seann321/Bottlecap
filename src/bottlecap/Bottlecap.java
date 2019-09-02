@@ -2,6 +2,8 @@ package bottlecap;
 
 import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
+import bottlecap.assets.images.ImageLoader;
+import bottlecap.assets.images.Images;
 import bottlecap.states.Handler;
 
 import java.awt.*;
@@ -39,6 +41,7 @@ public class Bottlecap implements Runnable {
         display.getFrame().addMouseMotionListener(handler.getMM());
         display.getCanvas().addMouseListener(handler.getMM());
         display.getCanvas().addMouseMotionListener(handler.getMM());
+        Images.init();
     }
 
     private void tick() {
