@@ -18,11 +18,11 @@ public class Tiles {
         this.handler = handler;
         xDiv = handler.getWidth() / 100D;
         yDiv = handler.getHeight() / 100D;
-        xTiles = (int)(handler.getWidth() / xDiv);
-        yTiles = (int)(handler.getHeight() / yDiv);
+        xTiles = (int) (handler.getWidth() / xDiv);
+        yTiles = (int) (handler.getHeight() / yDiv);
         for (int i = 0; i < xTiles; i++) {
-            for(int ii = 0; ii < yTiles; ii++){
-                tiles.add(new Rectangle((int)(i * xDiv), (int)(ii * yDiv), (int)xDiv, (int)yDiv));
+            for (int ii = 0; ii < yTiles; ii++) {
+                tiles.add(new Rectangle((int) (i * xDiv), (int) (ii * yDiv), (int) xDiv, (int) yDiv));
             }
         }
     }
@@ -31,43 +31,43 @@ public class Tiles {
         this.handler = handler;
         xDiv = handler.getWidth() / sizeX;
         yDiv = handler.getHeight() / sizeY;
-        xTiles = (int)(handler.getWidth() / xDiv);
-        yTiles = (int)(handler.getHeight() / yDiv);
+        xTiles = (int) (handler.getWidth() / xDiv);
+        yTiles = (int) (handler.getHeight() / yDiv);
         for (int i = 0; i < xTiles; i++) {
-            for(int ii = 0; ii < yTiles; ii++){
-                tiles.add(new Rectangle((int)(i * xDiv), (int)(ii * yDiv), (int)xDiv, (int)yDiv));
+            for (int ii = 0; ii < yTiles; ii++) {
+                tiles.add(new Rectangle((int) (i * xDiv), (int) (ii * yDiv), (int) xDiv, (int) yDiv));
             }
         }
     }
 
-    public int[] cords(int x, int y){
+    public int[] cords(int x, int y) {
         int[] cords = new int[2];
-        cords[0] = (int)((x * xDiv) - xDiv);
-        cords[1] = (int)((y * yDiv));
+        cords[0] = (int) ((x * xDiv) - xDiv);
+        cords[1] = (int) ((y * yDiv));
         return cords;
     }
 
-    public int[] tilePOS(int x, int y){
+    public int[] tilePOS(int x, int y) {
         int[] cords = new int[2];
 
-        cords[0] = (int)(x/xDiv);
-        cords[1] = (int)(y/yDiv);
+        cords[0] = (int) ((x / xDiv) - xDiv);
+        cords[1] = (int) (y / yDiv);
 
         return cords;
     }
 
-    public int[] cords(int[] x){
+    public int[] cords(int[] x) {
         int[] cords = new int[2];
-        cords[0] = (int)((x[0] * xDiv) - xDiv);
-        cords[1] = (int)((x[1] * yDiv));
+        cords[0] = (int) ((x[0] * xDiv) - xDiv);
+        cords[1] = (int) ((x[1] * yDiv));
         return cords;
     }
 
-    public int[] tilePOS(int[] x){
+    public int[] tilePOS(int[] x) {
         int[] cords = new int[2];
 
-        cords[0] = (int)(x[0]/xDiv);
-        cords[1] = (int)(x[1]/yDiv);
+        cords[0] = (int) ((x[0] / xDiv) - xDiv);
+        cords[1] = (int) (x[1] / yDiv);
 
         return cords;
     }
@@ -75,7 +75,7 @@ public class Tiles {
     public void tick() {
     }
 
-    public ArrayList<Rectangle> getTiles(){
+    public ArrayList<Rectangle> getTiles() {
         return tiles;
     }
 

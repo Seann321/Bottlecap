@@ -55,16 +55,16 @@ public class GameState extends State {
             firstLoading();
         }
 
+        if(handler.getMM().isRightClicked()){
+            System.out.println(gridPlacement.tilePOS(handler.getMM().getMouseX(),handler.getMM().getMouseY())[0] + " " + gridPlacement.tilePOS(handler.getMM().getMouseX(),handler.getMM().getMouseY())[1]);
+        }
+
         player.tick();
         uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
         ActiveWorld.tick();
         if (GUI.gui != gui)
             GUI.gui = gui;
         gui.tick();
-        for (Player p : multiplayers) {
-            //System.out.println("Other X " + gridPlacement.tilePOS(p.bounds.x, p.bounds.y)[0] + " Y " + gridPlacement.tilePOS(p.bounds.x, p.bounds.y)[1]);
-            //System.out.println("Player X " +gridPlacement.tilePOS(player.bounds.x, player.bounds.y)[0]  + " Y " + gridPlacement.tilePOS(player.bounds.x, player.bounds.y)[1]);
-        }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
             nextTurn();
         if (handler.multiplayer) {
