@@ -21,6 +21,7 @@ public class GameState extends State {
     private WorldGenerator worldGen;
     private Player player;
     private boolean firstLoad = true;
+    private int turnCount = 0;
 
     public GameState(Handler handler) {
         super(handler);
@@ -30,7 +31,10 @@ public class GameState extends State {
         uiInfo = new Text[]{
                 new Text("Health: ", gridPlacement.cords(1, 33), Text.mFont, false, Color.white, false),
                 new Text("Level: ", gridPlacement.cords(1, 34), Text.mFont, false, Color.white, false),
-                new Text("", gridPlacement.cords(1, 35), Text.mFont, false, Color.white, false)
+                new Text("", gridPlacement.cords(1, 35), Text.mFont, false, Color.white, false),
+                new Text("AP Remaining: ", gridPlacement.cords(32, 33), Text.lFont, true, Color.white, false),
+                new Text("Enter To End Turn; Right Click to Cancel Movement", gridPlacement.cords(32, 34), Text.sFont, true, Color.white, false),
+                new Text("Turn: " + 0, gridPlacement.cords(32, 35), Text.sFont, true, Color.white, false)
         };
         for (Text t : uiInfo) {
             gui.addText(t);
@@ -43,6 +47,7 @@ public class GameState extends State {
             firstLoading();
         }
         player.tick();
+        uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
         worldGen.tick();
         if (GUI.gui != gui)
             GUI.gui = gui;
@@ -55,7 +60,7 @@ public class GameState extends State {
     //((CharacterSlots) handler.activePlayer).level;
 
     public void firstLoading() {
-        player = new Player(gridPlacement.cords(32, 21), ((CharacterSlots) handler.activePlayer).color, gridPlacement, handler, handler.computerID);
+        player = new Player(gridPlacement.cords(32, 21), ((CharacterSlots) handler.activePlayer).color, gridPlacement, handler,worldGen, handler.computerID);
         System.out.println("Player Created with ID: " + player.privateID);
         uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
         uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
@@ -64,9 +69,12 @@ public class GameState extends State {
     }
 
     public void nextTurn() {
+        turnCount++;
         uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
         uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
         uiInfo[2].setText("" + ((CharacterSlots) handler.activePlayer).nickName);
+        uiInfo[5].setText("Turn: " + turnCount);
+        player.endTurn();
         player.AP = player.startAP;
     }
 

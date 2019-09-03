@@ -35,6 +35,15 @@ public class WorldGenerator {
         turnCharArrayIntoTiles();
     }
 
+    public Enum returnTileType(int cords[]){
+        for (WorldTiles wt : worldTiles) {
+            if(wt.bounds.contains(cords[0],cords[1])){
+                return wt.tileType;
+            }
+        }
+        return WorldTiles.TileType.BRIDGE;
+    }
+
     public void tick() {
         for (WorldTiles wt : worldTiles) {
             wt.tick();

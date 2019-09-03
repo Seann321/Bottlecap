@@ -82,7 +82,7 @@ public class Tiles {
     public void render(Graphics g) {
         for (Rectangle x : tiles) {
             g.setColor(Color.darkGray);
-            g.drawRect(x.x,x.y,x.width,x.height);
+            //g.drawRect(x.x,x.y,x.width,x.height);
         }
     }
 
