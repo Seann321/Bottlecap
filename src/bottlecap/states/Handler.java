@@ -64,7 +64,7 @@ public class Handler {
         }
         String temp = lastMessage;
         lastMessage = "";
-        //if(!temp.equals(""))
+        //(!temp.equals(""))
         //System.out.println("Message: " + temp);
         return temp;
     }

@@ -53,9 +53,7 @@ public class GameState extends State {
         if (firstLoad) {
             firstLoading();
         }
-        if (handler.multiplayer) {
-            multiplayerTick();
-        }
+
         player.tick();
         uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
         ActiveWorld.tick();
@@ -72,8 +70,22 @@ public class GameState extends State {
         recieveMessages();
     }
 
+    public void nextTurn() {
+        turnCount++;
+        uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
+        uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
+        uiInfo[2].setText("" + ((CharacterSlots) handler.activePlayer).nickName);
+        uiInfo[5].setText("Turn: " + turnCount);
+        player.endTurn();
+        player.AP = player.startAP;
+        uiInfo[6].setText("Island: " + ActiveWorld.worldTitle);
+        if (handler.multiplayer) {
+            multiplayerTick();
+        }
+    }
+
     public void sendMessages() {
-        handler.sendMessage("GATHERPLAYERDATA");
+        handler.sendMessage("GATHERPLAYERDATA" + turnCount);
         //System.out.println(("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
         //            + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle));
     }
@@ -82,6 +94,7 @@ public class GameState extends State {
 
     public void recieveMessages() {
         currentMessage = handler.recieveMessage();
+        System.out.println(currentMessage);
         if (currentMessage.startsWith("GATHERPLAYERDATA")) {
             handler.sendMessage("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
                     + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle);
@@ -118,16 +131,6 @@ public class GameState extends State {
         firstLoad = false;
     }
 
-    public void nextTurn() {
-        turnCount++;
-        uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
-        uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
-        uiInfo[2].setText("" + ((CharacterSlots) handler.activePlayer).nickName);
-        uiInfo[5].setText("Turn: " + turnCount);
-        player.endTurn();
-        player.AP = player.startAP;
-        uiInfo[6].setText("Island: " + ActiveWorld.worldTitle);
-    }
 
     public void debug() {
         if (debug) {
