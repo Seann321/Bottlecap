@@ -10,7 +10,7 @@ public class Tiles {
     private final Handler handler;
     private int xTiles, yTiles;
     public double xDiv;
-    private double yDiv;
+    public double yDiv;
     private ArrayList<Rectangle> tiles = new ArrayList<>();
 
 

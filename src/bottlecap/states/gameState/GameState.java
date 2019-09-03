@@ -58,9 +58,11 @@ public class GameState extends State {
 
     public void debug() {
         if (debug) {
-            if (handler.getMM().isRightPressed()) {
-                System.out.println("X " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
-            }
+
+
+            //if (handler.getMM().isRightPressed()) {
+            //    System.out.println("X " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
+            //}
         }
     }
 

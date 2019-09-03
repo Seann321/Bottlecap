@@ -28,13 +28,13 @@ public class GUI {
     }
 
     public void onMouseMove(MouseEvent e) {
-        for (Text o : text) {
+        for (Text o : newText) {
             o.onMouseMove(e);
         }
     }
 
     public void onMouseRelease(MouseEvent e) {
-        for (Text o : text) {
+        for (Text o : newText) {
             o.onMouseReleased(e);
         }
     }
