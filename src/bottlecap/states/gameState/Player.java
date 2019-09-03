@@ -12,7 +12,7 @@ public class Player {
 
     public int AP = 3;
     public int startAP = 3;
-    private Color color;
+    public Color color;
     private Handler handler;
     public int privateID;
     private Rectangle bounds;
@@ -20,14 +20,18 @@ public class Player {
     int[] cancelMove;
     WorldGenerator wg;
 
-    public Player(int[] cords, Color color, Tiles tiles, Handler handler, WorldGenerator worldGen, int privateID) {
+    public Player(int[] cords, Color color, Tiles tiles, Handler handler, int privateID) {
         this.tiles = tiles;
         this.color = color;
-        wg = worldGen;
+        wg = GameState.ActiveWorld;
         this.handler = handler;
         this.privateID = privateID;
         bounds = new Rectangle(cords[0], cords[1], 10, 15);
         cancelMove = new int[]{bounds.x, bounds.y};
+    }
+
+    public int[] gatherPlayerTileCords(){
+        return tiles.tilePOS(bounds.x,bounds.y);
     }
 
     public void tick() {
@@ -36,9 +40,24 @@ public class Player {
 
     public int movementPoints = 0;
 
-    public void endTurn(){
+    public void endTurn() {
         movementPoints = 0;
         cancelMove = new int[]{bounds.x, bounds.y};
+        if (wg.returnTileType(new int[]{bounds.x, bounds.y}) == WorldTiles.TileType.DOCK) {
+            if (GameState.ActiveWorld == GameState.Overworld) {
+                GameState.ActiveWorld = GameState.Seantopia;
+            } else {
+                GameState.ActiveWorld = GameState.Overworld;
+            }
+            wg = GameState.ActiveWorld;
+            for (WorldTiles wt : wg.worldTiles) {
+                if (wt.tileType == WorldTiles.TileType.DOCK) {
+                    bounds.x = wt.x;
+                    bounds.y = wt.y;
+                    return;
+                }
+            }
+        }
     }
 
     public void movement() {
@@ -55,25 +74,25 @@ public class Player {
             return;
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_W)) {
-            if (bounds.y - tiles.yDiv >= 0 && (wg.returnTileType(new int[]{bounds.x , bounds.y - (int)tiles.yDiv})) != (WorldTiles.TileType.WATER)) {
+            if (bounds.y - tiles.yDiv >= 0 && (wg.returnTileType(new int[]{bounds.x, bounds.y - (int) tiles.yDiv})) != (WorldTiles.TileType.WATER)) {
                 bounds.y -= tiles.yDiv;
                 afterPress();
             }
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_S)) {
-            if (bounds.y + tiles.yDiv <= tiles.cords(0, 31)[1] && (wg.returnTileType(new int[]{bounds.x, bounds.y  + (int)tiles.yDiv})) != (WorldTiles.TileType.WATER)) {
+            if (bounds.y + tiles.yDiv <= tiles.cords(0, 31)[1] && (wg.returnTileType(new int[]{bounds.x, bounds.y + (int) tiles.yDiv})) != (WorldTiles.TileType.WATER)) {
                 bounds.y += tiles.yDiv;
                 afterPress();
             }
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_A)) {
-            if (bounds.x - tiles.xDiv >= 0 && (wg.returnTileType(new int[]{bounds.x - (int)tiles.xDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
+            if (bounds.x - tiles.xDiv >= 0 && (wg.returnTileType(new int[]{bounds.x - (int) tiles.xDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
                 bounds.x -= tiles.xDiv;
                 afterPress();
             }
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_D)) {
-            if (bounds.x <= tiles.cords(63, 0)[0] && (wg.returnTileType(new int[]{bounds.x + (int)tiles.xDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
+            if (bounds.x <= tiles.cords(63, 0)[0] && (wg.returnTileType(new int[]{bounds.x + (int) tiles.xDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
                 bounds.x += tiles.xDiv;
                 afterPress();
             }

@@ -2,13 +2,13 @@ package bottlecap.states.gameState;
 
 import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
-import bottlecap.assets.images.Images;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
 import bottlecap.states.gameState.worldGenerator.WorldGenerator;
 import bottlecap.states.voidstate.tiles.CharacterSlots;
 
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -18,23 +18,30 @@ public class GameState extends State {
     private Text[] uiInfo;
     private boolean debug = true;
     private Tiles gridPlacement;
-    private WorldGenerator worldGen;
+    public static WorldGenerator Overworld;
+    public static WorldGenerator Seantopia;
     private Player player;
     private boolean firstLoad = true;
     private int turnCount = 0;
+    public static WorldGenerator ActiveWorld;
+    private ArrayList<Player> multiplayers;
 
     public GameState(Handler handler) {
         super(handler);
         gui = new GUI();
         gridPlacement = new Tiles(handler, 64, 36);
-        worldGen = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/OverWorld.txt");
+        Overworld = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Overworld.txt", "Overworld");
+        ActiveWorld = Overworld;
+        Seantopia = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Seantopia.txt", "Seantopia");
+        multiplayers = new ArrayList<>();
         uiInfo = new Text[]{
                 new Text("Health: ", gridPlacement.cords(1, 33), Text.mFont, false, Color.white, false),
                 new Text("Level: ", gridPlacement.cords(1, 34), Text.mFont, false, Color.white, false),
                 new Text("", gridPlacement.cords(1, 35), Text.mFont, false, Color.white, false),
                 new Text("AP Remaining: ", gridPlacement.cords(32, 33), Text.lFont, true, Color.white, false),
-                new Text("Space To End Turn; Right Click to Cancel Movement", gridPlacement.cords(32, 34), Text.sFont, true, Color.white, false),
-                new Text("Turn: " + 0, gridPlacement.cords(32, 35), Text.sFont, true, Color.white, false)
+                new Text("Enter To End Turn; Right Click to Cancel Movement", gridPlacement.cords(32, 34), Text.sFont, true, Color.white, false),
+                new Text("Turn: " + 0, gridPlacement.cords(32, 35), Text.sFont, true, Color.white, false),
+                new Text("Island: " + ActiveWorld.worldTitle, gridPlacement.cords(64, 34), Text.lFont, Color.white, false, true)
         };
         for (Text t : uiInfo) {
             gui.addText(t);
@@ -46,21 +53,64 @@ public class GameState extends State {
         if (firstLoad) {
             firstLoading();
         }
+        if (handler.multiplayer) {
+            multiplayerTick();
+        }
         player.tick();
         uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
-        worldGen.tick();
+        ActiveWorld.tick();
         if (GUI.gui != gui)
             GUI.gui = gui;
         gui.tick();
         debug();
-        if (handler.getKM().keyJustPressed(KeyEvent.VK_SPACE))
+        if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
             nextTurn();
+    }
+
+    public void multiplayerTick() {
+        sendMessages();
+        recieveMessages();
+    }
+
+    public void sendMessages() {
+        handler.sendMessage("GATHERPLAYERDATA");
+        //System.out.println(("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
+        //            + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle));
+    }
+
+    private String currentMessage = "";
+
+    public void recieveMessages() {
+        currentMessage = handler.recieveMessage();
+        if (currentMessage.startsWith("GATHERPLAYERDATA")) {
+            handler.sendMessage("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
+                    + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle);
+        }
+        if (currentMessage.startsWith("PLAYERDATA")) {
+            int ID = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("ID") + 2));
+            int x = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("X") + 1), currentMessage.indexOf("Y") - 1);
+            int y = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("Y") + 1), currentMessage.indexOf("COLOR") - 1);
+            Color color = colorConvertor(currentMessage.substring(currentMessage.indexOf("COLOR") + 8,currentMessage.indexOf("WORLD") - 1));
+            String worldName = currentMessage.substring(currentMessage.indexOf("WORLD") + 5,currentMessage.indexOf("ID") - 1);
+            System.out.println("ID " + ID);
+            System.out.println("X " + x);
+            System.out.println("Y " + y);
+            System.out.println("COLOR " + color);
+            System.out.println("WORLDNAME " + worldName);
+        }
+    }
+
+    public Color colorConvertor(String colorStart) {
+        int a = Integer.parseInt(colorStart.substring(0, 2));
+        int b = Integer.parseInt(colorStart.substring(5, 7));
+        int c = Integer.parseInt(colorStart.substring(10, 12));
+        return new Color(a, b, c);
     }
 
     //((CharacterSlots) handler.activePlayer).level;
 
     public void firstLoading() {
-        player = new Player(gridPlacement.cords(32, 21), ((CharacterSlots) handler.activePlayer).color, gridPlacement, handler,worldGen, handler.computerID);
+        player = new Player(gridPlacement.cords(32, 21), ((CharacterSlots) handler.activePlayer).color, gridPlacement, handler, handler.computerID);
         System.out.println("Player Created with ID: " + player.privateID);
         uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
         uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
@@ -76,15 +126,14 @@ public class GameState extends State {
         uiInfo[5].setText("Turn: " + turnCount);
         player.endTurn();
         player.AP = player.startAP;
+        uiInfo[6].setText("Island: " + ActiveWorld.worldTitle);
     }
 
     public void debug() {
         if (debug) {
-
-
-           // if (handler.getMM().isRightPressed()) {
-           //     System.out.println("X " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
-           // }
+            // if (handler.getMM().isRightPressed()) {
+            //     System.out.println("X " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
+            // }
         }
     }
 
@@ -92,7 +141,7 @@ public class GameState extends State {
     public void render(Graphics g) {
         g.setColor(Color.darkGray);
         g.fillRect(0, gridPlacement.cords(0, 32)[1], handler.getWidth(), handler.getHeight());
-        worldGen.render(g);
+        ActiveWorld.render(g);
         gui.render(g);
         gridPlacement.render(g);
         if (player != null)

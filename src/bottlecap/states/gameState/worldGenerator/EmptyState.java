@@ -24,6 +24,8 @@ public class EmptyState extends State {
 
     @Override
     public void tick() {
+        worldGen.debug = true;
+        WorldTiles.debug = true;
         if(handler.getKM().keyJustPressed(KeyEvent.VK_R)){
             for(WorldTiles wt : worldGen.worldTiles){
                 wt.tileType = WorldTiles.TileType.WATER;
@@ -36,7 +38,7 @@ public class EmptyState extends State {
     public void render(Graphics g) {
         g.fillRect(0, gridPlacement.cords(0, 32)[1], handler.getWidth(), handler.getHeight());
         Text text = new Text("Current TileType: " + WorldTiles.activeMapPainter,gridPlacement.cords(32,33),Text.lFont,true,Color.lightGray);
-        Text text2 = new Text("0 - Water, 1 - Grass, 2 - Forrest, 3 - Dessert, 4 - Bridge, 5 - DESSERTTOWN, 6- GRASSTOWN",gridPlacement.cords(32,34),Text.sFont,true,Color.lightGray);
+        Text text2 = new Text("0 - Water, 1 - Grass, 2 - Forrest, 3 - Dessert, 4 - Bridge, 5 - DESSERTTOWN, 6- GRASSTOWN, 7 - DOCK",gridPlacement.cords(32,34),Text.sFont,true,Color.lightGray);
         worldGen.render(g);
         text.render(g);
         text2.render(g);

@@ -18,7 +18,8 @@ import java.util.stream.Stream;
 
 public class WorldGenerator {
 
-    private boolean debug = false;
+    public String worldTitle;
+    public boolean debug = false;
     private Handler handler;
     private Tiles tiles;
     private String worldPath;
@@ -26,7 +27,8 @@ public class WorldGenerator {
     public ArrayList<WorldTiles> worldTiles;
     public int[][] tileGen = new int[32][64];
 
-    public WorldGenerator(Handler handler, Tiles tiles, String worldPath) {
+    public WorldGenerator(Handler handler, Tiles tiles, String worldPath, String worldTitle) {
+        this.worldTitle = worldTitle;
         this.worldPath = worldPath;
         this.handler = handler;
         this.tiles = tiles;
@@ -35,9 +37,8 @@ public class WorldGenerator {
         turnStringArrayToChar();
         turnCharArrayIntoTiles();
     }
+
     public WorldGenerator(Handler handler, Tiles tiles) {
-        this.debug = true;
-        WorldTiles.debug = true;
         this.handler = handler;
         this.tiles = tiles;
         worldPath = "src/bottlecap/assets/worlds/WaterTemplate.txt";
@@ -48,9 +49,9 @@ public class WorldGenerator {
     }
 
 
-    public Enum returnTileType(int cords[]){
+    public Enum returnTileType(int cords[]) {
         for (WorldTiles wt : worldTiles) {
-            if(wt.bounds.contains(cords[0],cords[1])){
+            if (wt.bounds.contains(cords[0], cords[1])) {
                 return wt.tileType;
             }
         }
@@ -87,6 +88,9 @@ public class WorldGenerator {
                     case GRASSTOWN:
                         temp += 6;
                         break;
+                    case DOCK:
+                        temp += 7;
+                        break;
                 }
                 i++;
                 if (i == 64) {
@@ -101,7 +105,7 @@ public class WorldGenerator {
     private void saveWorldAsFile(String message) {
 
         try {
-            FileWriter fileWriter = new FileWriter("src/bottlecap/assets/worlds/SavedWorld.txt",true);
+            FileWriter fileWriter = new FileWriter("src/bottlecap/assets/worlds/SavedWorld.txt", true);
 
             // Always wrap FileWriter in BufferedWriter.
             BufferedWriter bufferedWriter =

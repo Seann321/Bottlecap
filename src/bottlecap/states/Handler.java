@@ -16,6 +16,7 @@ import bottlecap.states.voidstate.tiles.TileEntities;
 
 public class Handler {
 
+    public boolean multiplayer = true;
     public TileEntities activePlayer = null;
     public int computerID = 0;
     private Bottlecap bottlecap;

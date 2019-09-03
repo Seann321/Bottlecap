@@ -11,7 +11,7 @@ public class Text {
     public static Font mFont;
     public static Font lFont;
     public FontMetrics fm;
-    public Boolean center;
+    public Boolean center = false, right = false;
     public Color color;
     public Color originalColor;
     public Rectangle bounds;
@@ -36,6 +36,18 @@ public class Text {
     public Text(String message, int cords[], Font font, Boolean center, Color color, boolean clickable) {
         this.font = font;
         this.center = center;
+        x = cords[0];
+        y = cords[1];
+        this.message = message;
+        this.color = color;
+        originalColor = color;
+        bounds = new Rectangle(0, 0, 0, 0);
+        this.clickable = clickable;
+    }
+
+    public Text(String message, int cords[], Font font, Color color, boolean clickable, Boolean right) {
+        this.font = font;
+        this.right = right;
         x = cords[0];
         y = cords[1];
         this.message = message;
@@ -82,10 +94,10 @@ public class Text {
 
     public void render(Graphics g) {
         if (fm == null) fm = g.getFontMetrics(font);
-        drawString(g, message, x, y, center, color, font);
+        drawString(g, message, x, y, color, font);
     }
 
-    public void drawString(Graphics g, String text, int xPos, int yPos, boolean center, Color c, Font font) {
+    public void drawString(Graphics g, String text, int xPos, int yPos, Color c, Font font) {
         g.setColor(c);
         g.setFont(font);
         int x = xPos;
@@ -94,6 +106,10 @@ public class Text {
         if (center) {
             x = xPos - fm.stringWidth(text) / 2;
             y = (yPos - fm.getHeight() / 2) + fm.getAscent();
+        }
+        if (right) {
+            x = xPos - fm.stringWidth(text);
+            y = (yPos - fm.getHeight()) + fm.getAscent();
         }
         bounds = new Rectangle(x, y - (fm.getHeight() - 5), fm.stringWidth(text), fm.getHeight());
 

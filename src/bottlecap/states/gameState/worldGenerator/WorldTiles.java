@@ -11,7 +11,7 @@ import java.util.Random;
 public class WorldTiles {
 
     public static enum TileType {
-        GRASS, WATER, FOREST, DESSERT, BRIDGE, DESSERTTOWN, GRASSTOWN
+        GRASS, WATER, FOREST, DESSERT, BRIDGE, DESSERTTOWN, GRASSTOWN, DOCK
     }
 
     Tiles gridPlacement;
@@ -58,18 +58,21 @@ public class WorldTiles {
             case 6:
                 tileType = TileType.GRASSTOWN;
                 break;
+            case 7:
+                tileType = TileType.DOCK;
+                break;
         }
     }
 
     public static TileType activeMapPainter = TileType.WATER;
 
     public void tick() {
-        if(debug){
+        if (debug) {
             paintMap();
         }
     }
 
-    public void paintMap(){
+    public void paintMap() {
         if (handler.getKM().keyJustPressed(KeyEvent.VK_0)) {
             activeMapPainter = TileType.WATER;
         } else if (handler.getKM().keyJustPressed(KeyEvent.VK_1)) {
@@ -84,6 +87,8 @@ public class WorldTiles {
             activeMapPainter = TileType.DESSERTTOWN;
         } else if (handler.getKM().keyJustPressed(KeyEvent.VK_6)) {
             activeMapPainter = TileType.GRASSTOWN;
+        } else if (handler.getKM().keyJustPressed(KeyEvent.VK_7)) {
+            activeMapPainter = TileType.DOCK;
         }
         if (handler.getMM().isLeftPressed()) {
             if (bounds.contains(handler.getMM().getMouseX(), handler.getMM().getMouseY())) {
@@ -114,6 +119,9 @@ public class WorldTiles {
                 break;
             case GRASSTOWN:
                 g.drawImage(Images.grassTown, x, y, (int) tiles.xDiv, (int) tiles.yDiv, null);
+                break;
+            case DOCK:
+                g.drawImage(Images.dock, x, y, (int) tiles.xDiv, (int) tiles.yDiv, null);
                 break;
 
         }

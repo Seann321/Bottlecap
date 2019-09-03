@@ -6,7 +6,7 @@ public class Images {
 
     public static final int WIDTH = 8, HEIGHT = 8;
 
-    public static BufferedImage water, forest,bridge,dessertTown,grassTown;
+    public static BufferedImage water, forest,bridge,dessertTown,grassTown, dock;
     public static BufferedImage[] grass = new BufferedImage[3];
     public static BufferedImage[] dessert = new BufferedImage[3];
 
@@ -25,6 +25,7 @@ public class Images {
         bridge = sheet.crop(WIDTH*4, 0, WIDTH, HEIGHT);
         dessertTown = sheet.crop(WIDTH*5, 0, WIDTH, HEIGHT);
         grassTown = sheet.crop(WIDTH*6, 0, WIDTH, HEIGHT);
+        dock = sheet.crop(WIDTH*7, 0, WIDTH, HEIGHT);
     }
 
 }

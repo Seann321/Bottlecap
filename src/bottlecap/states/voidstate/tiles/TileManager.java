@@ -44,14 +44,15 @@ public class TileManager {
         }
         handler.computerID = playerID;
         if (debug) {
-            //startMutliplayer("192.168.0.15");
-            handler.setCurrentState(handler.creationState);
+            startMutliplayer("192.168.0.15");
         }
-
     }
 
 
     public void tick() {
+        if(!debug){
+        handler.multiplayer = multiplayer;
+        }
         if (debug) {
             if (handler.getMM().isRightPressed()) {
                 System.out.println("X " + tiles.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + tiles.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
