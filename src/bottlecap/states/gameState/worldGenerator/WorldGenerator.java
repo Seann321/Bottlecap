@@ -1,5 +1,6 @@
 package bottlecap.states.gameState.worldGenerator;
 
+import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.Tiles;
 
@@ -34,6 +35,18 @@ public class WorldGenerator {
         turnStringArrayToChar();
         turnCharArrayIntoTiles();
     }
+    public WorldGenerator(Handler handler, Tiles tiles) {
+        this.debug = true;
+        WorldTiles.debug = true;
+        this.handler = handler;
+        this.tiles = tiles;
+        worldPath = "src/bottlecap/assets/worlds/WaterTemplate.txt";
+        worldTiles = new ArrayList<>();
+        initReadFromFile();
+        turnStringArrayToChar();
+        turnCharArrayIntoTiles();
+    }
+
 
     public Enum returnTileType(int cords[]){
         for (WorldTiles wt : worldTiles) {
@@ -88,7 +101,7 @@ public class WorldGenerator {
     private void saveWorldAsFile(String message) {
 
         try {
-            FileWriter fileWriter = new FileWriter("src/bottlecap/assets/worlds/SavedWorld.txt", true);
+            FileWriter fileWriter = new FileWriter("src/bottlecap/assets/worlds/SavedWorld.txt",true);
 
             // Always wrap FileWriter in BufferedWriter.
             BufferedWriter bufferedWriter =

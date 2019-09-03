@@ -33,7 +33,7 @@ public class GameState extends State {
                 new Text("Level: ", gridPlacement.cords(1, 34), Text.mFont, false, Color.white, false),
                 new Text("", gridPlacement.cords(1, 35), Text.mFont, false, Color.white, false),
                 new Text("AP Remaining: ", gridPlacement.cords(32, 33), Text.lFont, true, Color.white, false),
-                new Text("Enter To End Turn; Right Click to Cancel Movement", gridPlacement.cords(32, 34), Text.sFont, true, Color.white, false),
+                new Text("Space To End Turn; Right Click to Cancel Movement", gridPlacement.cords(32, 34), Text.sFont, true, Color.white, false),
                 new Text("Turn: " + 0, gridPlacement.cords(32, 35), Text.sFont, true, Color.white, false)
         };
         for (Text t : uiInfo) {

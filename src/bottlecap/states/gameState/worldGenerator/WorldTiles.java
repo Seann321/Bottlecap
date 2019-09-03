@@ -21,6 +21,7 @@ public class WorldTiles {
     Tiles tiles;
     public Rectangle bounds;
     private Handler handler;
+    public static boolean debug = false;
 
     public WorldTiles(Tiles tiles, int[] cords, int z, Handler handler) {
         this.tiles = tiles;
@@ -60,10 +61,10 @@ public class WorldTiles {
         }
     }
 
-    private TileType activeMapPainter = TileType.WATER;
+    public static TileType activeMapPainter = TileType.WATER;
 
     public void tick() {
-        if(false){
+        if(debug){
             paintMap();
         }
     }

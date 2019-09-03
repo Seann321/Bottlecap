@@ -82,7 +82,7 @@ public class Player {
 
     public void afterPress() {
         movementPoints++;
-        System.out.println(wg.returnTileType(new int[]{bounds.x, bounds.y}));
+        //System.out.println(wg.returnTileType(new int[]{bounds.x, bounds.y}));
     }
 
     public void render(Graphics g) {
