@@ -64,6 +64,10 @@ public class WorldTiles {
         }
     }
 
+    public int[] getTileCords(){
+        return tiles.tilePOS(x,y);
+    }
+
     public static TileType activeMapPainter = TileType.WATER;
 
     public void tick() {

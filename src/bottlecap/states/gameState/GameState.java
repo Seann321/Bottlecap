@@ -8,7 +8,6 @@ import bottlecap.states.Tiles;
 import bottlecap.states.gameState.worldGenerator.WorldGenerator;
 import bottlecap.states.voidstate.tiles.CharacterSlots;
 
-import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -95,7 +94,7 @@ public class GameState extends State {
     }
 
     public void sendMessages() {
-        handler.sendMessage("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
+        handler.sendMessage("PLAYERDATA" + "X" + player.getTileUnderPlayer()[0] + "Y" + player.getTileUnderPlayer()[1]
                 + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle);
     }
 
@@ -123,7 +122,7 @@ public class GameState extends State {
                     p.bounds.y = gridPlacement.cords(x, y)[1];
                     p.currentWorld = worldName;
                 } else {
-                    newMultiplayers.add(new Player(gridPlacement.tilePOS(x + 2, y), color, gridPlacement, handler, ID));
+                    newMultiplayers.add(new Player(gridPlacement.tilePOS(x, y), color, gridPlacement, handler, ID));
                     System.out.println("New Player made with ID " + ID);
                 }
             }

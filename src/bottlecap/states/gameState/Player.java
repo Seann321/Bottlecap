@@ -27,12 +27,13 @@ public class Player {
         wg = GameState.ActiveWorld;
         this.handler = handler;
         this.privateID = privateID;
-        bounds = new Rectangle(cords[0], cords[1], 10, 15);
+        bounds = new Rectangle(cords[0], cords[1], (int)(tiles.xDiv/3),  (int)(tiles.yDiv/2));
         cancelMove = new int[]{bounds.x, bounds.y};
     }
 
-    public int[] gatherPlayerTileCords(){
-        return tiles.tilePOS(bounds.x,bounds.y);
+    public int[] getTileUnderPlayer(){
+        WorldTiles temp = wg.returnTileUnderCords(new int[]{bounds.x, bounds.y + (int) tiles.yDiv});
+        return temp.getTileCords();
     }
 
     public void tick() {
