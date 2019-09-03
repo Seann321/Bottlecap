@@ -32,7 +32,10 @@ public class Player {
     }
 
     public int[] getTileUnderPlayer(){
-        WorldTiles temp = wg.returnTileUnderCords(new int[]{bounds.x, bounds.y + (int) tiles.yDiv});
+        WorldTiles temp = wg.returnTileUnderCords(new int[]{bounds.x, bounds.y});
+        if(temp == null){
+            System.out.println(true);
+        }
         return temp.getTileCords();
     }
 
