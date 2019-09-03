@@ -1,5 +1,6 @@
 package bottlecap.states.squareState;
 
+import bottlecap.assets.GUI;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 
@@ -12,6 +13,7 @@ public class SquareState extends State {
 
     public SquareState(Handler handler) {
         super(handler);
+        gui = new GUI();
         squareManager = new SquareManager(handler);
     }
 

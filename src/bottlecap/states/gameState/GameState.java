@@ -19,7 +19,6 @@ public class GameState extends State {
     private boolean debug = true;
     private Tiles tiles;
     private Tiles gridPlacement;
-    private GUI gui;
     private WorldGenerator worldGen;
 
     public GameState(Handler handler) {

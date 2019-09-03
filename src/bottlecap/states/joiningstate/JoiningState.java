@@ -1,5 +1,6 @@
 package bottlecap.states.joiningstate;
 
+import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
@@ -18,6 +19,7 @@ public class JoiningState extends State {
 
     public JoiningState(Handler handler) {
         super(handler);
+        gui = new GUI();
         tiles = new Tiles(handler);
         textStrings.add(new Text("IP Address:",(tiles.cords(50,15)),Text.lFont,true,Color.LIGHT_GRAY));
         ipMessage = new Text("", tiles.cords(50, 25),Text.mFont,true,Color.LIGHT_GRAY);

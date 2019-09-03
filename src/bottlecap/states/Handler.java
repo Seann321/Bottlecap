@@ -37,10 +37,10 @@ public class Handler {
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         client = new Client(this);
+        creationState = new CreationState(this);
         squareState = new SquareState(this);
         voidState = new VoidState(this);
         joiningState = new JoiningState(this);
-        creationState = new CreationState(this);
         gameState = new GameState(this);
         setCurrentState(voidState);
 
@@ -86,7 +86,10 @@ public class Handler {
     }
 
     public void setCurrentState(State x) {
+
         State.CurrentState = x;
+        GUI.gui=x.getGUI();
+
     }
 
 }

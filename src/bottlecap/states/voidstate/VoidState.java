@@ -1,5 +1,6 @@
 package bottlecap.states.voidstate;
 
+import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
@@ -27,6 +28,7 @@ public class VoidState extends State {
 
     public VoidState(Handler handler) {
         super(handler);
+        gui = new GUI();
         tiles = new Tiles(handler);
         tm = new TileManager(handler, tiles);
         int centerOfDoorS = 0;

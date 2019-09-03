@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class GUI {
 
     public ArrayList<Text> text = new ArrayList<>();
+    public ArrayList<Text> newText= new ArrayList<>();
 
     public static GUI gui;
 
@@ -18,6 +19,8 @@ public class GUI {
     }
 
     public void tick() {
+        text.clear();
+        text.addAll(newText);
         for (Text t : text) {
             if(t.active)
             t.tick();
@@ -37,11 +40,11 @@ public class GUI {
     }
 
     public void addText(Text e) {
-        text.add(e);
+        newText.add(e);
     }
 
     public void removeText(Text e) {
-        text.remove(e);
+        newText.remove(e);
     }
 
 }
