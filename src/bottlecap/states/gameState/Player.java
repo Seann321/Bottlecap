@@ -10,12 +10,13 @@ import java.awt.event.KeyEvent;
 
 public class Player {
 
+    public String currentWorld;
     public int AP = 3;
     public int startAP = 3;
     public Color color;
     private Handler handler;
     public int privateID;
-    private Rectangle bounds;
+    public Rectangle bounds;
     private Tiles tiles;
     int[] cancelMove;
     WorldGenerator wg;

@@ -25,6 +25,7 @@ public class GameState extends State {
     private int turnCount = 0;
     public static WorldGenerator ActiveWorld;
     private ArrayList<Player> multiplayers;
+    private ArrayList<Player> newMultiplayers;
 
     public GameState(Handler handler) {
         super(handler);
@@ -34,6 +35,7 @@ public class GameState extends State {
         ActiveWorld = Overworld;
         Seantopia = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Seantopia.txt", "Seantopia");
         multiplayers = new ArrayList<>();
+        newMultiplayers = new ArrayList<>();
         uiInfo = new Text[]{
                 new Text("Health: ", gridPlacement.cords(1, 33), Text.mFont, false, Color.white, false),
                 new Text("Level: ", gridPlacement.cords(1, 34), Text.mFont, false, Color.white, false),
@@ -63,11 +65,16 @@ public class GameState extends State {
         debug();
         if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
             nextTurn();
+        if (handler.multiplayer) {
+            multiplayers.clear();
+            multiplayers.addAll(newMultiplayers);
+            handler.client.tick();
+            recieveMessages();
+        }
     }
 
     public void multiplayerTick() {
         sendMessages();
-        recieveMessages();
     }
 
     public void nextTurn() {
@@ -85,31 +92,38 @@ public class GameState extends State {
     }
 
     public void sendMessages() {
-        handler.sendMessage("GATHERPLAYERDATA" + turnCount);
-        //System.out.println(("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
-        //            + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle));
+        handler.sendMessage("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
+                + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle);
     }
 
     private String currentMessage = "";
 
     public void recieveMessages() {
         currentMessage = handler.recieveMessage();
-        System.out.println(currentMessage);
-        if (currentMessage.startsWith("GATHERPLAYERDATA")) {
-            handler.sendMessage("PLAYERDATA" + "X" + player.gatherPlayerTileCords()[0] + "Y" + player.gatherPlayerTileCords()[1]
-                    + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle);
-        }
         if (currentMessage.startsWith("PLAYERDATA")) {
+            currentMessage = currentMessage.substring(currentMessage.indexOf("PLAYERDATA") + 10);
             int ID = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("ID") + 2));
-            int x = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("X") + 1), currentMessage.indexOf("Y") - 1);
-            int y = Integer.parseInt(currentMessage.substring(currentMessage.indexOf("Y") + 1), currentMessage.indexOf("COLOR") - 1);
-            Color color = colorConvertor(currentMessage.substring(currentMessage.indexOf("COLOR") + 8,currentMessage.indexOf("WORLD") - 1));
-            String worldName = currentMessage.substring(currentMessage.indexOf("WORLD") + 5,currentMessage.indexOf("ID") - 1);
-            System.out.println("ID " + ID);
-            System.out.println("X " + x);
-            System.out.println("Y " + y);
-            System.out.println("COLOR " + color);
-            System.out.println("WORLDNAME " + worldName);
+            int x = Integer.parseInt(currentMessage.substring((currentMessage.indexOf("X") + 1), currentMessage.indexOf("Y")));
+            int y = Integer.parseInt(currentMessage.substring((currentMessage.indexOf("Y") + 1), currentMessage.indexOf("COLOR")));
+            Color color = colorConvertor(currentMessage.substring(currentMessage.indexOf("COLOR") + 22, currentMessage.indexOf("WORLD") - 1));
+            String worldName = currentMessage.substring(currentMessage.indexOf("WORLD") + 5, currentMessage.indexOf("ID"));
+            if (multiplayers.size() == 0) {
+                newMultiplayers.add(new Player(gridPlacement.cords(x, y), color, gridPlacement, handler, ID));
+                System.out.println("New Player made with ID " + ID);
+            }
+            multiplayers.clear();
+            multiplayers.addAll(newMultiplayers);
+            for (Player p : multiplayers) {
+                if (p.privateID == ID) {
+                    p.color = color;
+                    p.bounds.x = gridPlacement.cords(x, y)[0];
+                    p.bounds.y = gridPlacement.cords(x, y)[1];
+                    p.currentWorld = worldName;
+                } else {
+                    newMultiplayers.add(new Player(gridPlacement.tilePOS(x, y), color, gridPlacement, handler, ID));
+                    System.out.println("New Player made with ID " + ID);
+                }
+            }
         }
     }
 
@@ -149,6 +163,10 @@ public class GameState extends State {
         gridPlacement.render(g);
         if (player != null)
             player.render(g);
-
+        for (Player p : multiplayers) {
+            if (p.currentWorld.equals(ActiveWorld.worldTitle)) {
+                p.render(g);
+            }
+        }
     }
 }
