@@ -86,7 +86,7 @@ public class Client {
         if(out == null) return;
         if(message.equals(lastMessage)) return;
         out.println(message);
-        System.out.println("Info Sent " + message);
+        //System.out.println("Info Sent " + message);
         lastMessage = message;
         try {
             checkForMessage();

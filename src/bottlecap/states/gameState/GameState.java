@@ -62,7 +62,10 @@ public class GameState extends State {
         if (GUI.gui != gui)
             GUI.gui = gui;
         gui.tick();
-        debug();
+        for (Player p : multiplayers) {
+            //System.out.println("Other X " + gridPlacement.tilePOS(p.bounds.x, p.bounds.y)[0] + " Y " + gridPlacement.tilePOS(p.bounds.x, p.bounds.y)[1]);
+            //System.out.println("Player X " +gridPlacement.tilePOS(player.bounds.x, player.bounds.y)[0]  + " Y " + gridPlacement.tilePOS(player.bounds.x, player.bounds.y)[1]);
+        }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
             nextTurn();
         if (handler.multiplayer) {
@@ -120,7 +123,7 @@ public class GameState extends State {
                     p.bounds.y = gridPlacement.cords(x, y)[1];
                     p.currentWorld = worldName;
                 } else {
-                    newMultiplayers.add(new Player(gridPlacement.tilePOS(x, y), color, gridPlacement, handler, ID));
+                    newMultiplayers.add(new Player(gridPlacement.tilePOS(x + 2, y), color, gridPlacement, handler, ID));
                     System.out.println("New Player made with ID " + ID);
                 }
             }
@@ -143,15 +146,6 @@ public class GameState extends State {
         uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
         uiInfo[2].setText("" + ((CharacterSlots) handler.activePlayer).nickName);
         firstLoad = false;
-    }
-
-
-    public void debug() {
-        if (debug) {
-            // if (handler.getMM().isRightPressed()) {
-            //     System.out.println("X " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " Y " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
-            // }
-        }
     }
 
     @Override
