@@ -42,7 +42,7 @@ public class Tiles {
 
     public int[] cords(int x, int y) {
         int[] cords = new int[2];
-        cords[0] = (int) ((x * xDiv) - xDiv);
+        cords[0] = (int) ((x * xDiv));
         cords[1] = (int) ((y * yDiv));
         return cords;
     }
@@ -50,7 +50,7 @@ public class Tiles {
     public int[] tilePOS(int x, int y) {
         int[] cords = new int[2];
 
-        cords[0] = (int) ((x / xDiv) - xDiv);
+        cords[0] = (int) ((x / xDiv));
         cords[1] = (int) (y / yDiv);
 
         return cords;
@@ -58,7 +58,7 @@ public class Tiles {
 
     public int[] cords(int[] x) {
         int[] cords = new int[2];
-        cords[0] = (int) ((x[0] * xDiv) - xDiv);
+        cords[0] = (int) ((x[0] * xDiv));
         cords[1] = (int) ((x[1] * yDiv));
         return cords;
     }
@@ -66,7 +66,7 @@ public class Tiles {
     public int[] tilePOS(int[] x) {
         int[] cords = new int[2];
 
-        cords[0] = (int) ((x[0] / xDiv) - xDiv);
+        cords[0] = (int) ((x[0] / xDiv));
         cords[1] = (int) (x[1] / yDiv);
 
         return cords;

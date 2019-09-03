@@ -138,9 +138,9 @@ public class WorldGenerator {
     private void turnCharArrayIntoTiles() {
         for (int i = 0; i < 32; i++) {
             for (int ii = 0; ii < 64; ii++) {
-                worldTiles.add(new WorldTiles(tiles, tiles.cords(ii + 1, i), tileGen[i][ii], handler));
+                worldTiles.add(new WorldTiles(tiles, tiles.cords(ii, i), tileGen[i][ii], handler));
                 //System.out.println(tileGen[i][ii]);
-                //System.out.println("X " + tiles.cords(i,ii)[0] + " Y " + tiles.cords(i,ii)[1] + " CODE " + tileGen[i][ii]);
+                //System.out.println("X " + tiles.cords(i,ii)[0] + " Y " + tiles.cords(i,ii)[1]);
             }
         }
     }
