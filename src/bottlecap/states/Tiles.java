@@ -56,6 +56,22 @@ public class Tiles {
         return cords;
     }
 
+    public int[] cords(int[] x){
+        int[] cords = new int[2];
+        cords[0] = (int)((x[0] * xDiv) - xDiv);
+        cords[1] = (int)((x[1] * yDiv));
+        return cords;
+    }
+
+    public int[] tilePOS(int[] x){
+        int[] cords = new int[2];
+
+        cords[0] = (int)(x[0]/xDiv);
+        cords[1] = (int)(x[1]/yDiv);
+
+        return cords;
+    }
+
     public void tick() {
     }
 
@@ -66,7 +82,7 @@ public class Tiles {
     public void render(Graphics g) {
         for (Rectangle x : tiles) {
             g.setColor(Color.darkGray);
-            //g.drawRect(x.x,x.y,x.width,x.height);
+            g.drawRect(x.x,x.y,x.width,x.height);
         }
     }
 

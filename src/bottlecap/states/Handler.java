@@ -37,8 +37,8 @@ public class Handler {
         mouseManager = new MouseManager(this);
         keyManager = new KeyManager();
         client = new Client(this);
-        creationState = new CreationState(this);
         squareState = new SquareState(this);
+        creationState = new CreationState(this);
         voidState = new VoidState(this);
         joiningState = new JoiningState(this);
         gameState = new GameState(this);
