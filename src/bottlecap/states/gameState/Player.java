@@ -27,7 +27,7 @@ public class Player {
         wg = GameState.ActiveWorld;
         this.handler = handler;
         this.privateID = privateID;
-        bounds = new Rectangle(cords[0], cords[1], (int)(tiles.xDiv/3),  (int)(tiles.yDiv/2));
+        bounds = new Rectangle(cords[0], cords[1], Tiles.XDiv / 3, Tiles.YDiv / 2);
         cancelMove = new int[]{bounds.x, bounds.y};
     }
 
@@ -79,26 +79,26 @@ public class Player {
             return;
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_W)) {
-            if (bounds.y - tiles.yDiv >= 0 && (wg.returnTileType(new int[]{bounds.x, bounds.y - (int) tiles.yDiv})) != (WorldTiles.TileType.WATER)) {
-                bounds.y -= tiles.yDiv;
+            if (bounds.y - Tiles.YDiv >= 0 && (wg.returnTileType(new int[]{bounds.x, bounds.y - Tiles.YDiv})) != (WorldTiles.TileType.WATER)) {
+                bounds.y -= Tiles.YDiv;
                 afterPress();
             }
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_S)) {
-            if (bounds.y + tiles.yDiv <= tiles.cords(0, 31)[1] && (wg.returnTileType(new int[]{bounds.x, bounds.y + (int) tiles.yDiv})) != (WorldTiles.TileType.WATER)) {
-                bounds.y += tiles.yDiv;
+            if (bounds.y + Tiles.YDiv <= tiles.cords(0, 31)[1] && (wg.returnTileType(new int[]{bounds.x, bounds.y + Tiles.YDiv})) != (WorldTiles.TileType.WATER)) {
+                bounds.y += Tiles.YDiv;
                 afterPress();
             }
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_A)) {
-            if (bounds.x - tiles.xDiv >= 0 && (wg.returnTileType(new int[]{bounds.x - (int) tiles.xDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
-                bounds.x -= tiles.xDiv;
+            if (bounds.x - Tiles.XDiv >= 0 && (wg.returnTileType(new int[]{bounds.x - Tiles.XDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
+                bounds.x -= Tiles.XDiv;
                 afterPress();
             }
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_D)) {
-            if (bounds.x <= tiles.cords(63, 0)[0] && (wg.returnTileType(new int[]{bounds.x + (int) tiles.xDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
-                bounds.x += tiles.xDiv;
+            if (bounds.x <= tiles.cords(63, 0)[0] && (wg.returnTileType(new int[]{bounds.x + Tiles.XDiv, bounds.y})) != (WorldTiles.TileType.WATER)) {
+                bounds.x += Tiles.XDiv;
                 afterPress();
             }
         }
@@ -111,7 +111,7 @@ public class Player {
 
     public void render(Graphics g) {
         g.setColor(color);
-        g.fillRect(bounds.x + (int) (tiles.xDiv / 2), bounds.y + (int) (tiles.yDiv / 2), bounds.width, bounds.height);
+        g.fillRect(bounds.x + (Tiles.XDiv / 2), bounds.y + (Tiles.YDiv / 2), bounds.width, bounds.height);
 
     }
 }

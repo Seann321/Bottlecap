@@ -10,19 +10,26 @@ import java.util.Random;
 
 public class WorldTiles {
 
+    public static boolean debug = false;
+    public int x, y, z;
+    public TileType tileType;
+    public Rectangle bounds;
+    Tiles tiles;
+    private int texture;
+    private Handler handler;
+
     public WorldTiles(Tiles tiles, int[] cords, int z, Handler handler) {
         this.tiles = tiles;
         this.handler = handler;
         x = cords[0];
         y = cords[1];
         this.z = z;
-        bounds = new Rectangle(x, y, tiles.xDiv, tiles.yDiv);
+        bounds = new Rectangle(x, y, Tiles.XDiv, Tiles.YDiv);
         if (x < 0 || y < 0) {
             System.out.println("Negative Tile at X " + x + " Y " + y);
         }
         Random tempRandom = new Random();
-        int temp = tempRandom.nextInt(3);
-        texture = temp;
+        texture = tempRandom.nextInt(3);
         switch (z) {
             case 0:
                 tileType = TileType.GRASS;
@@ -51,47 +58,43 @@ public class WorldTiles {
         }
     }
 
-    Tiles gridPlacement;
-    public int x, y, z;
-    private int texture = -1;
-    public TileType tileType;
-    Tiles tiles;
-    public Rectangle bounds;
-    private Handler handler;
-    public static boolean debug = false;
+    public void render(Graphics g) {
+        switch (tileType) {
+            case WATER:
+                g.drawImage(Images.water, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case GRASS:
+                g.drawImage(Images.grass[texture], x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case FOREST:
+                g.drawImage(Images.forest, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case DESSERT:
+                g.drawImage(Images.dessert[texture], x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case BRIDGE:
+                g.drawImage(Images.bridge, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case DESSERTTOWN:
+                g.drawImage(Images.dessertTown, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case GRASSTOWN:
+                g.drawImage(Images.grassTown, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+            case DOCK:
+                g.drawImage(Images.dock, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                break;
+
+        }
+    }
+
 
     public int[] getTileCords() {
         return tiles.tilePOS(x, y);
     }
 
-    public void render(Graphics g) {
-        switch (tileType) {
-            case WATER:
-                g.drawImage(Images.water, x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case GRASS:
-                g.drawImage(Images.grass[texture], x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case FOREST:
-                g.drawImage(Images.forest, x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case DESSERT:
-                g.drawImage(Images.dessert[texture], x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case BRIDGE:
-                g.drawImage(Images.bridge, x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case DESSERTTOWN:
-                g.drawImage(Images.dessertTown, x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case GRASSTOWN:
-                g.drawImage(Images.grassTown, x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-            case DOCK:
-                g.drawImage(Images.dock, x, y, tiles.xDiv, tiles.yDiv, null);
-                break;
-
-        }
+    public enum TileType {
+        GRASS, WATER, FOREST, DESSERT, BRIDGE, DESSERTTOWN, GRASSTOWN, DOCK
     }
 
     public static TileType activeMapPainter = TileType.WATER;
@@ -127,7 +130,4 @@ public class WorldTiles {
         }
     }
 
-    public enum TileType {
-        GRASS, WATER, FOREST, DESSERT, BRIDGE, DESSERTTOWN, GRASSTOWN, DOCK
-    }
 }

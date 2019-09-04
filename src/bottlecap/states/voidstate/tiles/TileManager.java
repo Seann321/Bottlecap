@@ -30,8 +30,8 @@ public class TileManager {
     public TileManager(Handler handler, Tiles tiles) {
         this.handler = handler;
         this.tiles = tiles;
-        playerStartingPOS = new Rectangle((int)((tiles.cords(50, 85)[0]) - tiles.xDiv / 2), tiles.cords(50, 85)[1], 20, 30);
-        truePlayerStartingPOS = new Rectangle((int)((tiles.cords(50, 85)[0]) - tiles.xDiv / 2), tiles.cords(50, 85)[1], 20, 30);
+        playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - Tiles.XDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        truePlayerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - Tiles.XDiv / 2, tiles.cords(50, 85)[1], 20, 30);
         newTileEntities.add(new Player(playerStartingPOS, handler));
         createCandleWalkway();
         newTileEntities.add(new Candle(tiles.cords(50, 10), true, handler));
@@ -50,8 +50,8 @@ public class TileManager {
 
 
     public void tick() {
-        if(!debug){
-        handler.multiplayer = multiplayer;
+        if (!debug) {
+            handler.multiplayer = multiplayer;
         }
         if (debug) {
             if (handler.getMM().isRightPressed()) {
@@ -103,7 +103,13 @@ public class TileManager {
     }
 
     public void startSinglePlayer() {
-        handler.setCurrentState(handler.creationState);
+        if (handler.activePlayer instanceof CharacterSlots) {
+            if (((CharacterSlots) handler.activePlayer).level > 0) {
+                handler.setCurrentState(handler.gameState);
+            } else {
+                handler.setCurrentState(handler.creationState);
+            }
+        }
     }
 
     private void startMutliplayer() {

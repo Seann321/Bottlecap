@@ -5,6 +5,7 @@ import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
+import bottlecap.states.gameState.towns.Towns;
 import bottlecap.states.gameState.worldGenerator.WorldGenerator;
 import bottlecap.states.voidstate.tiles.CharacterSlots;
 
@@ -25,6 +26,7 @@ public class GameState extends State {
     public static WorldGenerator ActiveWorld;
     private ArrayList<Player> multiplayers;
     private ArrayList<Player> newMultiplayers;
+    Towns towns;
 
     public GameState(Handler handler) {
         super(handler);
@@ -35,6 +37,7 @@ public class GameState extends State {
         Seantopia = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Seantopia.txt", "Seantopia");
         multiplayers = new ArrayList<>();
         newMultiplayers = new ArrayList<>();
+        towns = new Towns(handler);
         uiInfo = new Text[]{
                 new Text("Health: ", gridPlacement.cords(1, 33), Text.mFont, false, Color.white, false),
                 new Text("Level: ", gridPlacement.cords(1, 34), Text.mFont, false, Color.white, false),
@@ -54,11 +57,9 @@ public class GameState extends State {
         if (firstLoad) {
             firstLoading();
         }
-
-        if(handler.getMM().isRightClicked()){
-            System.out.println(gridPlacement.tilePOS(handler.getMM().getMouseX(),handler.getMM().getMouseY())[0] + " " + gridPlacement.tilePOS(handler.getMM().getMouseX(),handler.getMM().getMouseY())[1]);
+        if (handler.getMM().isRightClicked()) {
+            System.out.println(gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
         }
-
         player.tick();
         uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
         ActiveWorld.tick();
@@ -73,6 +74,7 @@ public class GameState extends State {
             handler.client.tick();
             recieveMessages();
         }
+        towns.tick();
     }
 
     public void multiplayerTick() {
@@ -91,6 +93,13 @@ public class GameState extends State {
         if (handler.multiplayer) {
             multiplayerTick();
         }
+        isPlayerOnTown();
+    }
+
+    public void isPlayerOnTown() {
+        if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1)
+            System.out.println("On town " + towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}));
+
     }
 
     public void sendMessages() {
@@ -164,5 +173,6 @@ public class GameState extends State {
                 p.render(g);
             }
         }
+        towns.render(g);
     }
 }
