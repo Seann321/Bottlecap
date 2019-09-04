@@ -5,7 +5,6 @@ import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
-import bottlecap.states.creationstate.CreationState;
 import bottlecap.states.creationstate.skills.Skills;
 import bottlecap.states.creationstate.skills.Strength;
 
@@ -24,6 +23,8 @@ public class StrengthState extends State {
         gui.addText(new Text(strength.getUnlock(Skills.Branches.BASE, 0).getTitle(), tiles.cords(50, 50), Text.mFont, true, Color.LIGHT_GRAY));
 
     }
+
+    //TODO Hey Look at these neat TODO things. At the bottom the the screen you can look at all of them through the whole program.
 
     @Override
     public void tick() {

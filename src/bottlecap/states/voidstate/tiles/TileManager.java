@@ -19,7 +19,7 @@ public class TileManager {
     private Handler handler;
     private final Tiles tiles;
     public Boolean liteUp = false;
-    public Boolean debug = true;
+    public Boolean debug = false;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
@@ -27,7 +27,8 @@ public class TileManager {
     private static Rectangle truePlayerStartingPOS;
     private GUI gui;
 
-    public TileManager(Handler handler, Tiles tiles) {
+    public TileManager(Handler handler, Tiles tiles, GUI gui) {
+        this.gui = gui;
         this.handler = handler;
         this.tiles = tiles;
         playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - Tiles.XDiv / 2, tiles.cords(50, 85)[1], 20, 30);
@@ -304,19 +305,14 @@ public class TileManager {
     }
 
     public void render(Graphics g) {
-
-        //g.setColor(Color.white);
-        //g.drawRect(testX, testY, 50, 50);
-
-        Iterator<TileEntities> it = tileEntities.iterator();
-        while (it.hasNext()) {
-            TileEntities x = it.next();
+        for (TileEntities x : tileEntities) {
             if (x.liteUp)
                 x.render(g);
         }
         for (TileEntities t : tileEntities) {
             if (t instanceof Player) {
                 if (((Player) t).getColor() != Color.GRAY) {
+                    //TODO Fix this. No longer rendering for some reason, same with pickAColor. Method is running however.
                     Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level + " HP: " + ((CharacterSlots) activeChar).health, tiles.cords(50, 96), Text.lFont, true, Color.yellow);
                     text.render(g);
                 }
@@ -326,7 +322,5 @@ public class TileManager {
             Text t = new Text("Pick a Character Color to continue.", tiles.cords(50, 100), Text.lFont, true, Color.yellow);
             t.render(g);
         }
-
     }
-
 }

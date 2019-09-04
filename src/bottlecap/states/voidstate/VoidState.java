@@ -4,12 +4,11 @@ import bottlecap.assets.GUI;
 import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
-import bottlecap.states.voidstate.tiles.*;
 import bottlecap.states.Tiles;
+import bottlecap.states.voidstate.tiles.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 import java.util.ArrayList;
 
 public class VoidState extends State {
@@ -30,7 +29,7 @@ public class VoidState extends State {
         super(handler);
         gui = new GUI();
         tiles = new Tiles(handler);
-        tm = new TileManager(handler, tiles);
+        tm = new TileManager(handler, tiles, gui);
         int centerOfDoorS = 0;
         int centerOfDoorM = 0;
         for(TileEntities t : tm.newTileEntities){
