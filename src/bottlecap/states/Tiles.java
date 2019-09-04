@@ -1,7 +1,5 @@
 package bottlecap.states;
 
-import bottlecap.states.Handler;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -9,65 +7,65 @@ public class Tiles {
 
     private final Handler handler;
     private int xTiles, yTiles;
-    public double xDiv;
-    public double yDiv;
+    public int xDiv;
+    public int yDiv;
     private ArrayList<Rectangle> tiles = new ArrayList<>();
 
 
     public Tiles(Handler handler) {
         this.handler = handler;
-        xDiv = handler.getWidth() / 100D;
-        yDiv = handler.getHeight() / 100D;
-        xTiles = (int) (handler.getWidth() / xDiv);
-        yTiles = (int) (handler.getHeight() / yDiv);
+        xDiv = handler.getWidth() / 100;
+        yDiv = handler.getHeight() / 100;
+        xTiles = handler.getWidth() / xDiv;
+        yTiles = handler.getHeight() / yDiv;
         for (int i = 0; i < xTiles; i++) {
             for (int ii = 0; ii < yTiles; ii++) {
-                tiles.add(new Rectangle((int) (i * xDiv), (int) (ii * yDiv), (int) xDiv, (int) yDiv));
+                tiles.add(new Rectangle(i * xDiv, ii * yDiv, xDiv, yDiv));
             }
         }
     }
 
-    public Tiles(Handler handler, double sizeX, double sizeY) {
+    public Tiles(Handler handler, int sizeX, int sizeY) {
         this.handler = handler;
         xDiv = handler.getWidth() / sizeX;
         yDiv = handler.getHeight() / sizeY;
-        xTiles = (int) (handler.getWidth() / xDiv);
-        yTiles = (int) (handler.getHeight() / yDiv);
+        xTiles = handler.getWidth() / xDiv;
+        yTiles = handler.getHeight() / yDiv;
         for (int i = 0; i < xTiles; i++) {
             for (int ii = 0; ii < yTiles; ii++) {
-                tiles.add(new Rectangle((int) (i * xDiv), (int) (ii * yDiv), (int) xDiv, (int) yDiv));
+                tiles.add(new Rectangle(i * xDiv, ii * yDiv, xDiv, yDiv));
             }
         }
     }
 
     public int[] cords(int x, int y) {
         int[] cords = new int[2];
-        cords[0] = (int) ((x * xDiv));
-        cords[1] = (int) ((y * yDiv));
+        cords[0] = (x * xDiv);
+        cords[1] = (y * yDiv);
         return cords;
     }
 
     public int[] tilePOS(int x, int y) {
         int[] cords = new int[2];
 
-        cords[0] = (int) ((x / xDiv));
-        cords[1] = (int) (y / yDiv);
+        cords[0] = (x / xDiv);
+        cords[1] = y / yDiv;
 
         return cords;
     }
 
     public int[] cords(int[] x) {
         int[] cords = new int[2];
-        cords[0] = (int) ((x[0] * xDiv));
-        cords[1] = (int) ((x[1] * yDiv));
+        cords[0] = (x[0] * xDiv);
+        cords[1] = (x[1] * yDiv);
         return cords;
     }
 
     public int[] tilePOS(int[] x) {
         int[] cords = new int[2];
 
-        cords[0] = (int) ((x[0] / xDiv));
-        cords[1] = (int) (x[1] / yDiv);
+        cords[0] = (x[0] / xDiv);
+        cords[1] = x[1] / yDiv;
 
         return cords;
     }

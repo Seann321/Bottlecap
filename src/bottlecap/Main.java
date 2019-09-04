@@ -9,10 +9,7 @@ public class Main {
     private static Bottlecap bottlecap;
 
     public static void main(String[] args) throws IOException {
-
         bottlecap = new Bottlecap("Testing", screenSize.width, screenSize.height);
         bottlecap.start();
-
     }
-
 }
