@@ -23,6 +23,20 @@ public class Towns {
         generateTowns();
     }
 
+    public TownObjects grabTownByID(int ID) {
+        for (TownObjects to : townsOverWorld) {
+            if (to.ID == ID) {
+                return to;
+            }
+        }
+        for (TownObjects to : townsSeantopia) {
+            if (to.ID == ID) {
+                return to;
+            }
+        }
+        return null;
+    }
+
     public int grabTownID(int[] cords) {
         if (GameState.ActiveWorld == GameState.Overworld) {
             for (TownObjects to : townsOverWorld) {
@@ -52,7 +66,7 @@ public class Towns {
             if (wt.tileType == WorldTiles.TileType.GRASSTOWN || wt.tileType == WorldTiles.TileType.DESSERTTOWN) {
                 if (townAlreadyGivenValue(wt.x, wt.y, wg.worldTitle, towns))
                     continue;
-                towns.add(new TownObjects(i, new Rectangle(wt.x, wt.y, tiles.xDiv, tiles.yDiv), wg.worldTitle));
+                towns.add(new TownObjects(handler, tiles, i, new Rectangle(wt.x, wt.y, tiles.xDiv, tiles.yDiv), wg.worldTitle));
                 checkNearbyTiles(wt, wg.worldTitle, towns, wg);
                 i++;
             }
@@ -77,7 +91,7 @@ public class Towns {
                 if (wt.x >= startingTile.x - tiles.xDiv && wt.x <= startingTile.x + tiles.xDiv) {
                     if (wt.y >= startingTile.y - tiles.yDiv && wt.y <= startingTile.y + tiles.yDiv) {
                         if (!townAlreadyGivenValue(wt.x, wt.y, worldName, towns)) {
-                            towns.add(new TownObjects(i, new Rectangle(wt.x, wt.y, tiles.xDiv, tiles.yDiv), worldName));
+                            towns.add(new TownObjects(handler, tiles, i, new Rectangle(wt.x, wt.y, tiles.xDiv, tiles.yDiv), worldName));
                             checkNearbyTiles(wt, worldName, towns, worldTiles);
                         }
                     }

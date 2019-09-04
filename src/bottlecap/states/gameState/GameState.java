@@ -26,6 +26,7 @@ public class GameState extends State {
     public static WorldGenerator ActiveWorld;
     private ArrayList<Player> multiplayers;
     private ArrayList<Player> newMultiplayers;
+    private boolean inTown = false;
     Towns towns;
 
     public GameState(Handler handler) {
@@ -75,6 +76,11 @@ public class GameState extends State {
             recieveMessages();
         }
         towns.tick();
+        if (inTown) {
+            if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
+                towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).tick();
+            }
+        }
     }
 
     public void multiplayerTick() {
@@ -97,8 +103,12 @@ public class GameState extends State {
     }
 
     public void isPlayerOnTown() {
-        if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1)
-            System.out.println("On town " + towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}));
+        if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
+            towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).playerEnteringTown();
+            inTown = true;
+        } else {
+            inTown = false;
+        }
 
     }
 
@@ -174,5 +184,10 @@ public class GameState extends State {
             }
         }
         towns.render(g);
+        if (inTown) {
+            if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
+                towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).render(g);
+            }
+        }
     }
 }
