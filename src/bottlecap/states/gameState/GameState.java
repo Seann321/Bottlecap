@@ -64,8 +64,6 @@ public class GameState extends State {
         player.tick();
         uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
         ActiveWorld.tick();
-        if (GUI.gui != gui)
-            GUI.gui = gui;
         gui.tick();
         if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
             nextTurn();
@@ -80,6 +78,9 @@ public class GameState extends State {
             if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
                 towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).tick();
             }
+        } else {
+            if (GUI.gui != gui)
+                GUI.gui = gui;
         }
     }
 

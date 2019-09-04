@@ -1,5 +1,6 @@
 package bottlecap.states.gameState.towns;
 
+import bottlecap.assets.GUI;
 import bottlecap.states.Handler;
 import bottlecap.states.Tiles;
 
@@ -24,7 +25,7 @@ public class TownObjects {
     }
 
     public void playerEnteringTown() {
-        //System.out.println("Player: " + handler.computerID + " entering town with ID: " + ID);
+        GUI.gui = townUI.gui;
     }
 
     public void tick() {

@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class CharacterSlots extends TileEntities {
 
+    public boolean fastTravelUnlocked = false;
     public int health = 100;
     public int level = 0;
     public int pos;
