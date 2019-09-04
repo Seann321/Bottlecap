@@ -157,6 +157,9 @@ public class GameState extends State {
         if (player != null)
             player.render(g);
         for (Player p : multiplayers) {
+            if (p.currentWorld == null) {
+                p.currentWorld = ActiveWorld.worldTitle;
+            }
             if (p.currentWorld.equals(ActiveWorld.worldTitle)) {
                 p.render(g);
             }
