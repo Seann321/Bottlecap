@@ -37,7 +37,7 @@ public class GameState extends State {
         Seantopia = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Seantopia.txt", "Seantopia");
         multiplayers = new ArrayList<>();
         newMultiplayers = new ArrayList<>();
-        towns = new Towns(handler);
+        towns = new Towns(handler, gridPlacement);
         uiInfo = new Text[]{
                 new Text("Health: ", gridPlacement.cords(1, 33), Text.mFont, false, Color.white, false),
                 new Text("Level: ", gridPlacement.cords(1, 34), Text.mFont, false, Color.white, false),

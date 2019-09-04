@@ -11,12 +11,14 @@ import java.util.ArrayList;
 
 public class Towns {
 
+    private Tiles tiles;
     int i = 0;
     private Handler handler;
     private ArrayList<TownObjects> townsOverWorld = new ArrayList<>();
     private ArrayList<TownObjects> townsSeantopia = new ArrayList<>();
 
-    public Towns(Handler handler) {
+    public Towns(Handler handler, Tiles tiles) {
+        this.tiles = tiles;
         this.handler = handler;
         generateTowns();
     }
@@ -50,7 +52,7 @@ public class Towns {
             if (wt.tileType == WorldTiles.TileType.GRASSTOWN || wt.tileType == WorldTiles.TileType.DESSERTTOWN) {
                 if (townAlreadyGivenValue(wt.x, wt.y, wg.worldTitle, towns))
                     continue;
-                towns.add(new TownObjects(i, new Rectangle(wt.x, wt.y, Tiles.XDiv, Tiles.YDiv), wg.worldTitle));
+                towns.add(new TownObjects(i, new Rectangle(wt.x, wt.y, tiles.xDiv, tiles.yDiv), wg.worldTitle));
                 checkNearbyTiles(wt, wg.worldTitle, towns, wg);
                 i++;
             }
@@ -72,10 +74,10 @@ public class Towns {
     public void checkNearbyTiles(WorldTiles startingTile, String worldName, ArrayList<TownObjects> towns, WorldGenerator worldTiles) {
         for (WorldTiles wt : worldTiles.worldTiles) {
             if (wt.tileType == WorldTiles.TileType.GRASSTOWN || wt.tileType == WorldTiles.TileType.DESSERTTOWN) {
-                if (wt.x >= startingTile.x - Tiles.XDiv && wt.x <= startingTile.x + Tiles.XDiv) {
-                    if (wt.y >= startingTile.y - Tiles.YDiv && wt.y <= startingTile.y + Tiles.YDiv) {
+                if (wt.x >= startingTile.x - tiles.xDiv && wt.x <= startingTile.x + tiles.xDiv) {
+                    if (wt.y >= startingTile.y - tiles.yDiv && wt.y <= startingTile.y + tiles.yDiv) {
                         if (!townAlreadyGivenValue(wt.x, wt.y, worldName, towns)) {
-                            towns.add(new TownObjects(i, new Rectangle(wt.x, wt.y, Tiles.XDiv, Tiles.YDiv), worldName));
+                            towns.add(new TownObjects(i, new Rectangle(wt.x, wt.y, tiles.xDiv, tiles.yDiv), worldName));
                             checkNearbyTiles(wt, worldName, towns, worldTiles);
                         }
                     }

@@ -24,7 +24,7 @@ public class WorldTiles {
         x = cords[0];
         y = cords[1];
         this.z = z;
-        bounds = new Rectangle(x, y, Tiles.XDiv, Tiles.YDiv);
+        bounds = new Rectangle(x, y, tiles.xDiv, tiles.yDiv);
         if (x < 0 || y < 0) {
             System.out.println("Negative Tile at X " + x + " Y " + y);
         }
@@ -61,28 +61,28 @@ public class WorldTiles {
     public void render(Graphics g) {
         switch (tileType) {
             case WATER:
-                g.drawImage(Images.water, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.water, x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case GRASS:
-                g.drawImage(Images.grass[texture], x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.grass[texture], x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case FOREST:
-                g.drawImage(Images.forest, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.forest, x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case DESSERT:
-                g.drawImage(Images.dessert[texture], x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.dessert[texture], x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case BRIDGE:
-                g.drawImage(Images.bridge, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.bridge, x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case DESSERTTOWN:
-                g.drawImage(Images.dessertTown, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.dessertTown, x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case GRASSTOWN:
-                g.drawImage(Images.grassTown, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.grassTown, x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
             case DOCK:
-                g.drawImage(Images.dock, x, y, Tiles.XDiv, Tiles.YDiv, null);
+                g.drawImage(Images.dock, x, y, tiles.xDiv, tiles.yDiv, null);
                 break;
 
         }

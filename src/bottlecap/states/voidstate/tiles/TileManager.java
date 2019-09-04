@@ -17,9 +17,9 @@ public class TileManager {
     public ArrayList<TileEntities> tileEntities = new ArrayList<>();
     public ArrayList<TileEntities> newTileEntities = new ArrayList<>();
     private Handler handler;
-    private final Tiles tiles;
+    public Boolean debug = true;
     public Boolean liteUp = false;
-    public Boolean debug = false;
+    private Tiles tiles;
     public Boolean multiplayer = false;
     private int playerID = 0;
     private boolean pickAColor = false;
@@ -31,8 +31,8 @@ public class TileManager {
         this.gui = gui;
         this.handler = handler;
         this.tiles = tiles;
-        playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - Tiles.XDiv / 2, tiles.cords(50, 85)[1], 20, 30);
-        truePlayerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - Tiles.XDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        playerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
+        truePlayerStartingPOS = new Rectangle((tiles.cords(50, 85)[0]) - tiles.xDiv / 2, tiles.cords(50, 85)[1], 20, 30);
         newTileEntities.add(new Player(playerStartingPOS, handler));
         createCandleWalkway();
         newTileEntities.add(new Candle(tiles.cords(50, 10), true, handler));
@@ -313,13 +313,14 @@ public class TileManager {
             if (t instanceof Player) {
                 if (((Player) t).getColor() != Color.GRAY) {
                     //TODO Fix this. No longer rendering for some reason, same with pickAColor. Method is running however.
-                    Text text = new Text("Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level + " HP: " + ((CharacterSlots) activeChar).health, tiles.cords(50, 96), Text.lFont, true, Color.yellow);
+                    String s = "Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level + " HP: " + ((CharacterSlots) activeChar).health;
+                    Text text = new Text(s, (tiles.cords(50, 96)), Text.lFont, true, Color.yellow);
                     text.render(g);
                 }
             }
         }
         if (pickAColor) {
-            Text t = new Text("Pick a Character Color to continue.", tiles.cords(50, 100), Text.lFont, true, Color.yellow);
+            Text t = new Text("Pick a Character Color to continue.", tiles.cords(50, 96), Text.lFont, true, Color.yellow);
             t.render(g);
         }
     }
