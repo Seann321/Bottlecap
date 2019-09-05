@@ -17,7 +17,7 @@ public class TileManager {
     public ArrayList<TileEntities> tileEntities = new ArrayList<>();
     public ArrayList<TileEntities> newTileEntities = new ArrayList<>();
     private Handler handler;
-    public Boolean debug = true;
+    public static Boolean debug = true;
     public Boolean liteUp = false;
     private Tiles tiles;
     public Boolean multiplayer = false;
@@ -312,7 +312,6 @@ public class TileManager {
         for (TileEntities t : tileEntities) {
             if (t instanceof Player) {
                 if (((Player) t).getColor() != Color.GRAY) {
-                    //TODO Fix this. No longer rendering for some reason, same with pickAColor. Method is running however.
                     String s = "Player " + (((CharacterSlots) activeChar).nickName) + "     LVL: " + ((CharacterSlots) activeChar).level + " HP: " + ((CharacterSlots) activeChar).health;
                     Text text = new Text(s, (tiles.cords(50, 96)), Text.lFont, true, Color.yellow);
                     text.render(g);

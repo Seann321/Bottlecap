@@ -6,6 +6,7 @@ import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
 import bottlecap.states.creationstate.subStates.StrengthState;
+
 import java.awt.*;
 
 public class CreationState extends State {

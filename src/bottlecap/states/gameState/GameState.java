@@ -5,6 +5,7 @@ import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
+import bottlecap.states.gameState.inventoryState.InventoryState;
 import bottlecap.states.gameState.towns.Towns;
 import bottlecap.states.gameState.worldGenerator.WorldGenerator;
 import bottlecap.states.voidstate.tiles.CharacterSlots;
@@ -20,13 +21,14 @@ public class GameState extends State {
     private Tiles gridPlacement;
     public static WorldGenerator Overworld;
     public static WorldGenerator Seantopia;
-    private Player player;
+    public static Player Player;
     private boolean firstLoad = true;
-    private int turnCount = 0;
+    public static int Turn = 0;
     public static WorldGenerator ActiveWorld;
     private ArrayList<Player> multiplayers;
     private ArrayList<Player> newMultiplayers;
     private boolean inTown = false;
+    public InventoryState inventoryState;
     Towns towns;
 
     public GameState(Handler handler) {
@@ -36,6 +38,7 @@ public class GameState extends State {
         Overworld = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Overworld.txt", "Overworld");
         ActiveWorld = Overworld;
         Seantopia = new WorldGenerator(handler, gridPlacement, "src/bottlecap/assets/worlds/Seantopia.txt", "Seantopia");
+        inventoryState = new InventoryState(handler);
         multiplayers = new ArrayList<>();
         newMultiplayers = new ArrayList<>();
         towns = new Towns(handler, gridPlacement);
@@ -58,11 +61,11 @@ public class GameState extends State {
         if (firstLoad) {
             firstLoading();
         }
-        if (handler.getMM().isRightClicked()) {
-            System.out.println(gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[0] + " " + gridPlacement.tilePOS(handler.getMM().getMouseX(), handler.getMM().getMouseY())[1]);
+        if (handler.getKM().keyJustPressed(KeyEvent.VK_E)) {
+            inventory();
         }
-        player.tick();
-        uiInfo[3].setText("AP Remaining: " + (player.AP - player.movementPoints));
+        Player.tick();
+        uiInfo[3].setText("AP Remaining: " + (Player.AP));
         ActiveWorld.tick();
         gui.tick();
         if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
@@ -75,13 +78,18 @@ public class GameState extends State {
         }
         towns.tick();
         if (inTown) {
-            if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
-                towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).tick();
+            if (towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y}) != -1) {
+                towns.grabTownByID(towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y})).tick();
             }
         } else {
             if (GUI.gui != gui)
                 GUI.gui = gui;
         }
+        isPlayerOnTown();
+    }
+
+    public void inventory() {
+        handler.setCurrentState(inventoryState);
     }
 
     public void multiplayerTick() {
@@ -89,23 +97,22 @@ public class GameState extends State {
     }
 
     public void nextTurn() {
-        turnCount++;
+        Turn++;
         uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
         uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
         uiInfo[2].setText("" + ((CharacterSlots) handler.activePlayer).nickName);
-        uiInfo[5].setText("Turn: " + turnCount);
-        player.endTurn();
-        player.AP = player.startAP;
+        uiInfo[5].setText("Turn: " + Turn);
+        Player.endTurn();
+        Player.AP = Player.startAP;
         uiInfo[6].setText("Island: " + ActiveWorld.worldTitle);
         if (handler.multiplayer) {
             multiplayerTick();
         }
-        isPlayerOnTown();
     }
 
     public void isPlayerOnTown() {
-        if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
-            towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).playerEnteringTown();
+        if (towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y}) != -1) {
+            towns.grabTownByID(towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y})).playerEnteringTown();
             inTown = true;
         } else {
             inTown = false;
@@ -114,8 +121,8 @@ public class GameState extends State {
     }
 
     public void sendMessages() {
-        handler.sendMessage("PLAYERDATA" + "X" + player.getTileUnderPlayer()[0] + "Y" + player.getTileUnderPlayer()[1]
-                + "COLOR" + player.color + "WORLD" + ActiveWorld.worldTitle);
+        handler.sendMessage("PLAYERDATA" + "X" + Player.getTileUnderPlayer()[0] + "Y" + Player.getTileUnderPlayer()[1]
+                + "COLOR" + Player.color + "WORLD" + ActiveWorld.worldTitle);
     }
 
     private String currentMessage = "";
@@ -159,8 +166,8 @@ public class GameState extends State {
     //((CharacterSlots) handler.activePlayer).level;
 
     public void firstLoading() {
-        player = new Player(gridPlacement.cords(32, 21), ((CharacterSlots) handler.activePlayer).color, gridPlacement, handler, handler.computerID);
-        System.out.println("Player Created with ID: " + player.privateID);
+        Player = new Player(gridPlacement.cords(32, 21), ((CharacterSlots) handler.activePlayer).color, gridPlacement, handler, handler.computerID);
+        System.out.println("Player Created with ID: " + Player.privateID);
         uiInfo[0].setText("Health: " + ((CharacterSlots) handler.activePlayer).health);
         uiInfo[1].setText("Level: " + ((CharacterSlots) handler.activePlayer).level);
         uiInfo[2].setText("" + ((CharacterSlots) handler.activePlayer).nickName);
@@ -174,8 +181,8 @@ public class GameState extends State {
         ActiveWorld.render(g);
         gui.render(g);
         gridPlacement.render(g);
-        if (player != null)
-            player.render(g);
+        if (Player != null)
+            Player.render(g);
         for (Player p : multiplayers) {
             if (p.currentWorld == null) {
                 p.currentWorld = ActiveWorld.worldTitle;
@@ -186,8 +193,8 @@ public class GameState extends State {
         }
         towns.render(g);
         if (inTown) {
-            if (towns.grabTownID(new int[]{player.bounds.x, player.bounds.y}) != -1) {
-                towns.grabTownByID(towns.grabTownID(new int[]{player.bounds.x, player.bounds.y})).render(g);
+            if (towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y}) != -1) {
+                towns.grabTownByID(towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y})).render(g);
             }
         }
     }

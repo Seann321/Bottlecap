@@ -43,7 +43,7 @@ public class Player {
         movement();
     }
 
-    public int movementPoints = 0;
+    private int movementPoints = 0;
 
     public void endTurn() {
         movementPoints = 0;
@@ -68,14 +68,12 @@ public class Player {
     public void movement() {
 
         if (handler.getMM().isRightPressed()) {
+            AP += movementPoints;
             movementPoints = 0;
             bounds.x = cancelMove[0];
             bounds.y = cancelMove[1];
         }
-        if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER)) {
-
-        }
-        if (movementPoints >= AP) {
+        if (AP <= 0) {
             return;
         }
         if (handler.getKM().keyJustPressed(KeyEvent.VK_W)) {
@@ -106,7 +104,7 @@ public class Player {
 
     public void afterPress() {
         movementPoints++;
-        //System.out.println(wg.returnTileType(new int[]{bounds.x, bounds.y}));
+        AP--;
     }
 
     public void render(Graphics g) {
