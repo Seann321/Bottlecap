@@ -61,15 +61,13 @@ public class GameState extends State {
         if (firstLoad) {
             firstLoading();
         }
-        if (handler.getKM().keyJustPressed(KeyEvent.VK_E)) {
-            inventory();
-        }
         Player.tick();
         uiInfo[3].setText("AP Remaining: " + (Player.AP));
         ActiveWorld.tick();
         gui.tick();
-        if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER))
+        if (handler.getKM().keyJustPressed(KeyEvent.VK_ENTER)) {
             nextTurn();
+        }
         if (handler.multiplayer) {
             multiplayers.clear();
             multiplayers.addAll(newMultiplayers);
@@ -82,10 +80,14 @@ public class GameState extends State {
                 towns.grabTownByID(towns.grabTownID(new int[]{Player.bounds.x, Player.bounds.y})).tick();
             }
         } else {
-            if (GUI.gui != gui)
+            if (GUI.gui != gui) {
                 GUI.gui = gui;
+            }
         }
         isPlayerOnTown();
+        if (handler.getKM().keyJustPressed(KeyEvent.VK_E)) {
+            inventory();
+        }
     }
 
     public void inventory() {

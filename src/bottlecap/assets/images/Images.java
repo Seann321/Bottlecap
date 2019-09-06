@@ -7,6 +7,7 @@ public class Images {
     public static final int WIDTH = 8, HEIGHT = 8;
 
     public static BufferedImage water, forest,bridge,dessertTown,grassTown, dock;
+    public static BufferedImage inventoryScreen;
     public static BufferedImage[] grass = new BufferedImage[3];
     public static BufferedImage[] dessert = new BufferedImage[3];
 
@@ -14,6 +15,7 @@ public class Images {
 
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("SpriteSheet.png"));
 
+        inventoryScreen = new SpriteSheet(ImageLoader.loadImage("Inventorymashup.png")).crop(0, 0, 800, 450);
         grass[0] = sheet.crop(0, 0, WIDTH, HEIGHT);
         grass[1] = sheet.crop(0, HEIGHT, WIDTH, HEIGHT);
         grass[2] = sheet.crop(0, HEIGHT*2, WIDTH, HEIGHT);
