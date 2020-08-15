@@ -85,12 +85,8 @@ public class GameState extends State {
         }
         isPlayerOnTown();
         if (handler.getKM().keyJustPressed(KeyEvent.VK_E)) {
-            inventory();
+            handler.setCurrentState(handler.creationState);
         }
-    }
-
-    public void inventory() {
-        handler.setCurrentState(inventoryState);
     }
 
     public void multiplayerTick() {

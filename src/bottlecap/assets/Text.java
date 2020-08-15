@@ -18,7 +18,7 @@ public class Text {
     protected boolean clicked = false, rightClicked = false, hovering = false;
     public boolean active = true, clickable = true;
 
-    String message;
+    public String message;
     int x, y;
     Font font;
 
