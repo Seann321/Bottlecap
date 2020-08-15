@@ -8,7 +8,7 @@ public class Main {
     private static Bottlecap bottlecap;
 
     public static void main(String[] args) {
-        bottlecap = new Bottlecap("Testing", screenSize.width, screenSize.height);
+        bottlecap = new Bottlecap("Bottlecap", screenSize.width, screenSize.height);
         bottlecap.start();
     }
 }

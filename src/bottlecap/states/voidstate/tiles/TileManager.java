@@ -44,9 +44,6 @@ public class TileManager {
             }
         }
         handler.computerID = playerID;
-        if (debug) {
-            startMutliplayer("192.168.0.15");
-        }
     }
 
 

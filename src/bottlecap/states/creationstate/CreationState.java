@@ -5,39 +5,32 @@ import bottlecap.assets.Text;
 import bottlecap.states.Handler;
 import bottlecap.states.State;
 import bottlecap.states.Tiles;
-import bottlecap.states.creationstate.subStates.StrengthState;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class CreationState extends State {
 
-    private StrengthState strengthState;
     private Tiles tiles;
-    private int yOffset;
-    Color darkOrange = new Color(255, 140, 0);
-
+    public ArrayList<Stat> grids = new ArrayList<>();
 
     public CreationState(Handler handler) {
         super(handler);
         gui = new GUI();
         tiles = new Tiles(handler);
-        yOffset = 30;
-        strengthState = new StrengthState(handler, tiles);
-
         gui.addText(new Text("Character Sheet", tiles.cords(50, 5), Text.lFont, true, Color.lightGray,false));
-        gui.addText(new Text("Strength", tiles.cords(50, 5), Text.lFont, true, Color.red));
-        gui.addText(new Text("Magic", tiles.cords(50, 5), Text.lFont, true, Color.blue));
-        gui.addText(new Text("Perception", tiles.cords(50, 5), Text.lFont, true, Color.MAGENTA));
-        gui.addText(new Text("Charisma", tiles.cords(50, 5), Text.lFont, true, Color.green));
-        gui.addText(new Text("Defence", tiles.cords(50, 5), Text.lFont, true, darkOrange));
-        gui.addText(new Text("Agility", tiles.cords(50, 5), Text.lFont, true, Color.cyan));
+        createGrid();
+    }
 
-        for (Text t : gui.newText) {
-            if (t.getText().equals("Character Sheet")) continue;
-            t.setY(tiles.cords(40, yOffset)[1]);
-            yOffset += 10;
+    public void createGrid(){
+        int xWidth = handler.getWidth()/5;
+        int yHeight = handler.getHeight()/12;
+        for(int i = 0; i < yHeight; i++){
+            for(int ii = 0; ii < xWidth; ii++){
+                grids.add(new Stat(new Rectangle(i * xWidth, ii * yHeight, xWidth, yHeight)));
+            }
         }
-        yOffset = 30;
     }
 
     @Override
@@ -45,22 +38,17 @@ public class CreationState extends State {
         if (GUI.gui != gui) {
             GUI.gui = gui;
         }
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) handler.setCurrentState(handler.voidState);
         gui.tick();
-
-        for (Text t : gui.text) {
-            if (t.wasClicked()) {
-                if (t.getText().equals("Character Sheet")) {
-                    continue;
-                }
-                if (t.getText().equals("Strength")) {
-                    handler.setCurrentState(strengthState);
-                }
-            }
-        }
     }
 
     @Override
     public void render(Graphics g) {
+        for(Stat s : grids){
+            g.setColor(Color.red);
+            Rectangle r = s.bounds;
+            g.drawRect(r.x,r.y,r.width,r.height);
+        }
         gui.render(g);
     }
 }

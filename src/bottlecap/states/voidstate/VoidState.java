@@ -161,6 +161,9 @@ public class VoidState extends State {
             //handler.activePlayer = tm.
             handler.setCurrentState(handler.gameState);
         }
+        if(handler.getKM().keyJustPressed(KeyEvent.VK_F10)){
+            handler.setCurrentState(handler.creationState);
+        }
         if(handler.getKM().keyJustPressed(KeyEvent.VK_F8)){
             handler.setCurrentState(handler.emptyState);
         }

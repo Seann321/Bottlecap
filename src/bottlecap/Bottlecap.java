@@ -46,7 +46,7 @@ public class Bottlecap implements Runnable {
 
     private void tick() {
         handler.getKM().tick();
-        if (handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) System.exit(0);
+        //if (handler.getKM().keyJustPressed(KeyEvent.VK_ESCAPE)) System.exit(0);
         handler.getCurrentState().tick();
     }
 

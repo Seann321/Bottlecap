@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class GameState extends State {
 
     private Text[] uiInfo;
-    private boolean debug = true;
     private Tiles gridPlacement;
     public static WorldGenerator Overworld;
     public static WorldGenerator Seantopia;
